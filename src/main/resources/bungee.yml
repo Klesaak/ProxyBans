@@ -1,0 +1,3 @@
+name: ProxyBans
+version: '${project.version}'
+main: ua.klesaak.proxybans.ProxyBans

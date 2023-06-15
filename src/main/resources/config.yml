@@ -1,0 +1,38 @@
+groups:
+  defaults:
+    weight: 0
+    maxPunishTime:
+      tempban: 10m
+      tempmute: 30m
+      tempipban: 1h
+    cooldown:
+      ban: 5m
+      tempban: 1m
+      mute: 5m
+      tempmute: 1m
+      kick: 5m
+  admin:
+    weight: 1
+    maxPunishTime:
+      tempban: 150h
+      tempmute: 10h
+      tempipban: 1h
+    cooldown:
+      ban: 2m
+      tempban: 1m
+      mute: 5m
+      tempmute: 1m
+      kick: 1m
+
+protectedPlayers:
+  - klesaak
+
+dateFormat: "dd.MM.yyyy HH:mm:ss"
+
+blockedCommands:
+  - /me
+  - /bc
+  - /broadcast
+  - /tell
+  - /w
+  - /msg
