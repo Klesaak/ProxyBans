@@ -1,18 +1,18 @@
 package ua.klesaak.proxybans;
 
 import net.md_5.bungee.api.plugin.Plugin;
-import ua.klesaak.proxybans.rules.PunishType;
-import ua.klesaak.proxybans.storage.PunishData;
+import ua.klesaak.proxybans.manager.ProxyBansManager;
 
 public final class ProxyBansPlugin extends Plugin {
+    private ProxyBansManager proxyBansManager;
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        this.proxyBansManager = new ProxyBansManager(this);
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        this.proxyBansManager.disable();
     }
 }
