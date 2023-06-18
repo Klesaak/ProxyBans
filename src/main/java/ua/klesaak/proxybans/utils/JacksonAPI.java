@@ -2,6 +2,7 @@ package ua.klesaak.proxybans.utils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -35,13 +36,28 @@ public class JacksonAPI {
     }
 
     @SneakyThrows
+    public <T> T readFile(File file, TypeReference<T> reference) {
+        return OBJECT_MAPPER.readValue(file, reference);
+    }
+
+    @SneakyThrows
     public <T> T readPath(Path path, Class<T> clazz) {
         return OBJECT_MAPPER.readValue(readPath(path), clazz);
     }
 
     @SneakyThrows
+    public <T> T readPath(Path path, TypeReference<T> reference) {
+        return OBJECT_MAPPER.readValue(readPath(path), reference);
+    }
+
+    @SneakyThrows
     public <T> T readValue(String json, Class<T> clazz) {
         return OBJECT_MAPPER.readValue(json, clazz);
+    }
+
+    @SneakyThrows
+    public <T> T readValue(String json, TypeReference<T> reference) {
+        return OBJECT_MAPPER.readValue(json, reference);
     }
 
     @SneakyThrows

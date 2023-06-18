@@ -9,9 +9,9 @@ public class PunishData {
     private final String playerName;
     private final PunishType punishType;
 
-    private String punishServer;
+    private String punisherServer;
     private String server;
-    private String punishName;
+    private String punisherName;
     private String reason;
     private String comment;
     private String ip;

@@ -2,3 +2,6 @@ name: ProxyBans
 version: '${project.version}'
 main: ua.klesaak.proxybans.ProxyBansPlugin
 author: Klesaak
+softDepends:
+  - LuckPerms
+  - MinePerms

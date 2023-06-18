@@ -5,14 +5,17 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class RuleData {
-    private final String rule;
-    private final String ruleText;
-    private final EnumSet<PunishType> applicablePunishments;
+    private String rule;
+    private String ruleText;
+    private EnumSet<PunishType> applicablePunishments;
 
     public RuleData(String rule, String ruleText, EnumSet<PunishType> applicablePunishments) {
         this.rule = rule;
         this.ruleText = ruleText;
         this.applicablePunishments = applicablePunishments;
+    }
+
+    public RuleData() {
     }
 
     public Set<PunishType> getApplicablePunishments() {
