@@ -13,6 +13,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @UtilityClass
 public class JacksonAPI {
@@ -67,6 +70,14 @@ public class JacksonAPI {
     @SneakyThrows
     public Path writePath(Path path, String value) {
         return Files.write(path, value.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    public <K, V> Map<K, V> fastMap(List<K> keys, List<V> values) {
+        Map<K, V> map = new HashMap<>();
+        for (int i = 0; i < keys.size(); ++i) {
+            map.put(keys.get(i), values.get(i));
+        }
+        return map;
     }
 
     @SneakyThrows

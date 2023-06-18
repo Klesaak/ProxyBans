@@ -1,3 +1,4 @@
 name: ProxyBans
 version: '${project.version}'
-main: ua.klesaak.proxybans.ProxyBans
+main: ua.klesaak.proxybans.ProxyBansPlugin
+author: Klesaak

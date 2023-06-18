@@ -1,6 +1,7 @@
 package ua.klesaak.proxybans.utils.messages;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.base.Joiner;
 import lombok.SneakyThrows;
 import lombok.val;
 import ua.klesaak.proxybans.utils.JacksonAPI;
@@ -37,16 +38,16 @@ public interface LocaleConfigData<T extends LocaleConfigData<T>> {
         }
 
         if (keyList.stream().anyMatch(key -> !jsonNode.has(key))) { //записывает дефолт файл если ключей нет
-            LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+            LinkedHashMap<String, JsonNode> map = new LinkedHashMap<>();
             for (val field : getFields(thisClass)) {
                 if (field.isAnnotationPresent(MessageField.class)) {
                     val data = field.getAnnotation(MessageField.class);
                     val messageKey = data.key().isEmpty() ? field.getName() : data.key();
-                    val message = data.defaultMessage();
+                    val message = data.defaultMessage().length > 1 ? Arrays.asList(data.defaultMessage()) : data.defaultMessage()[0];
                     map.put(messageKey, JacksonAPI.OBJECT_MAPPER.valueToTree(message));
                 }
             }
-            JacksonAPI.writeFile(file, JacksonAPI.OBJECT_MAPPER.valueToTree(map));
+            JacksonAPI.writeFile(file, map);
         }
 
         JsonNode newJsonNode = JacksonAPI.readPath(file.toPath(), JsonNode.class);
@@ -54,8 +55,10 @@ public interface LocaleConfigData<T extends LocaleConfigData<T>> {
             if (field.isAnnotationPresent(MessageField.class)) {
                 val data = field.getAnnotation(MessageField.class);
                 val messageKey = data.key().isEmpty() ? field.getName() : data.key();
+                val nodeKey = newJsonNode.get(messageKey);
+                val message = nodeKey.isArray() ? Joiner.on('\n').join(JacksonAPI.readValue(nodeKey.toString(), List.class)) : nodeKey.toString();
                 field.setAccessible(true);
-                field.set(this, new Message(newJsonNode.get(messageKey).toString()));
+                field.set(this, new Message(message));
             }
         }
 

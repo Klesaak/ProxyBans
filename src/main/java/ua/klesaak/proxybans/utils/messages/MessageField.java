@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MessageField {
     String key() default "";
-    String defaultMessage() default "Default minecraft-json message.";
+    String[] defaultMessage() default "Default minecraft-json message.";
 }

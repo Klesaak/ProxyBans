@@ -7,16 +7,16 @@ import java.util.Set;
 public class RuleData {
     private final String rule;
     private final String ruleText;
-    private final EnumSet<PunishType> allowedPunishments;
+    private final EnumSet<PunishType> applicablePunishments;
 
-    public RuleData(String rule, String ruleText, EnumSet<PunishType> allowedPunishments) {
+    public RuleData(String rule, String ruleText, EnumSet<PunishType> applicablePunishments) {
         this.rule = rule;
         this.ruleText = ruleText;
-        this.allowedPunishments = allowedPunishments;
+        this.applicablePunishments = applicablePunishments;
     }
 
-    public Set<PunishType> getAllowedPunishments() {
-        return Collections.unmodifiableSet(this.allowedPunishments);
+    public Set<PunishType> getApplicablePunishments() {
+        return Collections.unmodifiableSet(this.applicablePunishments);
     }
 
     public String getRule() {

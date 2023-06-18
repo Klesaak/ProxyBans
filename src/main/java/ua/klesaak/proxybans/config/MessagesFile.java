@@ -1,11 +1,13 @@
 package ua.klesaak.proxybans.config;
 
+import lombok.Getter;
 import ua.klesaak.proxybans.utils.messages.LocaleConfigData;
 import ua.klesaak.proxybans.utils.messages.Message;
 import ua.klesaak.proxybans.utils.messages.MessageField;
 
 import java.util.regex.Pattern;
 
+@Getter
 public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private static final String PLAYER_NAME = "(player)";
     public static final Pattern PLAYER_NAME_PATTERN = Pattern.compile(PLAYER_NAME, Pattern.LITERAL);
@@ -25,6 +27,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     public static final Pattern DATE_PATTERN = Pattern.compile(DATE, Pattern.LITERAL);
 
 
+    //usages'ы
     @MessageField(key = "command.usage.ban", defaultMessage = "&7Использование - &c/ban &7<ник> <правило> <пояснение>")
     private Message usageBanCommand;
     @MessageField(key = "command.usage.ban-ip", defaultMessage = "&7Использование - &c/ban-ip &7<ник/IP-адрес> <правило> <пояснение>")
@@ -58,6 +61,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     @MessageField(key = "command.usage.check", defaultMessage = "&7Использование - &c/check &7<ник>")
     private Message usageCheckCommand;
 
+    //broadcast'ы
     @MessageField(key = "message.broadcast.banned", defaultMessage = "(punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastBanned;
     @MessageField(key = "message.broadcast.banned-ip", defaultMessage = "(punisher) (punishServer) забанил по-ip (player) (server). Причина - (rule). (ruleText) ((comment))")
@@ -89,6 +93,17 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     @MessageField(key = "message.broadcast.kicked", defaultMessage = "(punisher) (punishServer) кикнул (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastKicked;
 
+
+
+
+    @MessageField(key = "message.banned", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
+    private Message messageBanned;
+    @MessageField(key = "message.banned-ip", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
+    private Message messageBannedIp;
+    @MessageField(key = "message.tempBanned", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
+    private Message messageTempBanned;
+    @MessageField(key = "message.kicked", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
+    private Message messageKicked;
     // TODO: 15.06.2023 messages 
 
 

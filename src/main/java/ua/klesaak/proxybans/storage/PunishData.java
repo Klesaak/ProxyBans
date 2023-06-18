@@ -18,12 +18,6 @@ public class PunishData {
     private long time; //Время на которое забанили
     private long punishTime; //Время когда забанили
 
-
-    public PunishData(String playerName, PunishType punishType) {
-        this.playerName = playerName;
-        this.punishType = punishType;
-    }
-
     public boolean isIPBan() {
         return this.ip != null;
     }

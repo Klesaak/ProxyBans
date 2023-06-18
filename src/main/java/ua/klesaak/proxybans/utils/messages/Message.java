@@ -3,6 +3,8 @@ package ua.klesaak.proxybans.utils.messages;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 import java.util.function.Supplier;
@@ -18,6 +20,7 @@ public class Message implements Cloneable {
 
     public void broadcast() {
         ProxyServer.getInstance().getPlayers().forEach(this::send);
+        this.send(ProxyServer.getInstance().getConsole());
     }
 
     public static Message create(String text) {
@@ -45,8 +48,8 @@ public class Message implements Cloneable {
         return this.message;
     }
 
-    public String getMessage() {
-        return this.message;
+    public BaseComponent[] getMessage() {
+        return TextComponent.fromLegacyText(this.message);
     }
 
     @Override
