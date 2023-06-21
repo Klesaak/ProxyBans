@@ -1,7 +1,6 @@
 package ua.klesaak.proxybans.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.val;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -15,9 +14,8 @@ import java.nio.file.Files;
 import java.util.EnumSet;
 import java.util.LinkedHashSet;
 
-@Getter
 public class ConfigFile extends PluginConfig {
-    private LinkedHashSet<RuleData> rules = new LinkedHashSet<>();
+    private LinkedHashSet<RuleData> rules;
 
     public ConfigFile(Plugin plugin) {
         super(plugin, "config.yml");
@@ -39,5 +37,12 @@ public class ConfigFile extends PluginConfig {
         }
         LinkedHashSet<RuleData> ruleData = JacksonAPI.readFile(file, new TypeReference<LinkedHashSet<RuleData>>() {});
         this.rules = new LinkedHashSet<>(ruleData);
+    }
+
+    public RuleData getRule(String rule) {
+        for (val ruleData : this.rules) {
+            if (ruleData.getRule().equalsIgnoreCase(rule)) return ruleData;
+        }
+        return null;
     }
 }

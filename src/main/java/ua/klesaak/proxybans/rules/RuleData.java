@@ -1,8 +1,6 @@
 package ua.klesaak.proxybans.rules;
 
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Set;
 
 public class RuleData {
     private String rule;
@@ -18,8 +16,8 @@ public class RuleData {
     public RuleData() {
     }
 
-    public Set<PunishType> getApplicablePunishments() {
-        return Collections.unmodifiableSet(this.applicablePunishments);
+    public boolean isAllow(PunishType punishType) {
+        return this.applicablePunishments.contains(punishType);
     }
 
     public String getRule() {
