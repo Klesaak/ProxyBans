@@ -58,6 +58,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -85,12 +89,19 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.14.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>ua.klesaak</groupId>
+            <artifactId>MinePerms</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>D:/EclipseWS/MinePerms.jar</systemPath>
+        </dependency>
+
     </dependencies>
 </project>
