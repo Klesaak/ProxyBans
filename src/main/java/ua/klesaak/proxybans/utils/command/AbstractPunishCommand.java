@@ -9,16 +9,21 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
+    private final CooldownExpireNotifier cooldownExpireNotifier;
 
-    public AbstractPunishCommand(Plugin plugin, String commandName, String permission, String... aliases) {
+    public AbstractPunishCommand(Plugin plugin, CooldownExpireNotifier cooldownExpireNotifier, String commandName, String permission, String... aliases) {
         super(commandName, permission, aliases);
         plugin.getProxy().getPluginManager().registerCommand(plugin, this);
+        this.cooldownExpireNotifier = cooldownExpireNotifier;
+        this.cooldownExpireNotifier.registerCommand(this);
     }
 
     @Override
     public void execute(CommandSender commandSender, String[] args) {
         try {
-            this.onReceiveCommand(commandSender, this.getName(), args);
+            if (this.onReceiveCommand(commandSender, args)) {
+                this.cooldownExpireNotifier.addCooldown(this.getName(), commandSender.getName(), );
+            }
         } catch (RuntimeException exception) {
             commandSender.sendMessage(TextComponent.fromLegacyText(exception.getMessage()));
         }
@@ -29,7 +34,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.onTabCompleteCommand(commandSender, args);
     }
 
-    public abstract void onReceiveCommand(CommandSender sender, String label, String[] args);
+    public abstract boolean onReceiveCommand(CommandSender sender, String[] args); // если возвращаем - тру то включаеца кулдовн
 
     public abstract Iterable<String> onTabCompleteCommand(CommandSender commandSender, String[] args);
 

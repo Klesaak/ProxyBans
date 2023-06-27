@@ -9,13 +9,14 @@ public class BanCommand extends AbstractPunishCommand {
     private final ProxyBansManager proxyBansManager;
 
     public BanCommand(ProxyBansManager proxyBansManager) {
-        super(proxyBansManager.getProxyBansPlugin(), "ban", PermissionsConstants.BAN_PERMISSION);
+        super(proxyBansManager.getProxyBansPlugin(), proxyBansManager.getCooldownExpireNotifier(), "ban", PermissionsConstants.BAN_PERMISSION);
         this.proxyBansManager = proxyBansManager;
     }
 
     @Override
-    public void onReceiveCommand(CommandSender sender, String label, String[] args) {
+    public boolean onReceiveCommand(CommandSender sender, String[] args) {
 
+        return true;
     }
 
     @Override
