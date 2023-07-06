@@ -25,6 +25,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     public static final Pattern COMMENT_TEXT_PATTERN = Pattern.compile(COMMENT_TEXT, Pattern.LITERAL);
     private static final String DATE = "(date)";
     public static final Pattern DATE_PATTERN = Pattern.compile(DATE, Pattern.LITERAL);
+    private static final String TIME = "(time)";
+    public static final Pattern TIME_PATTERN = Pattern.compile(TIME, Pattern.LITERAL);
 
 
     //usages'ы
@@ -60,6 +62,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message usageKickCommand;
     @MessageField(key = "command.usage.check", defaultMessage = "&7Использование - &c/check &7<ник>")
     private Message usageCheckCommand;
+    @MessageField(key = "command.cooldown", defaultMessage = "&7Вы сможете юзать данную команду через &6(time)")
+    private Message messageCooldown;
 
     //broadcast'ы
     @MessageField(key = "message.broadcast.banned", defaultMessage = "(punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")
@@ -104,7 +108,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageTempBanned;
     @MessageField(key = "message.kicked", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
     private Message messageKicked;
-    // TODO: 15.06.2023 messages 
+    // TODO: 15.06.2023 messages
 
 
 }

@@ -6,6 +6,8 @@ import ua.klesaak.proxybans.commands.ban.BanCommand;
 import ua.klesaak.proxybans.config.ConfigFile;
 import ua.klesaak.proxybans.config.MessagesFile;
 import ua.klesaak.proxybans.permshook.IPermHook;
+import ua.klesaak.proxybans.permshook.MinePermsHook;
+import ua.klesaak.proxybans.permshook.SimplePermsHook;
 import ua.klesaak.proxybans.utils.command.CooldownExpireNotifier;
 
 import java.io.File;
@@ -16,15 +18,24 @@ public class ProxyBansManager {
     private ConfigFile configFile;
     private MessagesFile messagesFile;
     private final CooldownExpireNotifier cooldownExpireNotifier;
-    private final IPermHook permHook;
+    private IPermHook permHook;
 
     public ProxyBansManager(ProxyBansPlugin proxyBansPlugin) {
         this.proxyBansPlugin = proxyBansPlugin;
         this.reloadConfigFiles();
         new PunishListener(this);
         this.cooldownExpireNotifier = new CooldownExpireNotifier(this);
+        this.hookPerms();
         /////commands/////
         new BanCommand(this);
+    }
+
+    private void hookPerms() {
+        if (this.proxyBansPlugin.getProxy().getPluginManager().getPlugin("SimplePerms") != null) {
+            this.permHook = new SimplePermsHook();
+            return;
+        }
+        this.permHook = new MinePermsHook();
     }
 
     public void reloadConfigFiles() {

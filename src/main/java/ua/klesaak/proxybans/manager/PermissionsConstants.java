@@ -9,4 +9,5 @@ public final class PermissionsConstants {
     public static final String OP_TEMP_BAN_PERMISSION = "proxybans.op-tempban";
     public static final String MUTE_PERMISSION = "proxybans.mute";
     public static final String OP_MUTE_PERMISSION = "proxybans.op-mute";
+    public static final String IGNORE_COOLDOWN_PERMISSION = "proxybans.ignore-cd";
 }

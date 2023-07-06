@@ -3,19 +3,22 @@ package ua.klesaak.proxybans.utils.command;
 import lombok.val;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
-import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
+import net.md_5.bungee.chat.ComponentSerializer;
+import ua.klesaak.proxybans.config.MessagesFile;
+import ua.klesaak.proxybans.manager.PermissionsConstants;
+import ua.klesaak.proxybans.manager.ProxyBansManager;
+import ua.klesaak.proxybans.utils.NumberUtils;
 
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
     private final CooldownExpireNotifier cooldownExpireNotifier;
 
-    public AbstractPunishCommand(Plugin plugin, CooldownExpireNotifier cooldownExpireNotifier, String commandName, String permission, String... aliases) {
+    public AbstractPunishCommand(ProxyBansManager proxyBansManager, String commandName, String permission, String... aliases) {
         super(commandName, permission, aliases);
-        plugin.getProxy().getPluginManager().registerCommand(plugin, this);
-        this.cooldownExpireNotifier = cooldownExpireNotifier;
+        proxyBansManager.getProxyBansPlugin().getProxy().getPluginManager().registerCommand(proxyBansManager.getProxyBansPlugin(), this);
+        this.cooldownExpireNotifier = proxyBansManager.getCooldownExpireNotifier();
         this.cooldownExpireNotifier.registerCommand(this);
     }
 
@@ -25,11 +28,16 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
             if (this.onReceiveCommand(commandSender, args)) {
                 val senderName = commandSender.getName();
                 val manager = this.cooldownExpireNotifier.getProxyBansManager();
-                val time = manager.getConfigFile().getCooldownTime(manager.getPermHook().getUserGroup(senderName), this.getName());
-                if (time > 0L) this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, time);
+                val configTime = manager.getConfigFile().getCooldownTime(manager.getPermHook().getUserGroup(senderName), this.getName());
+                boolean applyCooldown = !commandSender.hasPermission(PermissionsConstants.IGNORE_COOLDOWN_PERMISSION) && configTime > 0L;
+                if (applyCooldown && !this.cooldownExpireNotifier.isCooldown(this.getName(), senderName)) {
+                    this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, configTime);
+                    return;
+                }
+                this.checkCooldown(commandSender);
             }
         } catch (RuntimeException exception) {
-            commandSender.sendMessage(TextComponent.fromLegacyText(exception.getMessage()));
+            commandSender.sendMessage(ComponentSerializer.parse(exception.getMessage()));
         }
     }
 
@@ -64,6 +72,13 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     public void cmdVerifyPermission(CommandSender sender, String permission, String errorMessage) {
         if (!sender.hasPermission(permission)) {
             throw new RuntimeException(errorMessage);
+        }
+    }
+
+    protected void checkCooldown(CommandSender sender) {
+        long cooldown = this.cooldownExpireNotifier.getCooldown(sender, this.getName());
+        if (cooldown > 0L) {
+            throw new RuntimeException(this.cooldownExpireNotifier.getProxyBansManager().getMessagesFile().getMessageCooldown().tag(MessagesFile.TIME_PATTERN, ()-> NumberUtils.getTime(cooldown)).toString());
         }
     }
 

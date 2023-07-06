@@ -1,5 +1,6 @@
 package ua.klesaak.proxybans.utils.command;
 
+import net.md_5.bungee.api.CommandSender;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 
 import java.util.Map;
@@ -21,6 +22,15 @@ public class CooldownExpireNotifier {
 
     public void addCooldown(String commandName, String playerName, Long time) {
         this.commandCooldowns.get(commandName).put(playerName, time);
+    }
+
+    public boolean isCooldown(String commandName, String playerName) {
+        return this.commandCooldowns.get(commandName).get(playerName) != null;
+    }
+
+    public long getCooldown(CommandSender commandSender, String commandName) {
+        if (this.isCooldown(commandName, commandSender.getName())) return this.commandCooldowns.get(commandName).get(commandSender.getName());
+        return 0L;
     }
 
     public ProxyBansManager getProxyBansManager() {
