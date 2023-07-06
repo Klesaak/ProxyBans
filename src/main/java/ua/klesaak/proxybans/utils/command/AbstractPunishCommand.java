@@ -1,5 +1,6 @@
 package ua.klesaak.proxybans.utils.command;
 
+import lombok.val;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -22,7 +23,10 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     public void execute(CommandSender commandSender, String[] args) {
         try {
             if (this.onReceiveCommand(commandSender, args)) {
-                this.cooldownExpireNotifier.addCooldown(this.getName(), commandSender.getName(), );
+                val senderName = commandSender.getName();
+                val manager = this.cooldownExpireNotifier.getProxyBansManager();
+                val time = manager.getConfigFile().getCooldownTime(manager.getPermHook().getUserGroup(senderName), this.getName());
+                if (time > 0L) this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, time);
             }
         } catch (RuntimeException exception) {
             commandSender.sendMessage(TextComponent.fromLegacyText(exception.getMessage()));

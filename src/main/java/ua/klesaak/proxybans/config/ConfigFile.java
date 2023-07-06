@@ -7,12 +7,14 @@ import net.md_5.bungee.api.plugin.Plugin;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
 import ua.klesaak.proxybans.utils.JacksonAPI;
+import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.yml.PluginConfig;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.util.EnumSet;
 import java.util.LinkedHashSet;
+import java.util.concurrent.TimeUnit;
 
 public class ConfigFile extends PluginConfig {
     private LinkedHashSet<RuleData> rules;
@@ -26,9 +28,7 @@ public class ConfigFile extends PluginConfig {
     private void loadRules(Plugin plugin) {
         val file = new File(plugin.getDataFolder(), "rules.json");
         if (!file.getParentFile().exists()) Files.createDirectory(file.getParentFile().toPath());
-        if (!file.exists()) {
-            Files.createFile(file.toPath());
-        }
+        if (!file.exists()) Files.createFile(file.toPath());
         if (file.length() <= 0L) {
             LinkedHashSet<RuleData> ruleData = new LinkedHashSet<>();
             ruleData.add(new RuleData("1.0", "Бан за матюки", EnumSet.of(PunishType.BAN, PunishType.MUTE)));
@@ -44,5 +44,29 @@ public class ConfigFile extends PluginConfig {
             if (ruleData.getRule().equalsIgnoreCase(rule)) return ruleData;
         }
         return null;
+    }
+
+    private String getTime(String group, String category, String what) {
+        return getConfig().getString("groups." + group + "." + category + "." + what, getConfig().getString("groups.defaults." + category + "." + what, "0s"));
+    }
+
+    public long getCooldownTime(String group, String command) {
+        return NumberUtils.parseTimeFromString(this.getTime(group, "cooldown", command), TimeUnit.SECONDS);
+    }
+
+    public long getMaxPunishTime(String group, String command) {
+        return NumberUtils.parseTimeFromString(this.getTime(group, "maxPunishTime", command), TimeUnit.SECONDS);
+    }
+
+    public boolean isProtected(String playerName) {
+        return this.getStringList("protectedPlayers").contains(playerName);
+    }
+
+    public boolean isHeavier(String fromGroup, String toGroup) {
+        return this.getWeight(fromGroup) >= this.getWeight(toGroup);
+    }
+
+    private int getWeight(String fromGroup) {
+        return getConfig().getInt("groups." + fromGroup + ".weight", this.getInt("groups.defaults.weight"));
     }
 }
