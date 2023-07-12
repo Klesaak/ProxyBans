@@ -11,6 +11,7 @@ import ua.klesaak.proxybans.config.MessagesFile;
 import ua.klesaak.proxybans.manager.PermissionsConstants;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.utils.NumberUtils;
+import ua.klesaak.proxybans.utils.messages.Message;
 
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
     private final CooldownExpireNotifier cooldownExpireNotifier;
@@ -25,16 +26,16 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     @Override
     public void execute(CommandSender commandSender, String[] args) {
         try {
+            val manager = this.cooldownExpireNotifier.getProxyBansManager();
+            this.cmdVerifyPermission(commandSender,"proxybans." + this.getName(), manager.getMessagesFile().getMessageNoPermission().getMessageString());
+            this.checkCooldown(commandSender);
             if (this.onReceiveCommand(commandSender, args)) {
                 val senderName = commandSender.getName();
-                val manager = this.cooldownExpireNotifier.getProxyBansManager();
                 val configTime = manager.getConfigFile().getCooldownTime(manager.getPermHook().getUserGroup(senderName), this.getName());
                 boolean applyCooldown = !commandSender.hasPermission(PermissionsConstants.IGNORE_COOLDOWN_PERMISSION) && configTime > 0L;
                 if (applyCooldown && !this.cooldownExpireNotifier.isCooldown(this.getName(), senderName)) {
                     this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, configTime);
-                    return;
                 }
-                this.checkCooldown(commandSender);
             }
         } catch (RuntimeException exception) {
             commandSender.sendMessage(ComponentSerializer.parse(exception.getMessage()));
@@ -75,10 +76,21 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
     }
 
+    protected void disconnect(ProxiedPlayer proxiedPlayer, Message message) {
+        if (proxiedPlayer != null) {
+            proxiedPlayer.disconnect(message.getMessageComponent());
+        }
+    }
+
+    protected void disconnect(String playerName, Message message) {
+        val proxiedPlayer = this.cooldownExpireNotifier.getProxyBansManager().getProxyBansPlugin().getProxy().getPlayer(playerName);
+        this.disconnect(proxiedPlayer, message);
+    }
+
     protected void checkCooldown(CommandSender sender) {
         long cooldown = this.cooldownExpireNotifier.getCooldown(sender, this.getName());
         if (cooldown > 0L) {
-            throw new RuntimeException(this.cooldownExpireNotifier.getProxyBansManager().getMessagesFile().getMessageCooldown().tag(MessagesFile.TIME_PATTERN, ()-> NumberUtils.getTime(cooldown)).toString());
+            throw new RuntimeException(this.cooldownExpireNotifier.getProxyBansManager().getMessagesFile().getMessageCooldown().tag(MessagesFile.TIME_PATTERN, ()-> NumberUtils.getTime(cooldown)).getMessageString());
         }
     }
 

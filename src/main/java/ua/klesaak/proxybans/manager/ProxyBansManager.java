@@ -44,6 +44,6 @@ public class ProxyBansManager {
     }
 
     public void disable() {
-
+        this.cooldownExpireNotifier.stop();
     }
 }

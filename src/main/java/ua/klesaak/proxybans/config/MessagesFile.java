@@ -27,6 +27,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     public static final Pattern DATE_PATTERN = Pattern.compile(DATE, Pattern.LITERAL);
     private static final String TIME = "(time)";
     public static final Pattern TIME_PATTERN = Pattern.compile(TIME, Pattern.LITERAL);
+    private static final String COMMAND = "(command)";
+    public static final Pattern COMMAND_PATTERN = Pattern.compile(COMMAND, Pattern.LITERAL);
 
 
     //usages'ы
@@ -64,6 +66,10 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message usageCheckCommand;
     @MessageField(key = "command.cooldown", defaultMessage = "&7Вы сможете юзать данную команду через &6(time)")
     private Message messageCooldown;
+    @MessageField(key = "command.no-permission", defaultMessage = "&cВы не можете юзать данную команду.")
+    private Message messageNoPermission;
+    @MessageField(key = "command.isCooldownExpired", defaultMessage = "&aКоманда (command) снова доступна к использованию.")
+    private Message messageIsCooldownExpired;
 
     //broadcast'ы
     @MessageField(key = "message.broadcast.banned", defaultMessage = "(punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")

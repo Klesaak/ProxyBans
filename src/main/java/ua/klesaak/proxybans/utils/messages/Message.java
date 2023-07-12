@@ -48,8 +48,12 @@ public class Message implements Cloneable {
         return this.message;
     }
 
-    public BaseComponent[] getMessage() {
+    public BaseComponent[] getMessageComponent() {
         return TextComponent.fromLegacyText(this.message);
+    }
+
+    public String getMessageString() {
+        return this.message;
     }
 
     @Override
