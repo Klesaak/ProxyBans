@@ -3,9 +3,11 @@ package ua.klesaak.proxybans.commands.ban;
 import net.md_5.bungee.api.CommandSender;
 import ua.klesaak.proxybans.manager.PermissionsConstants;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
+import ua.klesaak.proxybans.rules.PunishType;
+import ua.klesaak.proxybans.rules.RuleData;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
-public class BanCommand extends AbstractPunishCommand {
+public final class BanCommand extends AbstractPunishCommand {
 
     public BanCommand(ProxyBansManager proxyBansManager) {
         super(proxyBansManager, "ban", PermissionsConstants.BAN_PERMISSION);
@@ -14,11 +16,15 @@ public class BanCommand extends AbstractPunishCommand {
     @Override
     public boolean onReceiveCommand(CommandSender sender, String[] args) {
         this.cmdVerifyArgs(3, args, this.proxyBansManager.getMessagesFile().getUsageBanCommand());
-        String nickName = this.cmdVerifyNickname(args);
-        String rule = this.parseRule(args);
+        String nickName = this.cmdVerifyNickname(sender, args);
+        this.checkOffline(sender, nickName);
+        RuleData rule = this.parseRule(2, args);
+        this.verifyPunish(sender, rule, PunishType.BAN);
         String punisherName = this.cmdVerifyPunisher(sender);
         String comment = this.parseComment(3, args);
-
+        String punishServer = this.parseServer(sender);
+        String playerServer = this.parseServer(nickName);
+        String punishData = this.proxyBansManager.getConfigFile().parseDate(System.currentTimeMillis());
         return true;
     }
 

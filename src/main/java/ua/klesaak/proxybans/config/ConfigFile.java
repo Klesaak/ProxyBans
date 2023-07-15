@@ -12,16 +12,21 @@ import ua.klesaak.proxybans.utils.yml.PluginConfig;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.EnumSet;
-import java.util.LinkedHashSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class ConfigFile extends PluginConfig {
     private LinkedHashSet<RuleData> rules;
+    private final DateFormat dateFormat;
 
     public ConfigFile(Plugin plugin) {
         super(plugin, "config.yml");
         this.loadRules(plugin);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(this.getString("dateFormat.format"), new Locale(this.getString("dateFormat.locale")));
+        dateFormat.setTimeZone(TimeZone.getTimeZone(this.getString("dateFormat.timeZone")));
+        this.dateFormat = dateFormat;
     }
 
     @SneakyThrows
@@ -68,5 +73,9 @@ public class ConfigFile extends PluginConfig {
 
     private int getWeight(String fromGroup) {
         return getConfig().getInt("groups." + fromGroup + ".weight", this.getInt("groups.defaults.weight"));
+    }
+
+    public String parseDate(long time) {
+        return this.dateFormat.format(new Date(time));
     }
 }

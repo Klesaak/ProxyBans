@@ -12,11 +12,11 @@ public class PunishData {
     private String punisherServer;
     private String server;
     private String punisherName;
-    private String reason;
+    private String rule;
     private String comment;
     private String ip;
     private long time; //Время на которое забанили
-    private long punishTime; //Время когда забанили
+    private String punishTime; //Время когда забанили (Date format)
 
     public boolean isIPBan() {
         return this.ip != null;

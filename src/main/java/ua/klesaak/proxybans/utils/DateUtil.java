@@ -30,7 +30,7 @@ public class DateUtil {
         return createDateFormat(pattern).parse(formattedPattern).getTime();
     }
 
-    private DateFormat createDateFormat(@NonNull String pattern) {
+    public DateFormat createDateFormat(@NonNull String pattern) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, new Locale("ru"));
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
         return dateFormat;

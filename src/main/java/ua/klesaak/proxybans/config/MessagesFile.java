@@ -74,6 +74,18 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageIsConsoleName;
     @MessageField(key = "command.wrongNickname", defaultMessage = "&4Ошибка: &cНеправильный ник.")
     private Message messageWrongNickname;
+    @MessageField(key = "command.playerIsOffline", defaultMessage = "&4Ошибка: &cИгрок не в сети.")
+    private Message messagePlayerIsOffline;
+    @MessageField(key = "command.tooFewInfoAboutPunish", defaultMessage = "&4Ошибка: &cВы указали мало информации в пояснении.")
+    private Message messageTooFewInfoAboutPunish;
+    @MessageField(key = "command.rule.notFound", defaultMessage = "&4Ошибка: &cПравило не найдено.")
+    private Message messageRuleNotFound;
+    @MessageField(key = "command.rule.notApplicablePunish", defaultMessage = "&4Ошибка: &cДля данного правила нельзя применить этот тип наказания.")
+    private Message messageNotApplicablePunish;
+    @MessageField(key = "command.emptyData", defaultMessage = "N/A")
+    private Message messageEmptyData;
+    @MessageField(key = "command.self", defaultMessage = "&4Ошибка: &cВы не можете взаимодействовать с собой.")
+    private Message messageSelfHarm;
 
     //broadcast'ы
     @MessageField(key = "message.broadcast.banned", defaultMessage = "(punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")

@@ -3,6 +3,7 @@ package ua.klesaak.proxybans.utils.command;
 import lombok.val;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
@@ -10,8 +11,13 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import ua.klesaak.proxybans.config.MessagesFile;
 import ua.klesaak.proxybans.manager.PermissionsConstants;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
+import ua.klesaak.proxybans.rules.PunishType;
+import ua.klesaak.proxybans.rules.RuleData;
 import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.messages.Message;
+
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
 
@@ -60,9 +66,10 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
     }
 
-    protected String cmdVerifyNickname(String[] args) {
+    protected String cmdVerifyNickname(CommandSender commandSender, String[] args) {
         String nickName = args[0].toLowerCase();
         if (nickName.isEmpty()) throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageWrongNickname().getMessageString());
+        if (commandSender.getName().equalsIgnoreCase(nickName)) throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageSelfHarm().getMessageString());
         return nickName;
     }
 
@@ -120,12 +127,34 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getMessageString();
     }
 
-    protected String parseRule(String[] args) {
-        return ""; // TODO: 26.06.2023
+    protected RuleData parseRule(int argIndex, String[] args) {
+        String rule = args[argIndex].toLowerCase();
+        RuleData ruleData = this.proxyBansManager.getConfigFile().getRule(rule);
+        if (ruleData == null) throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageRuleNotFound().getMessageString());
+        return ruleData;
+    }
+
+    protected String parseServer(CommandSender commandSender) {
+        if (commandSender != null) return ((ProxiedPlayer)commandSender).getServer().getInfo().getMotd();
+        return this.proxyBansManager.getMessagesFile().getMessageEmptyData().getMessageString();
+    }
+
+    protected String parseServer(String playerName) {
+        return this.parseServer(ProxyServer.getInstance().getPlayer(playerName));
     }
 
     protected long parseTimme(String time) {
-        return 0L; // TODO: 26.06.2023
+        return NumberUtils.parseTimeFromString(time, TimeUnit.MICROSECONDS);
+    }
+
+    protected void checkOffline(CommandSender commandSender, String targetName) {
+        if (ProxyServer.getInstance().getPlayer(targetName) == null && !commandSender.hasPermission(IGNORE_OFFLINE_PERMISSION)) {
+            throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessagePlayerIsOffline().getMessageString());
+        }
+    }
+
+    protected void verifyPunish(CommandSender commandSender, RuleData ruleData, PunishType punishType) {
+        if (!ruleData.isAllow(punishType) && !commandSender.hasPermission(USER_ANY_PUNISHMENTS_PERMISSION)) throw new RuntimeException(vxfg);
     }
 
     protected String parseComment(int start, String[] args) {
@@ -136,11 +165,13 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
             }
             builder.append(args[i]);
         }
+        if (Arrays.stream(builder.toString().split("\\s+")).filter(s -> s.length() >= 2).count() < 3L) {
+            throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageTooFewInfoAboutPunish().getMessageString());
+        }
         return builder.toString();
     }
 
     // TODO: 15.07.2023 check protected method
-    // TODO: 15.07.2023 check server method
 
 
 }
