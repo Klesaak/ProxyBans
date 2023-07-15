@@ -10,8 +10,9 @@ import ua.klesaak.proxybans.manager.ProxyBansManager;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
 
-public class CooldownExpireNotifier {
+public final class CooldownExpireNotifier {
     private final ProxyBansManager proxyBansManager;
     private final Map<String, ConcurrentHashMap<String, Long>> commandCooldowns = new ConcurrentHashMap<>(64);
     private ScheduledTask cooldownExpireTask;
@@ -25,7 +26,7 @@ public class CooldownExpireNotifier {
                     if (this.commandCooldowns.get(commandKey).get(playerKey) <= System.currentTimeMillis()) {
                         this.commandCooldowns.remove(commandKey).get(playerKey);
                         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playerKey);
-                        if (proxiedPlayer != null) {
+                        if (proxiedPlayer != null && proxiedPlayer.hasPermission(PREFIX_WILDCARD_PERMISSION + commandKey)) {
                             this.proxyBansManager.getMessagesFile().getMessageIsCooldownExpired().tag(MessagesFile.COMMAND_PATTERN, ()-> commandKey).send(proxiedPlayer);
                         }
                     }

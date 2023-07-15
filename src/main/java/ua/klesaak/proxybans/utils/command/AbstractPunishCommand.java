@@ -13,11 +13,15 @@ import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.messages.Message;
 
+import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
+
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
     private final CooldownExpireNotifier cooldownExpireNotifier;
+    protected final ProxyBansManager proxyBansManager;
 
     public AbstractPunishCommand(ProxyBansManager proxyBansManager, String commandName, String permission, String... aliases) {
         super(commandName, permission, aliases);
+        this.proxyBansManager = proxyBansManager;
         proxyBansManager.getProxyBansPlugin().getProxy().getPluginManager().registerCommand(proxyBansManager.getProxyBansPlugin(), this);
         this.cooldownExpireNotifier = proxyBansManager.getCooldownExpireNotifier();
         this.cooldownExpireNotifier.registerCommand(this);
@@ -26,15 +30,14 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     @Override
     public void execute(CommandSender commandSender, String[] args) {
         try {
-            val manager = this.cooldownExpireNotifier.getProxyBansManager();
-            this.cmdVerifyPermission(commandSender,"proxybans." + this.getName(), manager.getMessagesFile().getMessageNoPermission().getMessageString());
+            this.cmdVerifyPermission(commandSender,PREFIX_WILDCARD_PERMISSION + this.getName(), this.proxyBansManager.getMessagesFile().getMessageNoPermission().getMessageString());
             this.checkCooldown(commandSender);
             if (this.onReceiveCommand(commandSender, args)) {
                 val senderName = commandSender.getName();
-                val configTime = manager.getConfigFile().getCooldownTime(manager.getPermHook().getUserGroup(senderName), this.getName());
+                val configTime = this.proxyBansManager.getConfigFile().getCooldownTime(this.proxyBansManager.getPermHook().getUserGroup(senderName), this.getName());
                 boolean applyCooldown = !commandSender.hasPermission(PermissionsConstants.IGNORE_COOLDOWN_PERMISSION) && configTime > 0L;
                 if (applyCooldown && !this.cooldownExpireNotifier.isCooldown(this.getName(), senderName)) {
-                    this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, configTime);
+                    this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, System.currentTimeMillis() + configTime);
                 }
             }
         } catch (RuntimeException exception) {
@@ -57,6 +60,25 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
     }
 
+    protected String cmdVerifyNickname(String[] args) {
+        String nickName = args[0].toLowerCase();
+        if (nickName.isEmpty()) throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageWrongNickname().getMessageString());
+        return nickName;
+    }
+
+    protected String cmdVerifyPunisher(CommandSender commandSender) {
+        if (commandSender instanceof ProxiedPlayer) {
+            return commandSender.getName();
+        }
+        return this.getConsoleName();
+    }
+
+    public void cmdVerifyArgs(int minimum, String[] args, Message usage) {
+        if (args.length < minimum) {
+            throw new RuntimeException(usage.getMessageString());
+        }
+    }
+
     public ProxiedPlayer cmdVerifyPlayer(CommandSender sender) {
         if (!(sender instanceof ProxiedPlayer)) {
             throw new RuntimeException(ChatColor.RED + "Must be player");
@@ -70,7 +92,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
     }
 
-    public void cmdVerifyPermission(CommandSender sender, String permission, String errorMessage) {
+    private void cmdVerifyPermission(CommandSender sender, String permission, String errorMessage) {
         if (!sender.hasPermission(permission)) {
             throw new RuntimeException(errorMessage);
         }
@@ -83,24 +105,42 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     }
 
     protected void disconnect(String playerName, Message message) {
-        val proxiedPlayer = this.cooldownExpireNotifier.getProxyBansManager().getProxyBansPlugin().getProxy().getPlayer(playerName);
+        val proxiedPlayer = this.proxyBansManager.getProxyBansPlugin().getProxy().getPlayer(playerName);
         this.disconnect(proxiedPlayer, message);
     }
 
-    protected void checkCooldown(CommandSender sender) {
+    private void checkCooldown(CommandSender sender) {
         long cooldown = this.cooldownExpireNotifier.getCooldown(sender, this.getName());
         if (cooldown > 0L) {
-            throw new RuntimeException(this.cooldownExpireNotifier.getProxyBansManager().getMessagesFile().getMessageCooldown().tag(MessagesFile.TIME_PATTERN, ()-> NumberUtils.getTime(cooldown)).getMessageString());
+            throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageCooldown().tag(MessagesFile.TIME_PATTERN, ()-> NumberUtils.getTime(cooldown)).getMessageString());
         }
     }
 
-    protected String parseRule() {
+    protected String getConsoleName() {
+        return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getMessageString();
+    }
+
+    protected String parseRule(String[] args) {
         return ""; // TODO: 26.06.2023
     }
 
-    protected long parseTimme() {
+    protected long parseTimme(String time) {
         return 0L; // TODO: 26.06.2023
     }
+
+    protected String parseComment(int start, String[] args) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = start; i < args.length; ++i) {
+            if (i != start) {
+                builder.append(" ");
+            }
+            builder.append(args[i]);
+        }
+        return builder.toString();
+    }
+
+    // TODO: 15.07.2023 check protected method
+    // TODO: 15.07.2023 check server method
 
 
 }

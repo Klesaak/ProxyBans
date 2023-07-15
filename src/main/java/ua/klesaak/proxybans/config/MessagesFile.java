@@ -70,6 +70,10 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageNoPermission;
     @MessageField(key = "command.isCooldownExpired", defaultMessage = "&aКоманда (command) снова доступна к использованию.")
     private Message messageIsCooldownExpired;
+    @MessageField(key = "command.consoleName", defaultMessage = "&cProxyBansPlugin")
+    private Message messageIsConsoleName;
+    @MessageField(key = "command.wrongNickname", defaultMessage = "&4Ошибка: &cНеправильный ник.")
+    private Message messageWrongNickname;
 
     //broadcast'ы
     @MessageField(key = "message.broadcast.banned", defaultMessage = "(punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")

@@ -6,15 +6,18 @@ import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 public class BanCommand extends AbstractPunishCommand {
-    private final ProxyBansManager proxyBansManager;
 
     public BanCommand(ProxyBansManager proxyBansManager) {
         super(proxyBansManager, "ban", PermissionsConstants.BAN_PERMISSION);
-        this.proxyBansManager = proxyBansManager;
     }
 
     @Override
     public boolean onReceiveCommand(CommandSender sender, String[] args) {
+        this.cmdVerifyArgs(3, args, this.proxyBansManager.getMessagesFile().getUsageBanCommand());
+        String nickName = this.cmdVerifyNickname(args);
+        String rule = this.parseRule(args);
+        String punisherName = this.cmdVerifyPunisher(sender);
+        String comment = this.parseComment(3, args);
 
         return true;
     }
