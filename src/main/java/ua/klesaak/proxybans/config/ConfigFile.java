@@ -52,7 +52,7 @@ public class ConfigFile extends PluginConfig {
     }
 
     private String getTime(String group, String category, String what) {
-        return getConfig().getString("groups." + group + "." + category + "." + what, getConfig().getString("groups.defaults." + category + "." + what, "0s"));
+        return this.getConfig().getString("groups." + group + "." + category + "." + what, this.getConfig().getString("groups.defaults." + category + "." + what, "0s"));
     }
 
     public long getCooldownTime(String group, String command) {
@@ -68,11 +68,11 @@ public class ConfigFile extends PluginConfig {
     }
 
     public boolean isHeavier(String fromGroup, String toGroup) {
-        return this.getWeight(fromGroup) >= this.getWeight(toGroup);
+        return this.getWeight(fromGroup) > this.getWeight(toGroup);
     }
 
     private int getWeight(String fromGroup) {
-        return getConfig().getInt("groups." + fromGroup + ".weight", this.getInt("groups.defaults.weight"));
+        return this.getConfig().getInt("groups." + fromGroup + ".weight", this.getInt("groups.defaults.weight"));
     }
 
     public String parseDate(long time) {

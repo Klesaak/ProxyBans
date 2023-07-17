@@ -68,8 +68,15 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     protected String cmdVerifyNickname(CommandSender commandSender, String[] args) {
         String nickName = args[0].toLowerCase();
-        if (nickName.isEmpty()) throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageWrongNickname().getMessageString());
-        if (commandSender.getName().equalsIgnoreCase(nickName)) throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageSelfHarm().getMessageString());
+        String senderName = commandSender.getName();
+        val messagesFile = this.proxyBansManager.getMessagesFile();
+        if (nickName.isEmpty()) throw new RuntimeException(messagesFile.getMessageWrongNickname().getMessageString());
+        if (senderName.equalsIgnoreCase(nickName)) throw new RuntimeException(messagesFile.getMessageSelfHarm().getMessageString());
+        val configFile = this.proxyBansManager.getConfigFile();
+        val permsHook = this.proxyBansManager.getPermHook();
+        if (!commandSender.hasPermission(BAN_EVERYONE_PERMISSION) && (configFile.isProtected(nickName) || configFile.isHeavier(permsHook.getUserGroup(nickName), permsHook.getUserGroup(senderName)))) {
+            throw new RuntimeException(messagesFile.getMessagePlayerIsProtected().getMessageString());
+        }
         return nickName;
     }
 
@@ -127,10 +134,12 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getMessageString();
     }
 
-    protected RuleData parseRule(int argIndex, String[] args) {
+    protected RuleData parseRule(CommandSender commandSender, PunishType punishType, int argIndex, String[] args) {
         String rule = args[argIndex].toLowerCase();
         RuleData ruleData = this.proxyBansManager.getConfigFile().getRule(rule);
-        if (ruleData == null) throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageRuleNotFound().getMessageString());
+        val messagesFile = this.proxyBansManager.getMessagesFile();
+        if (ruleData == null) throw new RuntimeException(messagesFile.getMessageRuleNotFound().getMessageString());
+        if (!ruleData.isAllow(punishType) && !commandSender.hasPermission(USER_ANY_PUNISHMENTS_PERMISSION)) throw new RuntimeException(messagesFile.getMessageNotApplicablePunish().getMessageString());
         return ruleData;
     }
 
@@ -153,10 +162,6 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
     }
 
-    protected void verifyPunish(CommandSender commandSender, RuleData ruleData, PunishType punishType) {
-        if (!ruleData.isAllow(punishType) && !commandSender.hasPermission(USER_ANY_PUNISHMENTS_PERMISSION)) throw new RuntimeException(vxfg);
-    }
-
     protected String parseComment(int start, String[] args) {
         StringBuilder builder = new StringBuilder();
         for (int i = start; i < args.length; ++i) {
@@ -170,8 +175,4 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
         return builder.toString();
     }
-
-    // TODO: 15.07.2023 check protected method
-
-
 }

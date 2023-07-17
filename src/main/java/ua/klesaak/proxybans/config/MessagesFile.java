@@ -76,6 +76,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageWrongNickname;
     @MessageField(key = "command.playerIsOffline", defaultMessage = "&4Ошибка: &cИгрок не в сети.")
     private Message messagePlayerIsOffline;
+    @MessageField(key = "command.playerIsProtected", defaultMessage = "&4Ошибка: &cВы не можете наказать этого игрока.")
+    private Message messagePlayerIsProtected;
     @MessageField(key = "command.tooFewInfoAboutPunish", defaultMessage = "&4Ошибка: &cВы указали мало информации в пояснении.")
     private Message messageTooFewInfoAboutPunish;
     @MessageField(key = "command.rule.notFound", defaultMessage = "&4Ошибка: &cПравило не найдено.")

@@ -18,13 +18,14 @@ public final class BanCommand extends AbstractPunishCommand {
         this.cmdVerifyArgs(3, args, this.proxyBansManager.getMessagesFile().getUsageBanCommand());
         String nickName = this.cmdVerifyNickname(sender, args);
         this.checkOffline(sender, nickName);
-        RuleData rule = this.parseRule(2, args);
-        this.verifyPunish(sender, rule, PunishType.BAN);
+        RuleData rule = this.parseRule(sender, PunishType.BAN, 2, args);
         String punisherName = this.cmdVerifyPunisher(sender);
         String comment = this.parseComment(3, args);
         String punishServer = this.parseServer(sender);
         String playerServer = this.parseServer(nickName);
-        String punishData = this.proxyBansManager.getConfigFile().parseDate(System.currentTimeMillis());
+        String date = this.proxyBansManager.getConfigFile().parseDate(System.currentTimeMillis());
+
+
         return true;
     }
 
