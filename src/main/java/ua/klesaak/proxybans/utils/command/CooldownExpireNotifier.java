@@ -27,7 +27,7 @@ public final class CooldownExpireNotifier {
                         this.commandCooldowns.remove(commandKey).get(playerKey);
                         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playerKey);
                         if (proxiedPlayer != null && proxiedPlayer.hasPermission(PREFIX_WILDCARD_PERMISSION + commandKey)) {
-                            this.proxyBansManager.getMessagesFile().getMessageIsCooldownExpired().tag(MessagesFile.COMMAND_PATTERN, ()-> commandKey).send(proxiedPlayer);
+                            this.proxyBansManager.getMessagesFile().getMessageIsCooldownExpired().tag(MessagesFile.COMMAND_PATTERN, commandKey).send(proxiedPlayer);
                         }
                     }
                 }

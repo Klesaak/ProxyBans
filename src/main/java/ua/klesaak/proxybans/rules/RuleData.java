@@ -27,4 +27,8 @@ public class RuleData {
     public String getText() {
         return this.ruleText;
     }
+
+    public String getRuleData() {
+        return this.rule + " " + this.ruleText;
+    }
 }

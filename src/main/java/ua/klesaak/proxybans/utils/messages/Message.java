@@ -33,8 +33,8 @@ public class Message implements Cloneable {
         }
     }
 
-    public Message tag(Pattern pattern, Supplier<String> replacement) {
-        this.message = this.replaceAll(pattern, replacement);
+    public Message tag(Pattern pattern, String replacement) {
+        this.message = this.replaceAll(pattern, ()-> replacement);
         return this;
     }
 
