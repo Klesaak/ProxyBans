@@ -131,7 +131,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     }
 
     protected String getConsoleName() {
-        return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getMessageString();
+        return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getMessageString().replace("\"", "");
     }
 
     protected RuleData parseRule(CommandSender commandSender, PunishType punishType, int argIndex, String[] args) {
@@ -144,8 +144,8 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     }
 
     protected String parseServer(CommandSender commandSender) {
-        if (commandSender != null) return ((ProxiedPlayer)commandSender).getServer().getInfo().getMotd();
-        return this.proxyBansManager.getMessagesFile().getMessageEmptyData().getMessageString();
+        if (commandSender instanceof ProxiedPlayer) return ((ProxiedPlayer)commandSender).getServer().getInfo().getMotd();
+        return this.proxyBansManager.getMessagesFile().getMessageEmptyData().getMessageString().replace("\"", "");
     }
 
     protected String parseServer(String playerName) {

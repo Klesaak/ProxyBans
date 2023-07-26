@@ -15,8 +15,7 @@ public class PunishListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(LoginEvent event) {
-        event.setCancelReason(manager.getMessagesFile().getMessageKicked().getMessageComponent());
-        event.setCancelled(true);
+
     }
 
 
