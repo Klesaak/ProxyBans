@@ -5,7 +5,7 @@ redis:
   bans-key: 'bans'
   mutes-key: 'mutes'
   history-key: 'punish-history'
-  password:
+  password: ''
   database: 0
 
 mysql:

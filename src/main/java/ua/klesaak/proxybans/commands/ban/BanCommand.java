@@ -13,7 +13,7 @@ import static ua.klesaak.proxybans.config.MessagesFile.*;
 public final class BanCommand extends AbstractPunishCommand {
 
     public BanCommand(ProxyBansManager proxyBansManager) {
-        super(proxyBansManager, "ban", "");
+        super(proxyBansManager, "ban");
     }
 
     @Override

@@ -51,8 +51,8 @@ public class ConfigFile extends PluginConfig {
         return null;
     }
 
-    private String getTime(String group, String category, String what) {
-        return this.getConfig().getString("groups." + group + "." + category + "." + what, this.getConfig().getString("groups.defaults." + category + "." + what, "0s"));
+    private String getTime(String group, String category, String command) {
+        return this.getConfig().getString("groups." + group + "." + category + "." + command, this.getConfig().getString("groups.defaults." + category + "." + command, "0s"));
     }
 
     public long getCooldownTime(String group, String command) {

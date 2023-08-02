@@ -25,8 +25,8 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     private final CooldownExpireNotifier cooldownExpireNotifier;
     protected final ProxyBansManager proxyBansManager;
 
-    public AbstractPunishCommand(ProxyBansManager proxyBansManager, String commandName, String permission, String... aliases) {
-        super(commandName, permission, aliases);
+    public AbstractPunishCommand(ProxyBansManager proxyBansManager, String commandName) {
+        super(commandName, "");
         this.proxyBansManager = proxyBansManager;
         proxyBansManager.getProxyBansPlugin().getProxy().getPluginManager().registerCommand(proxyBansManager.getProxyBansPlugin(), this);
         this.cooldownExpireNotifier = proxyBansManager.getCooldownExpireNotifier();
