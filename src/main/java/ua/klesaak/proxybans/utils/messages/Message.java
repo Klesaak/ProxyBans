@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Message implements Cloneable {
-    private String message;
+    private final String message;
 
     public Message(String message) {
         this.message = ChatColor.translateAlternateColorCodes('&', message);
@@ -34,18 +34,17 @@ public class Message implements Cloneable {
     }
 
     public Message tag(Pattern pattern, String replacement) {
-        this.message = this.replaceAll(pattern, ()-> replacement);
-        return this;
+        return new Message(this.replaceAll(this.message, pattern, ()-> replacement));
     }
 
     public void send(CommandSender player) {
         player.sendMessage(ComponentSerializer.parse(this.message));
     }
 
-    private String replaceAll(Pattern pattern, Supplier<String> replacement) {
-        Matcher matcher = pattern.matcher(this.message);
+    private String replaceAll(String message, Pattern pattern, Supplier<String> replacement) {
+        Matcher matcher = pattern.matcher(message);
         if (matcher.find()) return matcher.replaceAll(Matcher.quoteReplacement(replacement.get()));
-        return this.message;
+        return message;
     }
 
     public BaseComponent[] getMessageComponent() {

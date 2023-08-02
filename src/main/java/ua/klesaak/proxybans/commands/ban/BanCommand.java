@@ -31,6 +31,7 @@ public final class BanCommand extends AbstractPunishCommand {
         messagesFile.getBroadcastBanned()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
                 .tag(RULE_PATTERN, rule.getRule())
+                .tag(PLAYER_NAME_PATTERN, nickName)
                 .tag(RULE_TEXT_PATTERN, rule.getText())
                 .tag(COMMENT_TEXT_PATTERN, comment)
                 .tag(PUNISH_SERVER_PATTERN, punishServer)

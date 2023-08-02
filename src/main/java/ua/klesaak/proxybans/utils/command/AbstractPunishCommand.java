@@ -126,7 +126,8 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     private void checkCooldown(CommandSender sender) {
         long cooldown = this.cooldownExpireNotifier.getCooldown(sender, this.getName());
         if (cooldown > 0L) {
-            throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageCooldown().tag(MessagesFile.TIME_PATTERN, NumberUtils.getTime(cooldown)).getMessageString());
+            throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageCooldown()
+                    .tag(MessagesFile.TIME_PATTERN, NumberUtils.getTime(cooldown - System.currentTimeMillis())).getMessageString());
         }
     }
 

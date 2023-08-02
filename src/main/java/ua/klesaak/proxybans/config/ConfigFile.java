@@ -56,11 +56,11 @@ public class ConfigFile extends PluginConfig {
     }
 
     public long getCooldownTime(String group, String command) {
-        return NumberUtils.parseTimeFromString(this.getTime(group, "cooldown", command), TimeUnit.SECONDS);
+        return NumberUtils.parseTimeFromString(this.getTime(group, "cooldown", command), TimeUnit.MILLISECONDS);
     }
 
     public long getMaxPunishTime(String group, String command) {
-        return NumberUtils.parseTimeFromString(this.getTime(group, "maxPunishTime", command), TimeUnit.SECONDS);
+        return NumberUtils.parseTimeFromString(this.getTime(group, "maxPunishTime", command), TimeUnit.MILLISECONDS);
     }
 
     public boolean isProtected(String playerName) {
