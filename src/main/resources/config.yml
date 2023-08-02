@@ -1,3 +1,25 @@
+storage: FILE #FILE, MYSQL, REDIS
+redis:
+  host: '127.0.0.1'
+  port: 6379
+  bans-key: 'bans'
+  mutes-key: 'mutes'
+  history-key: 'punish-history'
+  password:
+  database: 0
+
+mysql:
+  host: '127.0.0.1'
+  port: 3306
+  username: 'root'
+  password: ''
+  bans-table: 'bans'
+  mutes-table: 'mutes'
+  history-table: 'history'
+  database: 'proxybans'
+  useSSL: false
+
+
 groups:
   defaults:
     weight: 0
