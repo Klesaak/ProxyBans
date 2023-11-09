@@ -5,3 +5,4 @@ author: Klesaak
 softDepends:
   - LuckPerms
   - MinePerms
+  - SimplePerms

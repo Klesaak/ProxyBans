@@ -51,8 +51,13 @@ public class ConfigFile extends PluginConfig {
         return null;
     }
 
+    /**
+     * @param group - группа игрока.
+     * @param category - категория(maxPunishTime or cooldown)
+     * @param command - команда, которая применяется
+     */
     private String getTime(String group, String category, String command) {
-        return this.getConfig().getString("groups." + group + "." + category + "." + command, this.getConfig().getString("groups.defaults." + category + "." + command, "0s"));
+        return this.getConfig().getString("groups." + group + "." + category + "." + command, "0s");
     }
 
     public long getCooldownTime(String group, String command) {
@@ -72,7 +77,7 @@ public class ConfigFile extends PluginConfig {
     }
 
     private int getWeight(String fromGroup) {
-        return this.getConfig().getInt("groups." + fromGroup + ".weight", this.getInt("groups.defaults.weight"));
+        return this.getConfig().getInt("groups." + fromGroup + ".weight", 0);
     }
 
     public String parseDate(long time) {
