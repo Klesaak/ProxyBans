@@ -53,12 +53,12 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     @Override
     public Iterable<String> onTabComplete(CommandSender commandSender, String[] args) {
-        return this.onTabCompleteCommand(commandSender, args);
+        return this.onTabSuggest(commandSender, args);
     }
 
     public abstract boolean onReceiveCommand(CommandSender sender, String[] args); // если возвращаем - тру то включаеца кулдовн
 
-    public abstract Iterable<String> onTabCompleteCommand(CommandSender commandSender, String[] args);
+    public abstract Iterable<String> onTabSuggest(CommandSender commandSender, String[] args);
 
     public void cmdVerifyArgs(int minimum, String[] args, String usage) {
         if (args.length < minimum) {

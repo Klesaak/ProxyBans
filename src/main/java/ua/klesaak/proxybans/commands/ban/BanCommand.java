@@ -61,7 +61,7 @@ public final class BanCommand extends AbstractPunishCommand {
     }
 
     @Override
-    public Iterable<String> onTabCompleteCommand(CommandSender commandSender, String[] args) {
+    public Iterable<String> onTabSuggest(CommandSender commandSender, String[] args) {
         return null;
     }
 }

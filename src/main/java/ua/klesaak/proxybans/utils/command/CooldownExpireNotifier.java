@@ -1,5 +1,6 @@
 package ua.klesaak.proxybans.utils.command;
 
+import lombok.val;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -15,7 +16,7 @@ import static ua.klesaak.proxybans.manager.PermissionsConstants.PREFIX_WILDCARD_
 
 public final class CooldownExpireNotifier {
     private final ProxyBansManager proxyBansManager;
-    private final Map<String, ConcurrentHashMap<String, Long>> commandCooldowns = new ConcurrentHashMap<>(64);
+    private final Map<String, ConcurrentHashMap<String, Long>> commandCooldowns = new ConcurrentHashMap<>(64); //todo Instant.class
     private ScheduledTask cooldownExpireTask;
 
 
@@ -23,9 +24,10 @@ public final class CooldownExpireNotifier {
         this.proxyBansManager = proxyBansManager;
         this.cooldownExpireTask = ProxyServer.getInstance().getScheduler().schedule(this.proxyBansManager.getProxyBansPlugin(), () -> {
             for (String commandKey : this.commandCooldowns.keySet()) {
-                for (String playerKey : this.commandCooldowns.get(commandKey).keySet()) {
-                    if (this.commandCooldowns.get(commandKey).get(playerKey) <= System.currentTimeMillis()) {
-                        this.commandCooldowns.get(commandKey).remove(playerKey);
+                val playersMap = this.commandCooldowns.get(commandKey);
+                for (String playerKey : playersMap.keySet()) {
+                    if (playersMap.get(playerKey) <= System.currentTimeMillis()) {
+                        playersMap.remove(playerKey);
                         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playerKey);
                         if (proxiedPlayer != null && proxiedPlayer.hasPermission(PREFIX_WILDCARD_PERMISSION + commandKey)) {
                             this.proxyBansManager.getMessagesFile().getMessageIsCooldownExpired().tag(MessagesFile.COMMAND_PATTERN, commandKey).send(proxiedPlayer);

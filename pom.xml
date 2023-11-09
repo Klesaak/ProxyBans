@@ -40,6 +40,52 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.fasterxml</pattern>
+                                    <shadedPattern>ua.klesaak.libs.com.fasterxml</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/maven/ua.klesaak/ProxyBans/pom.xml</exclude>
+                                        <exclude>LICENSE</exclude>
+                                        <exclude>INFO_BIN</exclude>
+                                        <exclude>INFO_SRC</exclude>
+                                        <exclude>README</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>junit:junit</exclude>
+                                    <exclude>*:xml-apis</exclude>
+                                    <exclude>org.apache.maven:lib:tests</exclude>
+                                    <exclude>org.apache:org.apache</exclude>
+                                    <exclude>org.hamcrest:org.hamcrest</exclude>
+                                    <exclude>org.json:org.json</exclude>
+                                    <exclude>log4j:log4j:jar:</exclude>
+                                    <exclude>net.md_5</exclude>
+                                    <exclude>org.projectlombok</exclude>
+                                    <exclude>ru.Den_Abr</exclude>
+                                    <exclude>net.luckperms</exclude>
+                                    <exclude>com.googlecode</exclude>
+                                    <exclude>org.hamcrest</exclude>
+                                    <exclude>com.google.protobuf</exclude>
+                                    <exclude>org.codehaus.mojo</exclude>
+                                    <exclude>org.yaml</exclude>
+                                    <exclude>com.google.errorprone</exclude>
+                                    <exclude>com.google.code</exclude>
+                                    <exclude>com.google.guava</exclude>
+                                    <exclude>org.slf4j</exclude>
+                                </excludes>
+                            </artifactSet>
                         </configuration>
                     </execution>
                 </executions>
@@ -96,7 +142,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>ua.klesaak</groupId>
+            <groupId>ua.klesaak.mineperms</groupId>
             <artifactId>MinePerms</artifactId>
             <version>1.0</version>
             <scope>system</scope>
