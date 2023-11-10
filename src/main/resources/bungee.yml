@@ -6,3 +6,37 @@ softDepends:
   - LuckPerms
   - MinePerms
   - SimplePerms
+
+permissions:
+  proxybans.ban:
+    description: "Позволяет использовать команду /ban"
+  proxybans.banip:
+    description: "Позволяет использовать команду /banip"
+  proxybans.op-ban:
+    description: "Позволяет использовать команду /op-ban"
+  proxybans.op-banip:
+    description: "Позволяет использовать команду /op-banip"
+  proxybans.tempban:
+    description: "Позволяет использовать команду /tempban"
+  proxybans.op-tempban:
+    description: "Позволяет использовать команду /op-tempban"
+  proxybans.mute:
+    description: "Позволяет использовать команду /mute"
+  proxybans.op-mute:
+    description: "Позволяет использовать команду /op-mute"
+  proxybans.rules:
+    description: "Позволяет использовать команду /rules"
+  proxybans.punish-info:
+    description: "Позволяет использовать команду /punish-info"
+  proxybans.punish-history:
+    description: "Позволяет использовать команду /punish-history"
+  proxybans.ignore-cd:
+    description: "При использовании любой команды плагина - игроку не наложиться кулдаун."
+  proxybans.offline:
+    description: "Позволяет пользователям наказывать оффлайн игроков"
+  proxybans.useanypunishments:
+    description: "Позволяет использовать типы наказаний, которые не предусмотрены правилом."
+  proxybans.punish-everyone:
+    description: "Позволяет наказывать игроков, группа которых имеет выше приоритет."
+  proxybans.smart-comment:
+    description: "Позволяет игроку не писать подробный комментарий к наказанию."

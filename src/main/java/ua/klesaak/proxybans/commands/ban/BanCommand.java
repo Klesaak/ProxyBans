@@ -15,20 +15,20 @@ import static ua.klesaak.proxybans.config.MessagesFile.*;
 public final class BanCommand extends AbstractPunishCommand {
 
     public BanCommand(ProxyBansManager proxyBansManager) {
-        super(proxyBansManager, PunishType.BAN, "ban");
+        super(proxyBansManager, PunishType.BAN);
     }
 
     @Override
     public boolean onReceiveCommand(CommandSender sender, String[] args) {
-        this.cmdVerifyArgs(3, args, this.proxyBansManager.getMessagesFile().getUsageBanCommand());
+        val messagesFile = this.proxyBansManager.getMessagesFile();
+        this.cmdVerifyArgs(3, args, messagesFile.getUsageBanCommand());
         String nickName = this.cmdVerifyNickname(sender, true, args);
         RuleData rule = this.parseRule(sender,1, args);
         String punisherName = this.cmdVerifyPunisher(sender);
-        String comment = this.parseComment(2, args);
+        String comment = this.parseComment(sender,2, args);
         String punishServer = this.parseServer(sender);
         String playerServer = this.parseServer(nickName);
         String date = this.proxyBansManager.getConfigFile().parseDate(System.currentTimeMillis());
-        val messagesFile = this.proxyBansManager.getMessagesFile();
         messagesFile.getBroadcastBanned()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
                 .tag(RULE_PATTERN, rule.getRule())

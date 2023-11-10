@@ -41,6 +41,10 @@ public class Message implements Cloneable {
         player.sendMessage(ComponentSerializer.parse(this.message));
     }
 
+    public void sendWithoutJSON(CommandSender player) {
+        player.sendMessage(this.getMessageComponent());
+    }
+
     private String replaceAll(String message, Pattern pattern, Supplier<String> replacement) {
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) return matcher.replaceAll(Matcher.quoteReplacement(replacement.get()));

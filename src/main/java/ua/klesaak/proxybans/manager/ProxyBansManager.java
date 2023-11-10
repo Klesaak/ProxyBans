@@ -2,6 +2,7 @@ package ua.klesaak.proxybans.manager;
 
 import lombok.Getter;
 import ua.klesaak.proxybans.ProxyBansPlugin;
+import ua.klesaak.proxybans.commands.RulesCommand;
 import ua.klesaak.proxybans.commands.ban.BanCommand;
 import ua.klesaak.proxybans.config.ConfigFile;
 import ua.klesaak.proxybans.config.MessagesFile;
@@ -28,6 +29,7 @@ public class ProxyBansManager {
         this.hookPerms();
         /////commands/////
         new BanCommand(this);
+        new RulesCommand(this);
     }
 
     private void hookPerms() {
@@ -39,8 +41,8 @@ public class ProxyBansManager {
     }
 
     public void reloadConfigFiles() {
-        this.configFile = new ConfigFile(this.proxyBansPlugin);
         this.messagesFile = new MessagesFile().load(new File(this.proxyBansPlugin.getDataFolder(), "messages.json"));
+        this.configFile = new ConfigFile(this);
     }
 
     public void disable() {

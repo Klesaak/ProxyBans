@@ -26,10 +26,14 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     private final PunishType punishType;
     protected final ProxyBansManager proxyBansManager;
 
-    public AbstractPunishCommand(ProxyBansManager proxyBansManager, PunishType punishType, String commandName) {
+    public AbstractPunishCommand(ProxyBansManager proxyBansManager, PunishType punishType) {
+        this(proxyBansManager, punishType.getCommand());
+    }
+
+    public AbstractPunishCommand(ProxyBansManager proxyBansManager, String commandName) {
         super(commandName, "");
         this.proxyBansManager = proxyBansManager;
-        this.punishType = punishType;
+        this.punishType = PunishType.UNKNOWN;
         proxyBansManager.getProxyBansPlugin().getProxy().getPluginManager().registerCommand(proxyBansManager.getProxyBansPlugin(), this);
         this.cooldownExpireNotifier = proxyBansManager.getCooldownExpireNotifier();
         this.cooldownExpireNotifier.registerCommand(this);
@@ -49,7 +53,8 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
                 }
             }
         } catch (RuntimeException exception) {
-            commandSender.sendMessage(ComponentSerializer.parse(exception.getMessage()));
+            System.out.println(exception.getMessage());
+            commandSender.sendMessage(ComponentSerializer.parse(exception.getMessage())); //todo перделать этот треш
         }
     }
 
@@ -76,7 +81,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         if (senderName.equalsIgnoreCase(nickName)) throw new RuntimeException(messagesFile.getMessageSelfHarm().getMessageString());
         val configFile = this.proxyBansManager.getConfigFile();
         val permsHook = this.proxyBansManager.getPermHook();
-        if (!commandSender.hasPermission(BAN_EVERYONE_PERMISSION) && (configFile.isProtected(nickName) || configFile.isHeavier(permsHook.getUserGroup(nickName), permsHook.getUserGroup(senderName)))) {
+        if (!commandSender.hasPermission(PUNISH_EVERYONE_PERMISSION) && (configFile.isProtected(nickName) || configFile.isHeavier(permsHook.getUserGroup(nickName), permsHook.getUserGroup(senderName)))) {
             throw new RuntimeException(messagesFile.getMessagePlayerIsProtected().getMessageString());
         }
         if (checkOffline) this.checkOffline(commandSender, nickName);
@@ -156,8 +161,21 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.parseServer(ProxyServer.getInstance().getPlayer(playerName));
     }
 
+    protected int parsePage(String message) {
+        int i;
+        try {
+            i = Integer.parseInt(message);
+            if (i <= 0) {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessagePageNotFound().getMessageString());
+        }
+        return i;
+    }
+
     protected long parseTimme(String time) {
-        return NumberUtils.parseTimeFromString(time, TimeUnit.MICROSECONDS);
+        return NumberUtils.parseTimeFromString(time, TimeUnit.MILLISECONDS);
     }
 
     private void checkOffline(CommandSender commandSender, String targetName) {
@@ -166,7 +184,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
     }
 
-    protected String parseComment(int start, String[] args) {
+    protected String parseComment(CommandSender commandSender, int start, String[] args) {
         StringBuilder builder = new StringBuilder();
         for (int i = start; i < args.length; ++i) {
             if (i != start) {
@@ -174,7 +192,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
             }
             builder.append(args[i]);
         }
-        if (Arrays.stream(builder.toString().split("\\s+")).filter(s -> s.length() >= 2).count() < 3L) {
+        if (!commandSender.hasPermission(COMMENT_PERMISSION) && Arrays.stream(builder.toString().split("\\s+")).filter(s -> s.length() >= 2).count() < 3L) {
             throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageTooFewInfoAboutPunish().getMessageString());
         }
         return builder.toString();

@@ -9,26 +9,20 @@ import java.util.regex.Pattern;
 
 @Getter
 public class MessagesFile implements LocaleConfigData<MessagesFile> {
-    private static final String PLAYER_NAME = "(player)";
-    public static final Pattern PLAYER_NAME_PATTERN = Pattern.compile(PLAYER_NAME, Pattern.LITERAL);
-    private static final String PUNISHER_NAME = "(punisher)";
-    public static final Pattern PUNISHER_NAME_PATTERN = Pattern.compile(PUNISHER_NAME, Pattern.LITERAL);
-    private static final String PUNISH_SERVER = "(punishServer)";
-    public static final Pattern PUNISH_SERVER_PATTERN = Pattern.compile(PUNISH_SERVER, Pattern.LITERAL);
-    private static final String PLAYER_SERVER = "(server)";
-    public static final Pattern PLAYER_SERVER_PATTERN = Pattern.compile(PLAYER_SERVER, Pattern.LITERAL);
-    private static final String RULE = "(rule)";
-    public static final Pattern RULE_PATTERN = Pattern.compile(RULE, Pattern.LITERAL);
-    private static final String RULE_TEXT = "(ruleText)";
-    public static final Pattern RULE_TEXT_PATTERN = Pattern.compile(RULE_TEXT, Pattern.LITERAL);
-    private static final String COMMENT_TEXT = "(comment)";
-    public static final Pattern COMMENT_TEXT_PATTERN = Pattern.compile(COMMENT_TEXT, Pattern.LITERAL);
-    private static final String DATE = "(date)";
-    public static final Pattern DATE_PATTERN = Pattern.compile(DATE, Pattern.LITERAL);
-    private static final String TIME = "(time)";
-    public static final Pattern TIME_PATTERN = Pattern.compile(TIME, Pattern.LITERAL);
-    private static final String COMMAND = "(command)";
-    public static final Pattern COMMAND_PATTERN = Pattern.compile(COMMAND, Pattern.LITERAL);
+    public static final Pattern PLAYER_NAME_PATTERN = Pattern.compile("(player)", Pattern.LITERAL);
+    public static final Pattern PUNISHER_NAME_PATTERN = Pattern.compile("(punisher)", Pattern.LITERAL);
+    public static final Pattern PUNISH_SERVER_PATTERN = Pattern.compile("(punishServer)", Pattern.LITERAL);
+    public static final Pattern PLAYER_SERVER_PATTERN = Pattern.compile("(server)", Pattern.LITERAL);
+    public static final Pattern RULE_PATTERN = Pattern.compile("(rule)", Pattern.LITERAL);
+    public static final Pattern RULE_TEXT_PATTERN = Pattern.compile("(ruleText)", Pattern.LITERAL);
+    public static final Pattern RULES_PATTERN = Pattern.compile("(rules)", Pattern.LITERAL);
+    public static final Pattern COMMENT_TEXT_PATTERN = Pattern.compile("(comment)", Pattern.LITERAL);
+    public static final Pattern DATE_PATTERN = Pattern.compile("(date)", Pattern.LITERAL);
+    public static final Pattern TIME_PATTERN = Pattern.compile("(time)", Pattern.LITERAL);
+    public static final Pattern COMMAND_PATTERN = Pattern.compile("(command)", Pattern.LITERAL);
+    public static final Pattern APPLICABLE_PUNISHMENTS_PATTERN = Pattern.compile("(applicablePunishments)", Pattern.LITERAL);
+    public static final Pattern PAGE_PATTERN = Pattern.compile("(page)", Pattern.LITERAL);
+    public static final Pattern PAGES_PATTERN = Pattern.compile("(pages)", Pattern.LITERAL);
 
 
     //usages'ы
@@ -84,8 +78,14 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageRuleNotFound;
     @MessageField(key = "command.rule.notApplicablePunish", defaultMessage = "&4Ошибка: &cДля данного правила нельзя применить этот тип наказания.")
     private Message messageNotApplicablePunish;
+    @MessageField(key = "command.rule.listFormat", defaultMessage = {"&6Список правил: &c(page)/(pages)", "", "(rules)", "", "&6Следующая страница - /rules [&cномер страницы&6]"})
+    private Message messageRuleListFormat;
+    @MessageField(key = "command.rule.format", defaultMessage = "&c(rule). &6(ruleText) &a((applicablePunishments))")
+    private Message messageRuleFormat;
     @MessageField(key = "command.emptyData", defaultMessage = "N/A")
     private Message messageEmptyData;
+    @MessageField(key = "command.pageNotFound", defaultMessage = "Страница не найдена.")
+    private Message messagePageNotFound;
     @MessageField(key = "command.self", defaultMessage = "&4Ошибка: &cВы не можете взаимодействовать с собой.")
     private Message messageSelfHarm;
 
@@ -133,6 +133,11 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     @MessageField(key = "message.kicked", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
     private Message messageKicked;
     // TODO: 15.06.2023 messages
+
+
+
+
+
 
 
 }

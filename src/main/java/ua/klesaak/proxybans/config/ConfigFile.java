@@ -1,9 +1,11 @@
 package ua.klesaak.proxybans.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import lombok.SneakyThrows;
 import lombok.val;
-import net.md_5.bungee.api.plugin.Plugin;
+import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
 import ua.klesaak.proxybans.utils.JacksonAPI;
@@ -15,33 +17,64 @@ import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-public class ConfigFile extends PluginConfig {
-    private LinkedHashSet<RuleData> rules;
-    private final DateFormat dateFormat;
+import static ua.klesaak.proxybans.config.MessagesFile.*;
 
-    public ConfigFile(Plugin plugin) {
-        super(plugin, "config.yml");
-        this.loadRules(plugin);
+public class ConfigFile extends PluginConfig {
+    private LinkedList<RuleData> rules;
+    private final DateFormat dateFormat;
+    private final Map<Integer, String> rulesPages = new ConcurrentHashMap<>(128);
+
+    public ConfigFile(ProxyBansManager manager) {
+        super(manager.getProxyBansPlugin(), "config.yml");
+        this.loadRules(manager);
         SimpleDateFormat dateFormat = new SimpleDateFormat(this.getString("dateFormat.format"), new Locale(this.getString("dateFormat.locale")));
         dateFormat.setTimeZone(TimeZone.getTimeZone(this.getString("dateFormat.timeZone")));
         this.dateFormat = dateFormat;
     }
 
     @SneakyThrows
-    private void loadRules(Plugin plugin) {
-        val file = new File(plugin.getDataFolder(), "rules.json");
+    private void loadRules(ProxyBansManager manager) {
+        val file = new File(manager.getProxyBansPlugin().getDataFolder(), "rules.json");
         if (!file.getParentFile().exists()) Files.createDirectory(file.getParentFile().toPath());
         if (!file.exists()) Files.createFile(file.toPath());
         if (file.length() <= 0L) {
-            LinkedHashSet<RuleData> ruleData = new LinkedHashSet<>();
+            LinkedList<RuleData> ruleData = new LinkedList<>();
             ruleData.add(new RuleData("1.0", "Бан за матюки", EnumSet.of(PunishType.BAN, PunishType.MUTE)));
             ruleData.add(new RuleData("1.1", "Бан за оскорбление негров в чате", EnumSet.of(PunishType.BAN, PunishType.OP_BAN, PunishType.IP_BAN)));
             JacksonAPI.writeFile(file, ruleData);
         }
-        LinkedHashSet<RuleData> ruleData = JacksonAPI.readFile(file, new TypeReference<LinkedHashSet<RuleData>>() {});
-        this.rules = new LinkedHashSet<>(ruleData);
+        LinkedList<RuleData> ruleData = JacksonAPI.readFile(file, new TypeReference<LinkedList<RuleData>>() {});
+        this.rules = new LinkedList<>(ruleData);
+        this.loadRulesPages(manager.getMessagesFile());
+    }
+
+    private void loadRulesPages(MessagesFile messagesFile) {
+        int pageSize = this.rules.size() / 5;
+        for (int i = 0; i <= pageSize; i++) {
+            val pageData = this.getPage(this.rules, i, 5);
+            List<String> ruleList = new ArrayList<>();
+            for (val dat : pageData) {
+                val applicablePunishments = dat.getApplicablePunishments();
+                List<String> allowedCommands = new ArrayList<>();
+                for (val obj : applicablePunishments) {
+                    allowedCommands.add(obj.getCommand());
+                }
+                String allowedCommandsString = Joiner.on(", ").join(allowedCommands);
+                ruleList.add(messagesFile.getMessageRuleFormat()
+                        .tag(RULE_PATTERN, dat.getRule())
+                        .tag(RULE_TEXT_PATTERN, dat.getText())
+                        .tag(APPLICABLE_PUNISHMENTS_PATTERN, allowedCommandsString).getMessageString().replace("\"", ""));
+            }
+            String ruleListString = Joiner.on("\n").join(ruleList);
+            this.rulesPages.put(i, ruleListString);
+        }
+    }
+
+    public String getRulesPage(int pageIndex) {
+        return this.rulesPages.get(pageIndex - 1);
     }
 
     public RuleData getRule(String rule) {
@@ -82,5 +115,16 @@ public class ConfigFile extends PluginConfig {
 
     public String parseDate(long time) {
         return this.dateFormat.format(new Date(time));
+    }
+
+    public int getRulesPagesSize() {
+        return this.rulesPages.size();
+    }
+
+    private <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
+        Preconditions.checkArgument(pageSize > 0, ("invalid page size: " + pageSize));
+        Preconditions.checkArgument(page >= 0, ("invalid page: " + page));
+        int fromIndex = page * pageSize;
+        return (sourceList != null && sourceList.size() >= fromIndex) ? sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size())) : Collections.emptyList();
     }
 }
