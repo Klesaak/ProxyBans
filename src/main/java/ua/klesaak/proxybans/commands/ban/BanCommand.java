@@ -8,20 +8,21 @@ import ua.klesaak.proxybans.rules.RuleData;
 import ua.klesaak.proxybans.storage.PunishData;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
+import java.util.Collections;
+
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 
 public final class BanCommand extends AbstractPunishCommand {
 
     public BanCommand(ProxyBansManager proxyBansManager) {
-        super(proxyBansManager, "ban");
+        super(proxyBansManager, PunishType.BAN, "ban");
     }
 
     @Override
     public boolean onReceiveCommand(CommandSender sender, String[] args) {
         this.cmdVerifyArgs(3, args, this.proxyBansManager.getMessagesFile().getUsageBanCommand());
-        String nickName = this.cmdVerifyNickname(sender, args);
-        this.checkOffline(sender, nickName);
-        RuleData rule = this.parseRule(sender, PunishType.BAN, 1, args);
+        String nickName = this.cmdVerifyNickname(sender, true, args);
+        RuleData rule = this.parseRule(sender,1, args);
         String punisherName = this.cmdVerifyPunisher(sender);
         String comment = this.parseComment(2, args);
         String punishServer = this.parseServer(sender);
@@ -62,6 +63,6 @@ public final class BanCommand extends AbstractPunishCommand {
 
     @Override
     public Iterable<String> onTabSuggest(CommandSender commandSender, String[] args) {
-        return null;
+        return Collections.emptyList();
     }
 }

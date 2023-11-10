@@ -23,11 +23,13 @@ import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
 
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
     private final CooldownExpireNotifier cooldownExpireNotifier;
+    private final PunishType punishType;
     protected final ProxyBansManager proxyBansManager;
 
-    public AbstractPunishCommand(ProxyBansManager proxyBansManager, String commandName) {
+    public AbstractPunishCommand(ProxyBansManager proxyBansManager, PunishType punishType, String commandName) {
         super(commandName, "");
         this.proxyBansManager = proxyBansManager;
+        this.punishType = punishType;
         proxyBansManager.getProxyBansPlugin().getProxy().getPluginManager().registerCommand(proxyBansManager.getProxyBansPlugin(), this);
         this.cooldownExpireNotifier = proxyBansManager.getCooldownExpireNotifier();
         this.cooldownExpireNotifier.registerCommand(this);
@@ -66,7 +68,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
     }
 
-    protected String cmdVerifyNickname(CommandSender commandSender, String[] args) {
+    protected String cmdVerifyNickname(CommandSender commandSender, boolean checkOffline, String[] args) {
         String nickName = args[0].toLowerCase();
         String senderName = commandSender.getName();
         val messagesFile = this.proxyBansManager.getMessagesFile();
@@ -77,6 +79,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         if (!commandSender.hasPermission(BAN_EVERYONE_PERMISSION) && (configFile.isProtected(nickName) || configFile.isHeavier(permsHook.getUserGroup(nickName), permsHook.getUserGroup(senderName)))) {
             throw new RuntimeException(messagesFile.getMessagePlayerIsProtected().getMessageString());
         }
+        if (checkOffline) this.checkOffline(commandSender, nickName);
         return nickName;
     }
 
@@ -135,12 +138,12 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getMessageString().replace("\"", "");
     }
 
-    protected RuleData parseRule(CommandSender commandSender, PunishType punishType, int argIndex, String[] args) {
+    protected RuleData parseRule(CommandSender commandSender, int argIndex, String[] args) {
         String rule = args[argIndex].toLowerCase();
         RuleData ruleData = this.proxyBansManager.getConfigFile().getRule(rule);
         val messagesFile = this.proxyBansManager.getMessagesFile();
         if (ruleData == null) throw new RuntimeException(messagesFile.getMessageRuleNotFound().getMessageString());
-        if (!ruleData.isAllow(punishType) && !commandSender.hasPermission(USER_ANY_PUNISHMENTS_PERMISSION)) throw new RuntimeException(messagesFile.getMessageNotApplicablePunish().getMessageString());
+        if (!ruleData.isAllow(this.punishType) && !commandSender.hasPermission(USER_ANY_PUNISHMENTS_PERMISSION)) throw new RuntimeException(messagesFile.getMessageNotApplicablePunish().getMessageString());
         return ruleData;
     }
 
@@ -157,7 +160,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return NumberUtils.parseTimeFromString(time, TimeUnit.MICROSECONDS);
     }
 
-    protected void checkOffline(CommandSender commandSender, String targetName) {
+    private void checkOffline(CommandSender commandSender, String targetName) {
         if (ProxyServer.getInstance().getPlayer(targetName) == null && !commandSender.hasPermission(IGNORE_OFFLINE_PERMISSION)) {
             throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessagePlayerIsOffline().getMessageString());
         }
