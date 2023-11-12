@@ -121,13 +121,11 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     }
 
     protected void disconnect(ProxiedPlayer proxiedPlayer, Message message) {
-        if (proxiedPlayer != null) {
-            proxiedPlayer.disconnect(message.getMessageComponent());
-        }
+        message.disconnect(proxiedPlayer);
     }
 
     protected void disconnect(String playerName, Message message) {
-        val proxiedPlayer = this.proxyBansManager.getProxyBansPlugin().getProxy().getPlayer(playerName);
+        val proxiedPlayer = ProxyServer.getInstance().getPlayer(playerName);
         this.disconnect(proxiedPlayer, message);
     }
 
@@ -140,7 +138,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     }
 
     protected String getConsoleName() {
-        return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getMessageString().replace("\"", "");
+        return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getStringWithoutQuotes();
     }
 
     protected RuleData parseRule(CommandSender commandSender, int argIndex, String[] args) {
@@ -154,7 +152,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     protected String parseServer(CommandSender commandSender) {
         if (commandSender instanceof ProxiedPlayer) return ((ProxiedPlayer)commandSender).getServer().getInfo().getMotd();
-        return this.proxyBansManager.getMessagesFile().getMessageEmptyData().getMessageString().replace("\"", "");
+        return this.proxyBansManager.getMessagesFile().getMessageEmptyData().getStringWithoutQuotes();
     }
 
     protected String parseServer(String playerName) {

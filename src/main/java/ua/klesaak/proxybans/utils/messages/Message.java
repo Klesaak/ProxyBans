@@ -5,6 +5,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 import java.util.function.Supplier;
@@ -13,9 +14,11 @@ import java.util.regex.Pattern;
 
 public class Message implements Cloneable {
     private final String message;
+    private final boolean isList;
 
-    public Message(String message) {
+    public Message(String message, boolean isList) {
         this.message = ChatColor.translateAlternateColorCodes('&', message);
+        this.isList = isList;
     }
 
     public void broadcast() {
@@ -23,8 +26,8 @@ public class Message implements Cloneable {
         this.send(ProxyServer.getInstance().getConsole());
     }
 
-    public static Message create(String text) {
-        return new Message(text);
+    public static Message create(String text, boolean isList) {
+        return new Message(text, isList);
     }
 
     public void send(CommandSender... players) {
@@ -34,15 +37,17 @@ public class Message implements Cloneable {
     }
 
     public Message tag(Pattern pattern, String replacement) {
-        return new Message(this.replaceAll(this.message, pattern, ()-> replacement));
+        return create(this.replaceAll(this.message, pattern, ()-> replacement), this.isList);
     }
 
     public void send(CommandSender player) {
         player.sendMessage(ComponentSerializer.parse(this.message));
     }
 
-    public void sendWithoutJSON(CommandSender player) {
-        player.sendMessage(this.getMessageComponent());
+    public void disconnect(ProxiedPlayer proxiedPlayer) {
+        if (proxiedPlayer != null && this.isList) {
+            proxiedPlayer.disconnect(this.getMessageComponent());
+        }
     }
 
     private String replaceAll(String message, Pattern pattern, Supplier<String> replacement) {
@@ -57,6 +62,10 @@ public class Message implements Cloneable {
 
     public String getMessageString() {
         return this.message;
+    }
+
+    public String getStringWithoutQuotes() {
+        return this.message.replace("\"", "");
     }
 
     @Override

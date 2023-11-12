@@ -47,7 +47,7 @@ public final class BanCommand extends AbstractPunishCommand {
                 .tag(PLAYER_SERVER_PATTERN, playerServer)
                 .tag(DATE_PATTERN, date));
 
-        PunishData.builder()
+        val punishData = PunishData.builder()
                 .playerName(nickName)
                 .punishType(PunishType.BAN)
                 .rule(rule.getRuleData())
@@ -57,7 +57,7 @@ public final class BanCommand extends AbstractPunishCommand {
                 .server(playerServer)
                 .punishDate(date).build();
 
-        // TODO: 18.07.2023 save to storage Method
+        this.proxyBansManager.getPunishStorage().saveBan(punishData);
         return true;
     }
 

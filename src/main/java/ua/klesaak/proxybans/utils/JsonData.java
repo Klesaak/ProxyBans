@@ -6,9 +6,8 @@ import lombok.SneakyThrows;
 import lombok.val;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
+import java.lang.reflect.Modifier;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +21,6 @@ public class JsonData {
         if (!file.exists()) {
             Files.createFile(file.toPath());
             this.file = file;
-            Files.write(this.file.toPath(), "{}".getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             return;
         }
         this.file = file;
@@ -68,6 +66,18 @@ public class JsonData {
     @SneakyThrows
     public <T> void write(T source) {
         JacksonAPI.writeFile(this.file, source);
+    }
+
+    @SneakyThrows
+    public void reloadFields() {
+        val clazz = this.getClass();
+        val newClazz = load(this.file, clazz);
+        for (val field : clazz.getDeclaredFields()) {
+            val modifiers = field.getModifiers();
+            if (Modifier.isTransient(modifiers)) continue;
+            field.setAccessible(true);
+            field.set(this, field.get(newClazz));
+        }
     }
 
     @Getter

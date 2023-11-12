@@ -56,9 +56,10 @@ public interface LocaleConfigData<T extends LocaleConfigData<T>> {
                 val data = field.getAnnotation(MessageField.class);
                 val messageKey = data.key().isEmpty() ? field.getName() : data.key();
                 val nodeKey = newJsonNode.get(messageKey);
-                val message = nodeKey.isArray() ? Joiner.on('\n').join(JacksonAPI.readValue(nodeKey.toString(), List.class)) : nodeKey.toString();
+                boolean isList = nodeKey.isArray();
+                val message = isList ? Joiner.on('\n').join(JacksonAPI.readValue(nodeKey.toString(), List.class)) : nodeKey.toString();
                 field.setAccessible(true);
-                field.set(this, new Message(message));
+                field.set(this, new Message(message, isList));
             }
         }
 

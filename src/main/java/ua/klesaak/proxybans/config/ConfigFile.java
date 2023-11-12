@@ -66,7 +66,7 @@ public class ConfigFile extends PluginConfig {
                 ruleList.add(messagesFile.getMessageRuleFormat()
                         .tag(RULE_PATTERN, dat.getRule())
                         .tag(RULE_TEXT_PATTERN, dat.getText())
-                        .tag(APPLICABLE_PUNISHMENTS_PATTERN, allowedCommandsString).getMessageString().replace("\"", ""));
+                        .tag(APPLICABLE_PUNISHMENTS_PATTERN, allowedCommandsString).getStringWithoutQuotes());
             }
             String ruleListString = Joiner.on("\n").join(ruleList);
             this.rulesPages.put(i, ruleListString);
