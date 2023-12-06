@@ -57,7 +57,7 @@ public class ConfigFile extends PluginConfig {
             val applicablePunishments = dat.value().getApplicablePunishments();
             List<String> allowedCommands = new ArrayList<>();
             for (val obj : applicablePunishments) {
-                allowedCommands.add(obj.getCommand());
+                allowedCommands.add("/" + obj.getCommand());
             }
             String allowedCommandsString = Joiner.on(", ").join(allowedCommands);
             ruleList.add(messagesFile.getMessageRuleFormat()
