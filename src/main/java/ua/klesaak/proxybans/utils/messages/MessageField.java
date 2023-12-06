@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 public @interface MessageField {
     String key() default "";
     String[] defaultMessage() default "Default minecraft-json message.";
+    boolean withoutQuotes() default false;
 }

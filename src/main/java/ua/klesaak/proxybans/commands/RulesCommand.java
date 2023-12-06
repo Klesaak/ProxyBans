@@ -17,20 +17,22 @@ public class RulesCommand extends AbstractPunishCommand {
 
     @Override
     public boolean onReceiveCommand(CommandSender sender, String[] args) {
-        val message = this.proxyBansManager.getMessagesFile().getMessageRuleListFormat();
+        val messagesFile = this.proxyBansManager.getMessagesFile();
+        val message = messagesFile.getMessageRuleListFormat();
         val configFile = this.proxyBansManager.getConfigFile();
         if (args.length == 0) {
             message.tag(PAGE_PATTERN, String.valueOf(1))
-                    .tag(RULES_PATTERN, configFile.getRulesPage(1))
-                    .tag(PAGES_PATTERN, String.valueOf(configFile.getRulesPagesSize())).send(sender);
+                    .tag(RULES_PATTERN, configFile.getRulesPage(messagesFile,1))
+                    .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages())).send(sender);
             return false;
         }
         int pageIndex = this.parsePage(args[0]);
-        val rulePage = configFile.getRulesPage(pageIndex);
+        if (pageIndex > configFile.getMaxRulesPages()) pageIndex = configFile.getMaxRulesPages();
+        val rulePage = configFile.getRulesPage(messagesFile, pageIndex);
         if (rulePage == null) this.parsePage(null);
         message.tag(PAGE_PATTERN, String.valueOf(pageIndex))
-                .tag(RULES_PATTERN, configFile.getRulesPage(pageIndex))
-                .tag(PAGES_PATTERN, String.valueOf(configFile.getRulesPagesSize())).send(sender);
+                .tag(RULES_PATTERN, rulePage)
+                .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages())).send(sender);
         return false;//возвращаем именно фолс, потому что не нужно включать кд
     }
 

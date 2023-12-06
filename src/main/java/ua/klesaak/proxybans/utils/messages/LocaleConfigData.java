@@ -55,11 +55,12 @@ public interface LocaleConfigData<T extends LocaleConfigData<T>> {
             if (field.isAnnotationPresent(MessageField.class)) {
                 val data = field.getAnnotation(MessageField.class);
                 val messageKey = data.key().isEmpty() ? field.getName() : data.key();
+                boolean isWithoutQuotes = data.withoutQuotes();
                 val nodeKey = newJsonNode.get(messageKey);
                 boolean isList = nodeKey.isArray();
                 val message = isList ? Joiner.on('\n').join(JacksonAPI.readValue(nodeKey.toString(), List.class)) : nodeKey.toString();
                 field.setAccessible(true);
-                field.set(this, new Message(message, isList));
+                field.set(this, new Message(message, isList, isWithoutQuotes));
             }
         }
 

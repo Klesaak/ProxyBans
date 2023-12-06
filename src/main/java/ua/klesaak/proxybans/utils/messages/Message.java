@@ -15,10 +15,13 @@ import java.util.regex.Pattern;
 public class Message implements Cloneable {
     private final String message;
     private final boolean isList;
+    private final boolean isWithoutQuotes;
 
-    public Message(String message, boolean isList) {
-        this.message = ChatColor.translateAlternateColorCodes('&', message);
+    public Message(String message, boolean isList, boolean isWithoutQuotes) {
+        String mes = isWithoutQuotes ? message.replace("\"", "") : message;
+        this.message = ChatColor.translateAlternateColorCodes('&', mes);
         this.isList = isList;
+        this.isWithoutQuotes = isWithoutQuotes;
     }
 
     public void broadcast() {
@@ -26,8 +29,8 @@ public class Message implements Cloneable {
         this.send(ProxyServer.getInstance().getConsole());
     }
 
-    public static Message create(String text, boolean isList) {
-        return new Message(text, isList);
+    public static Message create(String text, boolean isList, boolean isWithoutQuotes) {
+        return new Message(text, isList, isWithoutQuotes);
     }
 
     public void send(CommandSender... players) {
@@ -37,10 +40,14 @@ public class Message implements Cloneable {
     }
 
     public Message tag(Pattern pattern, String replacement) {
-        return create(this.replaceAll(this.message, pattern, ()-> replacement), this.isList);
+        return create(this.replaceAll(this.message, pattern, ()-> replacement), this.isList, this.isWithoutQuotes);
     }
 
     public void send(CommandSender player) {
+        if (this.isWithoutQuotes || this.isList) {
+            player.sendMessage(this.getMessageComponent());
+            return;
+        }
         player.sendMessage(ComponentSerializer.parse(this.message));
     }
 
@@ -48,12 +55,6 @@ public class Message implements Cloneable {
         if (proxiedPlayer != null && this.isList) {
             proxiedPlayer.disconnect(this.getMessageComponent());
         }
-    }
-
-    private String replaceAll(String message, Pattern pattern, Supplier<String> replacement) {
-        Matcher matcher = pattern.matcher(message);
-        if (matcher.find()) return matcher.replaceAll(Matcher.quoteReplacement(replacement.get()));
-        return message;
     }
 
     public BaseComponent[] getMessageComponent() {
@@ -64,14 +65,17 @@ public class Message implements Cloneable {
         return this.message;
     }
 
-    public String getStringWithoutQuotes() {
-        return this.message.replace("\"", "");
+    private String replaceAll(String message, Pattern pattern, Supplier<String> replacement) {
+        Matcher matcher = pattern.matcher(message);
+        if (matcher.find()) return matcher.replaceAll(Matcher.quoteReplacement(replacement.get()));
+        return message;
     }
 
     @Override
     public Message clone() {
         try {
-            return (Message)super.clone();
+            super.clone();
+            return new Message(this.message, this.isList, this.isWithoutQuotes);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;

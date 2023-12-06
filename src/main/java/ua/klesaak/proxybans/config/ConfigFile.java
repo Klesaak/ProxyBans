@@ -2,7 +2,6 @@ package ua.klesaak.proxybans.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
 import lombok.SneakyThrows;
 import lombok.val;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
@@ -10,6 +9,7 @@ import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
 import ua.klesaak.proxybans.utils.JacksonAPI;
 import ua.klesaak.proxybans.utils.NumberUtils;
+import ua.klesaak.proxybans.utils.Paginated;
 import ua.klesaak.proxybans.utils.yml.PluginConfig;
 
 import java.io.File;
@@ -17,7 +17,6 @@ import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
@@ -25,7 +24,7 @@ import static ua.klesaak.proxybans.config.MessagesFile.*;
 public class ConfigFile extends PluginConfig {
     private LinkedList<RuleData> rules;
     private final DateFormat dateFormat;
-    private final Map<Integer, String> rulesPages = new ConcurrentHashMap<>(128);
+    private Paginated<RuleData> rulePages;
 
     public ConfigFile(ProxyBansManager manager) {
         super(manager.getProxyBansPlugin(), "config.yml");
@@ -48,33 +47,29 @@ public class ConfigFile extends PluginConfig {
         }
         LinkedList<RuleData> ruleData = JacksonAPI.readFile(file, new TypeReference<LinkedList<RuleData>>() {});
         this.rules = new LinkedList<>(ruleData);
-        this.loadRulesPages(manager.getMessagesFile());
+        this.rulePages = new Paginated<>(this.rules);
     }
 
-    private void loadRulesPages(MessagesFile messagesFile) {
-        int pageSize = this.rules.size() / 5;
-        for (int i = 0; i <= pageSize; i++) {
-            val pageData = this.getPage(this.rules, i, 5);
-            List<String> ruleList = new ArrayList<>();
-            for (val dat : pageData) {
-                val applicablePunishments = dat.getApplicablePunishments();
-                List<String> allowedCommands = new ArrayList<>();
-                for (val obj : applicablePunishments) {
-                    allowedCommands.add(obj.getCommand());
-                }
-                String allowedCommandsString = Joiner.on(", ").join(allowedCommands);
-                ruleList.add(messagesFile.getMessageRuleFormat()
-                        .tag(RULE_PATTERN, dat.getRule())
-                        .tag(RULE_TEXT_PATTERN, dat.getText())
-                        .tag(APPLICABLE_PUNISHMENTS_PATTERN, allowedCommandsString).getStringWithoutQuotes());
+    public String getRulesPage(MessagesFile messagesFile, int pageIndex) {
+        val pageData = this.rulePages.getPage(pageIndex, 5);
+        List<String> ruleList = new ArrayList<>();
+        for (val dat : pageData) {
+            val applicablePunishments = dat.value().getApplicablePunishments();
+            List<String> allowedCommands = new ArrayList<>();
+            for (val obj : applicablePunishments) {
+                allowedCommands.add(obj.getCommand());
             }
-            String ruleListString = Joiner.on("\n").join(ruleList);
-            this.rulesPages.put(i, ruleListString);
+            String allowedCommandsString = Joiner.on(", ").join(allowedCommands);
+            ruleList.add(messagesFile.getMessageRuleFormat()
+                    .tag(RULE_PATTERN, dat.value().getRule())
+                    .tag(RULE_TEXT_PATTERN, dat.value().getText())
+                    .tag(APPLICABLE_PUNISHMENTS_PATTERN, allowedCommandsString).getMessageString());
         }
+        return Joiner.on("\n").join(ruleList);
     }
 
-    public String getRulesPage(int pageIndex) {
-        return this.rulesPages.get(pageIndex - 1);
+    public int getMaxRulesPages() {
+        return this.rulePages.getMaxPages(5);
     }
 
     public RuleData getRule(String rule) {
@@ -115,16 +110,5 @@ public class ConfigFile extends PluginConfig {
 
     public String parseDate(long time) {
         return this.dateFormat.format(new Date(time));
-    }
-
-    public int getRulesPagesSize() {
-        return this.rulesPages.size();
-    }
-
-    private <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
-        Preconditions.checkArgument(pageSize > 0, ("invalid page size: " + pageSize));
-        Preconditions.checkArgument(page >= 0, ("invalid page: " + page));
-        int fromIndex = page * pageSize;
-        return (sourceList != null && sourceList.size() >= fromIndex) ? sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size())) : Collections.emptyList();
     }
 }

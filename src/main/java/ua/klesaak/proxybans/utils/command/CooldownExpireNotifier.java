@@ -59,8 +59,4 @@ public final class CooldownExpireNotifier {
         this.cooldownExpireTask.cancel();
         this.cooldownExpireTask = null;
     }
-
-    public ProxyBansManager getProxyBansManager() {
-        return proxyBansManager;
-    }
 }

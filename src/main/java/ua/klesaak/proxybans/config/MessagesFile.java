@@ -64,7 +64,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageNoPermission;
     @MessageField(key = "command.isCooldownExpired", defaultMessage = "&aКоманда (command) снова доступна к использованию.")
     private Message messageIsCooldownExpired;
-    @MessageField(key = "command.consoleName", defaultMessage = "&cProxyBansPlugin")
+    @MessageField(key = "command.consoleName", defaultMessage = "&cProxyBansPlugin", withoutQuotes = true)
     private Message messageIsConsoleName;
     @MessageField(key = "command.wrongNickname", defaultMessage = "&4Ошибка: &cНеправильный ник.")
     private Message messageWrongNickname;
@@ -80,9 +80,9 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageNotApplicablePunish;
     @MessageField(key = "command.rule.listFormat", defaultMessage = {"&6Список правил: &c(page)/(pages)", "", "(rules)", "", "&6Следующая страница - /rules [&cномер страницы&6]"})
     private Message messageRuleListFormat;
-    @MessageField(key = "command.rule.format", defaultMessage = "&c(rule). &6(ruleText) &a((applicablePunishments))")
+    @MessageField(key = "command.rule.format", defaultMessage = "&c(rule). &6(ruleText) &a((applicablePunishments))", withoutQuotes = true)
     private Message messageRuleFormat;
-    @MessageField(key = "command.emptyData", defaultMessage = "N/A")
+    @MessageField(key = "command.emptyData", defaultMessage = "N/A", withoutQuotes = true)
     private Message messageEmptyData;
     @MessageField(key = "command.pageNotFound", defaultMessage = "Страница не найдена.")
     private Message messagePageNotFound;

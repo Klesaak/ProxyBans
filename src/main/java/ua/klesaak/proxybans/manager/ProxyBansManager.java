@@ -13,7 +13,6 @@ import ua.klesaak.proxybans.permshook.MinePermsHook;
 import ua.klesaak.proxybans.permshook.SimplePermsHook;
 import ua.klesaak.proxybans.storage.PunishStorage;
 import ua.klesaak.proxybans.storage.file.FileStorage;
-import ua.klesaak.proxybans.storage.mysql.MySQLStorage;
 import ua.klesaak.proxybans.storage.redis.RedisStorage;
 import ua.klesaak.proxybans.utils.command.CooldownExpireNotifier;
 
@@ -54,9 +53,6 @@ public class ProxyBansManager {
             case "redis": {
                 this.punishStorage = new RedisStorage(this);
                 break;
-            }
-            case "mysql": {
-                this.punishStorage = new MySQLStorage(this);
             }
             case "file": {
                 this.punishStorage = new FileStorage(this);

@@ -1,6 +1,5 @@
 package ua.klesaak.proxybans.rules;
 
-import java.util.Collections;
 import java.util.EnumSet;
 
 public class RuleData {
