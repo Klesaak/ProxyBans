@@ -6,6 +6,7 @@ import net.md_5.bungee.api.ChatColor;
 import ua.klesaak.proxybans.ProxyBansPlugin;
 import ua.klesaak.proxybans.commands.RulesCommand;
 import ua.klesaak.proxybans.commands.ban.BanCommand;
+import ua.klesaak.proxybans.commands.unban.UnBanCommand;
 import ua.klesaak.proxybans.config.ConfigFile;
 import ua.klesaak.proxybans.config.MessagesFile;
 import ua.klesaak.proxybans.permshook.IPermHook;
@@ -36,6 +37,7 @@ public class ProxyBansManager {
         this.hookPerms();
         /////commands/////
         new BanCommand(this);
+        new UnBanCommand(this);
         new RulesCommand(this);
     }
 

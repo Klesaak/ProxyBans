@@ -24,4 +24,12 @@ public enum PunishType {
     public String getCommand() {
         return command;
     }
+
+    public boolean isOPBan() {
+        return this == OP_BAN || this == OP_TEMP_BAN || this == OP_IP_BAN;
+    }
+
+    public boolean isOPMute() {
+        return this == OP_MUTE || this == OP_TEMP_MUTE;
+    }
 }

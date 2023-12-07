@@ -1,5 +1,6 @@
 package ua.klesaak.proxybans.utils.command;
 
+import com.google.common.base.Preconditions;
 import lombok.val;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -17,24 +18,27 @@ import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.messages.Message;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
 
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
     private final CooldownExpireNotifier cooldownExpireNotifier;
-    private final PunishType punishType;
+    private PunishType punishType = PunishType.UNKNOWN;
     protected final ProxyBansManager proxyBansManager;
 
     public AbstractPunishCommand(ProxyBansManager proxyBansManager, PunishType punishType) {
         this(proxyBansManager, punishType.getCommand());
+        this.punishType = punishType;
     }
 
     public AbstractPunishCommand(ProxyBansManager proxyBansManager, String commandName) {
         super(commandName, "");
         this.proxyBansManager = proxyBansManager;
-        this.punishType = PunishType.UNKNOWN;
         proxyBansManager.getProxyBansPlugin().getProxy().getPluginManager().registerCommand(proxyBansManager.getProxyBansPlugin(), this);
         this.cooldownExpireNotifier = proxyBansManager.getCooldownExpireNotifier();
         this.cooldownExpireNotifier.registerCommand(this);
@@ -88,7 +92,24 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return nickName;
     }
 
-    protected String cmdVerifyPunisher(CommandSender commandSender) {
+    protected void cmdVerifyTryUnban(String nickname) {
+        val storage = this.proxyBansManager.getPunishStorage();
+        val nicknameLC = nickname.toLowerCase();
+        val punishData = storage.getBanData(nicknameLC);
+        if (punishData == null) {
+            throw new RuntimeException("\"Игрок не забанен(ВНЕСТИ ЭТО В КОНФИГ)\"");
+        }
+        if (punishData.getPunishType().isOPBan()) {
+            throw new RuntimeException("\"У игрока ОП-Бан, вы не можете его разблокировать!(ВНЕСТИ ЭТО В КОНФИГ)\"");
+        }
+        storage.unBan(nicknameLC);
+    }
+
+    protected void cmdVerifyTryUnmute() {
+
+    }
+
+    protected String cmdVerifySender(CommandSender commandSender) {
         if (commandSender instanceof ProxiedPlayer) {
             return commandSender.getName();
         }
@@ -194,5 +215,44 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
             throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageTooFewInfoAboutPunish().getMessageString());
         }
         return builder.toString();
+    }
+
+    protected List<String> getOnlinePlayers() {
+        List<String> onlinePlayers = new ArrayList<>();
+        ProxyServer.getInstance().getPlayers().forEach(pp -> onlinePlayers.add(pp.getName()));
+        return onlinePlayers;
+    }
+
+    protected List<String> getPunishedPlayersBy(PunishType punishType) {
+        List<String> players = new ArrayList<>();
+        for (val punishData : this.proxyBansManager.getPunishStorage().getBansCache().values()) {
+            if (punishData.getPunishType() == punishType) {
+                players.add(punishData.getPlayerName());
+            }
+        }
+        return players;
+    }
+
+    protected List<String> getActualRules() {
+        List<String> actualRules = new ArrayList<>();
+        for (RuleData ruleData : this.proxyBansManager.getConfigFile().getRules()) {
+            if (ruleData.getApplicablePunishments().contains(this.punishType)) {
+                actualRules.add(ruleData.getRule());
+            }
+        }
+        return actualRules;
+    }
+
+    protected <T extends Collection<? super String>> T copyPartialMatches(String token, Iterable<String> originals, T collection) {
+        Preconditions.checkNotNull(token, "Search token cannot be null");
+        Preconditions.checkNotNull(collection, "Collection cannot be null");
+        Preconditions.checkNotNull(originals, "Originals cannot be null");
+        originals.forEach(string -> { if (startsWithIgnoreCase(string, token)) collection.add(string);});
+        return collection;
+    }
+
+    private boolean startsWithIgnoreCase(String string, String prefix) {
+        Preconditions.checkNotNull(string, "Cannot check a null string for a match");
+        return string.length() >= prefix.length() && string.regionMatches(true, 0, prefix, 0, prefix.length());
     }
 }

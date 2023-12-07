@@ -2,6 +2,7 @@ package ua.klesaak.proxybans.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Joiner;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.val;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 
+@Getter
 public class ConfigFile extends PluginConfig {
     private LinkedList<RuleData> rules;
     private final DateFormat dateFormat;

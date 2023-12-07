@@ -9,7 +9,7 @@ import java.util.Collections;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 
-public class RulesCommand extends AbstractPunishCommand {
+public final class RulesCommand extends AbstractPunishCommand {
 
     public RulesCommand(ProxyBansManager proxyBansManager) {
         super(proxyBansManager, "rules");

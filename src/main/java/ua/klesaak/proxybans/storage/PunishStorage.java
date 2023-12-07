@@ -1,12 +1,14 @@
 package ua.klesaak.proxybans.storage;
 
+import lombok.Getter;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class PunishStorage implements AutoCloseable {
+@Getter
+public abstract class PunishStorage implements AutoCloseable { //todo поток, который чистит истекшую блокировку!
     protected final Map<String, PunishData> bansCache = new ConcurrentHashMap<>();
     protected final Map<String, PunishData> mutesCache = new ConcurrentHashMap<>();
     protected final Map<String, List<PunishData>> historyCache = new ConcurrentHashMap<>();

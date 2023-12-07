@@ -40,3 +40,7 @@ permissions:
     description: "Позволяет наказывать игроков, группа которых имеет выше приоритет."
   proxybans.smart-comment:
     description: "Позволяет игроку не писать подробный комментарий к наказанию."
+  proxybans.unban:
+    description: "Позволяет игроку снимать наказания от команд /ban, /ban-ip, /tempban."
+  proxybans.unop-ban:
+    description: "Позволяет игроку снимать наказания от команд /op-ban, /op-banip, /op-tempban."
