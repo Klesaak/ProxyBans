@@ -1,13 +1,17 @@
 package ua.klesaak.proxybans.storage;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ua.klesaak.proxybans.rules.PunishType;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Builder
 public class PunishData {
-    private final String playerName;
-    private final PunishType punishType;
+    private String playerName;
+    private PunishType punishType;
 
     private String punisherServer;
     private String server;

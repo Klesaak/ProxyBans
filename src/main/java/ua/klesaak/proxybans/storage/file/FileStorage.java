@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class FileStorage extends PunishStorage {
+    public static final TypeReference<Collection<PunishData>> PUNISH_DATA_REFERENCE = new TypeReference<Collection<PunishData>>() {};
     private final JsonData bansFile, mutesFile, historyFile;
 
     public FileStorage(ProxyBansManager proxyBansManager) {
@@ -24,11 +25,11 @@ public class FileStorage extends PunishStorage {
         this.mutesFile = new JsonData(new File(pluginDataFolder, "mutes.json"));
         this.historyFile = new JsonData(new File(pluginDataFolder, "history.json"));
         if (this.bansFile.getFile().length() > 0L) {
-            Collection<PunishData> dataCollection = JacksonAPI.readFile(this.bansFile.getFile(), new TypeReference<Collection<PunishData>>() {});
+            Collection<PunishData> dataCollection = JacksonAPI.readFile(this.bansFile.getFile(), PUNISH_DATA_REFERENCE);
             dataCollection.forEach(punishData -> this.bansCache.put(punishData.getPlayerName(), punishData));
         }
         if (this.mutesFile.getFile().length() > 0L) {
-            Collection<PunishData> dataCollection = JacksonAPI.readFile(this.mutesFile.getFile(), new TypeReference<Collection<PunishData>>() {});
+            Collection<PunishData> dataCollection = JacksonAPI.readFile(this.mutesFile.getFile(), PUNISH_DATA_REFERENCE);
             dataCollection.forEach(punishData -> this.mutesCache.put(punishData.getPlayerName(), punishData));
         }
         //todo history

@@ -62,7 +62,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageCooldown;
     @MessageField(key = "command.no-permission", defaultMessage = "&cВы не можете юзать данную команду.")
     private Message messageNoPermission;
-    @MessageField(key = "command.isCooldownExpired", defaultMessage = "&aКоманда (command) снова доступна к использованию.")
+    @MessageField(key = "command.isCooldownExpired", defaultMessage = "&aКоманда &6/(command)&a снова доступна к использованию.")
     private Message messageIsCooldownExpired;
     @MessageField(key = "command.consoleName", defaultMessage = "&cProxyBansPlugin", withoutQuotes = true)
     private Message messageIsConsoleName;

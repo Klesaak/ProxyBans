@@ -9,7 +9,7 @@ public class MinePermsHook implements IPermHook {
 
     @Override
     public String getUserGroup(String nickName) {
-        return null;
+        return "default";
     }
 
     @Override

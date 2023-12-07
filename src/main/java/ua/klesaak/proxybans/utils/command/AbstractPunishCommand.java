@@ -16,6 +16,7 @@ import ua.klesaak.proxybans.rules.RuleData;
 import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.messages.Message;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -49,11 +50,10 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
                 val configTime = this.proxyBansManager.getConfigFile().getCooldownTime(this.proxyBansManager.getPermHook().getUserGroup(senderName), this.getName());
                 boolean applyCooldown = !commandSender.hasPermission(PermissionsConstants.IGNORE_COOLDOWN_PERMISSION) && configTime > 0L;
                 if (applyCooldown && !this.cooldownExpireNotifier.isCooldown(this.getName(), senderName)) {
-                    this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, System.currentTimeMillis() + configTime);
+                    this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, Instant.now().plusSeconds(configTime));
                 }
             }
         } catch (RuntimeException exception) {
-            System.out.println(exception.getMessage());
             commandSender.sendMessage(ComponentSerializer.parse(exception.getMessage())); //todo перделать этот треш
         }
     }
@@ -130,10 +130,10 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     }
 
     private void checkCooldown(CommandSender sender) {
-        long cooldown = this.cooldownExpireNotifier.getCooldown(sender, this.getName());
-        if (cooldown > 0L) {
+        Instant cooldown = this.cooldownExpireNotifier.getCooldown(sender, this.getName());
+        if (cooldown != null) {
             throw new RuntimeException(this.proxyBansManager.getMessagesFile().getMessageCooldown()
-                    .tag(MessagesFile.TIME_PATTERN, NumberUtils.getTime(cooldown - System.currentTimeMillis())).getMessageString());
+                    .tag(MessagesFile.TIME_PATTERN, NumberUtils.getTime((int)cooldown.minusSeconds(Instant.now().getEpochSecond()).getEpochSecond())).getMessageString());
         }
     }
 

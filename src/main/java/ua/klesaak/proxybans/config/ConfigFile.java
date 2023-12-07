@@ -89,7 +89,7 @@ public class ConfigFile extends PluginConfig {
     }
 
     public long getCooldownTime(String group, String command) {
-        return NumberUtils.parseTimeFromString(this.getTime(group, "cooldown", command), TimeUnit.MILLISECONDS);
+        return NumberUtils.parseTimeFromString(this.getTime(group, "cooldown", command), TimeUnit.SECONDS);
     }
 
     public long getMaxPunishTime(String group, String command) {

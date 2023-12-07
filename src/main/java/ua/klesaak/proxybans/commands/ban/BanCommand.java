@@ -40,8 +40,7 @@ public final class BanCommand extends AbstractPunishCommand {
                 .tag(DATE_PATTERN, date).broadcast();
         this.disconnect(nickName, messagesFile.getMessageBanned()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
-                .tag(RULE_PATTERN, rule.getRule())
-                .tag(RULE_TEXT_PATTERN, rule.getText())
+                .tag(RULE_PATTERN, rule.getRuleData())
                 .tag(COMMENT_TEXT_PATTERN, comment)
                 .tag(PUNISH_SERVER_PATTERN, punishServer)
                 .tag(PLAYER_SERVER_PATTERN, playerServer)

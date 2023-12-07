@@ -8,6 +8,7 @@ import net.md_5.bungee.api.scheduler.ScheduledTask;
 import ua.klesaak.proxybans.config.MessagesFile;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +17,7 @@ import static ua.klesaak.proxybans.manager.PermissionsConstants.PREFIX_WILDCARD_
 
 public final class CooldownExpireNotifier {
     private final ProxyBansManager proxyBansManager;
-    private final Map<String, ConcurrentHashMap<String, Long>> commandCooldowns = new ConcurrentHashMap<>(64); //todo Instant.class
+    private final Map<String, ConcurrentHashMap<String, Instant>> commandCooldowns = new ConcurrentHashMap<>(64);
     private ScheduledTask cooldownExpireTask;
 
 
@@ -26,7 +27,7 @@ public final class CooldownExpireNotifier {
             for (String commandKey : this.commandCooldowns.keySet()) {
                 val playersMap = this.commandCooldowns.get(commandKey);
                 for (String playerKey : playersMap.keySet()) {
-                    if (playersMap.get(playerKey) <= System.currentTimeMillis()) {
+                    if (Instant.now().isAfter(playersMap.get(playerKey))) {
                         playersMap.remove(playerKey);
                         ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playerKey);
                         if (proxiedPlayer != null && proxiedPlayer.hasPermission(PREFIX_WILDCARD_PERMISSION + commandKey)) {
@@ -42,17 +43,16 @@ public final class CooldownExpireNotifier {
         this.commandCooldowns.put(command.getName(), new ConcurrentHashMap<>());
     }
 
-    public void addCooldown(String commandName, String playerName, Long time) {
-        this.commandCooldowns.get(commandName).put(playerName, time);
+    public void addCooldown(String commandName, String playerName, Instant instant) {
+        this.commandCooldowns.get(commandName).put(playerName, instant);
     }
 
     public boolean isCooldown(String commandName, String playerName) {
         return this.commandCooldowns.get(commandName).get(playerName) != null;
     }
 
-    public long getCooldown(CommandSender commandSender, String commandName) {
-        if (this.isCooldown(commandName, commandSender.getName())) return this.commandCooldowns.get(commandName).get(commandSender.getName());
-        return 0L;
+    public Instant getCooldown(CommandSender commandSender, String commandName) {
+        return this.commandCooldowns.get(commandName).get(commandSender.getName());
     }
 
     public void stop() {
