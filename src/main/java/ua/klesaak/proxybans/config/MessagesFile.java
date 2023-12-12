@@ -25,7 +25,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     public static final Pattern PAGES_PATTERN = Pattern.compile("(pages)", Pattern.LITERAL);
 
 
-    //usages'ы
+    //commands'ы
     @MessageField(key = "command.usage.ban", defaultMessage = "&7Использование - &c/ban &7<ник> <правило> <пояснение>")
     private Message usageBanCommand;
     @MessageField(key = "command.usage.ban-ip", defaultMessage = "&7Использование - &c/ban-ip &7<ник/IP-адрес> <правило> <пояснение>")
@@ -110,13 +110,13 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message broadcastOpMuted;
     @MessageField(key = "message.broadcast.op-tempMuted", defaultMessage = "(punisher) (punishServer) замутил (player) на (date) (server). Причина - (comment)")
     private Message broadcastOpTempMuted;
-    @MessageField(key = "message.broadcast.unbanned", defaultMessage = "(player) снял бан с (unbanned)")
+    @MessageField(key = "message.broadcast.unbanned", defaultMessage = "(punisher) снял бан с (player)")
     private Message broadcastUnbanned;
-    @MessageField(key = "message.broadcast.op-unbanned", defaultMessage = "(player) снял бан с (unbanned)")
+    @MessageField(key = "message.broadcast.op-unbanned", defaultMessage = "(punisher) снял бан с (player)")
     private Message broadcastOpUnbanned;
-    @MessageField(key = "message.broadcast.unmuted", defaultMessage = "Игрок (player) размутил игрока (unmuted)")
+    @MessageField(key = "message.broadcast.unmuted", defaultMessage = "Игрок (punisher) размутил игрока (player)")
     private Message broadcastUnmuted;
-    @MessageField(key = "message.broadcast.op-unmuted", defaultMessage = "Игрок (player) размутил игрока (unmuted)")
+    @MessageField(key = "message.broadcast.op-unmuted", defaultMessage = "Игрок (punisher) размутил игрока (player)")
     private Message broadcastOpUnmuted;
     @MessageField(key = "message.broadcast.kicked", defaultMessage = "(punisher) (punishServer) кикнул (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastKicked;
@@ -124,7 +124,15 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
 
 
 
-    @MessageField(key = "message.banned", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
+    @MessageField(key = "message.banned", defaultMessage = {
+            "Вас забанили навсегда!",
+            "Забанил: (punisher)" ,
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Вы были на сервере: (server)",
+            "Забанивший был на сервере: (punishServer)",
+            "Дата: (date)"
+    })
     private Message messageBanned;
     @MessageField(key = "message.banned-ip", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
     private Message messageBannedIp;
