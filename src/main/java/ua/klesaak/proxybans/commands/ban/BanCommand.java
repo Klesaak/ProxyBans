@@ -23,7 +23,7 @@ public final class BanCommand extends AbstractPunishCommand {
     @Override
     public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
         val messagesFile = this.proxyBansManager.getMessagesFile();
-        this.cmdVerifyArgs(sender, 3, args, messagesFile.getUsageBanCommand());
+        this.cmdVerifyArgs(3, args, messagesFile.getUsageBanCommand());
         String nickName = this.cmdVerifyNickname(sender, true, args);
         RuleData rule = this.parseRule(sender,1, args);
         String punisherName = this.cmdVerifySender(sender);

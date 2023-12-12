@@ -13,7 +13,6 @@ public final class PermissionsConstants {
     public static final String IGNORE_COOLDOWN_PERMISSION = PREFIX_WILDCARD_PERMISSION      + "ignore-cd";
     public static final String IGNORE_OFFLINE_PERMISSION = PREFIX_WILDCARD_PERMISSION       + "offline";
     public static final String USER_ANY_PUNISHMENTS_PERMISSION = PREFIX_WILDCARD_PERMISSION + "useanypunishments";
-    public static final String PUNISH_EVERYONE_PERMISSION = PREFIX_WILDCARD_PERMISSION + "punish-everyone";
     public static final String RULES_PERMISSION = PREFIX_WILDCARD_PERMISSION + "rules";
     public static final String INFO_PERMISSION = PREFIX_WILDCARD_PERMISSION + "punish-info";
     public static final String HISTORY_PERMISSION = PREFIX_WILDCARD_PERMISSION + "punish-history";

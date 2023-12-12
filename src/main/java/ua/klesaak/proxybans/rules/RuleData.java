@@ -1,7 +1,10 @@
 package ua.klesaak.proxybans.rules;
 
+import lombok.Getter;
+
 import java.util.EnumSet;
 
+@Getter
 public class RuleData {
     private String rule;
     private String ruleText;
@@ -20,16 +23,8 @@ public class RuleData {
         return this.applicablePunishments.contains(punishType);
     }
 
-    public String getRule() {
-        return this.rule;
-    }
-
     public String getText() {
         return this.ruleText;
-    }
-
-    public EnumSet<PunishType> getApplicablePunishments() {
-        return applicablePunishments;
     }
 
     public String getRuleData() {

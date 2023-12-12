@@ -27,10 +27,10 @@ public final class RulesCommand extends AbstractPunishCommand {
                     .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages())).send(sender);
             return false;
         }
-        int pageIndex = this.parsePage(sender, args[0]);
+        int pageIndex = this.parsePage(args[0]);
         if (pageIndex > configFile.getMaxRulesPages()) pageIndex = configFile.getMaxRulesPages();
         val rulePage = configFile.getRulesPage(messagesFile, pageIndex);
-        if (rulePage == null) this.parsePage(sender, null);
+        if (rulePage == null) this.parsePage(null);
         message.tag(PAGE_PATTERN, String.valueOf(pageIndex))
                 .tag(RULES_PATTERN, rulePage)
                 .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages())).send(sender);

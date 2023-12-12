@@ -1,4 +1,4 @@
-storage: FILE #FILE, MYSQL, REDIS
+storage: FILE #FILE, MARIADB, POSTGRES, MYSQL, REDIS
 redis:
   host: '127.0.0.1'
   port: 6379
@@ -8,7 +8,7 @@ redis:
   password: ''
   database: 0
 
-mysql:
+sql:
   host: '127.0.0.1'
   port: 3306
   username: 'root'

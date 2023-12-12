@@ -1,22 +1,14 @@
 package ua.klesaak.proxybans.utils.command;
 
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
+import lombok.Getter;
 import ua.klesaak.proxybans.utils.messages.Message;
 
+@Getter
 public class AbstractCommandException extends Exception {
+    private Message minecraftMessage;
 
-    public AbstractCommandException(CommandSender commandSender, String message) {
-        commandSender.sendMessage(TextComponent.fromLegacyText(message));
-    }
-
-    public AbstractCommandException(CommandSender commandSender, BaseComponent[] message) {
-        commandSender.sendMessage(message);
-    }
-
-    public AbstractCommandException(CommandSender commandSender, Message message) {
-        message.send(commandSender);
+    public AbstractCommandException(Message message) {
+        this.minecraftMessage = message;
     }
 
     protected AbstractCommandException(String message) {

@@ -5,6 +5,7 @@ import com.google.common.base.Joiner;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.val;
+import net.md_5.bungee.api.CommandSender;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
@@ -27,9 +28,11 @@ public class ConfigFile extends PluginConfig {
     private LinkedList<RuleData> rules;
     private final DateFormat dateFormat;
     private Paginated<RuleData> rulePages;
+    private final ProxyBansManager proxyBansManager;
 
     public ConfigFile(ProxyBansManager manager) {
         super(manager.getProxyBansPlugin(), "config.yml");
+        this.proxyBansManager = manager;
         this.loadRules(manager);
         SimpleDateFormat dateFormat = new SimpleDateFormat(this.getString("dateFormat.format"), new Locale(this.getString("dateFormat.locale")));
         dateFormat.setTimeZone(TimeZone.getTimeZone(this.getString("dateFormat.timeZone")));
@@ -90,12 +93,20 @@ public class ConfigFile extends PluginConfig {
         return this.getConfig().getString("groups." + group + "." + category + "." + command, "0s");
     }
 
-    public long getCooldownTime(String group, String command) {
+    private long getCooldownTime(String group, String command) {
         return NumberUtils.parseTimeFromString(this.getTime(group, "cooldown", command), TimeUnit.SECONDS);
     }
 
-    public long getMaxPunishTime(String group, String command) {
+    public long getCooldownTime(CommandSender commandSender, String command) {
+        return this.getCooldownTime(this.proxyBansManager.getPermHook().getUserGroup(commandSender.getName()), command);
+    }
+
+    private long getMaxPunishTime(String group, String command) {
         return NumberUtils.parseTimeFromString(this.getTime(group, "maxPunishTime", command), TimeUnit.MILLISECONDS);
+    }
+
+    public long getMaxPunishTime(CommandSender commandSender, String command) {
+        return this.getMaxPunishTime(this.proxyBansManager.getPermHook().getUserGroup(commandSender.getName()), command);
     }
 
     public boolean isProtected(String playerName) {
