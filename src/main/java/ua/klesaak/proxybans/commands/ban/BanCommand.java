@@ -6,6 +6,7 @@ import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
 import ua.klesaak.proxybans.storage.PunishData;
+import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ public final class BanCommand extends AbstractPunishCommand {
     }
 
     @Override
-    public boolean onReceiveCommand(CommandSender sender, String[] args) {
+    public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
         val messagesFile = this.proxyBansManager.getMessagesFile();
-        this.cmdVerifyArgs(3, args, messagesFile.getUsageBanCommand());
+        this.cmdVerifyArgs(sender, 3, args, messagesFile.getUsageBanCommand());
         String nickName = this.cmdVerifyNickname(sender, true, args);
         RuleData rule = this.parseRule(sender,1, args);
         String punisherName = this.cmdVerifySender(sender);

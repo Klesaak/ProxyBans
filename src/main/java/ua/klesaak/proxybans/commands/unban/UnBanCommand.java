@@ -4,6 +4,7 @@ import lombok.val;
 import net.md_5.bungee.api.CommandSender;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
+import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 import java.util.ArrayList;
@@ -18,13 +19,13 @@ public final class UnBanCommand extends AbstractPunishCommand {
     }
 
     @Override
-    public boolean onReceiveCommand(CommandSender sender, String[] args) {
+    public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
         val messagesFile = this.proxyBansManager.getMessagesFile();
         val message = messagesFile.getBroadcastUnbanned();
         val senderName = this.cmdVerifySender(sender);
-        this.cmdVerifyArgs(1, args, messagesFile.getUsageUnbanCommand());
+        this.cmdVerifyArgs(sender, 1, args, messagesFile.getUsageUnbanCommand());
         val nickName = args[0];
-        this.cmdVerifyTryUnban(nickName);
+        this.cmdVerifyTryUnban(sender, nickName);
         message.tag(PUNISHER_NAME_PATTERN, senderName)
                 .tag(PLAYER_NAME_PATTERN, nickName).broadcast();
         return false;//возвращаем именно фолс, потому что не нужно включать кд

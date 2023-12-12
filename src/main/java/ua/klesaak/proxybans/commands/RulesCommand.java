@@ -3,6 +3,7 @@ package ua.klesaak.proxybans.commands;
 import lombok.val;
 import net.md_5.bungee.api.CommandSender;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
+import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 import java.util.Collections;
@@ -16,7 +17,7 @@ public final class RulesCommand extends AbstractPunishCommand {
     }
 
     @Override
-    public boolean onReceiveCommand(CommandSender sender, String[] args) {
+    public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
         val messagesFile = this.proxyBansManager.getMessagesFile();
         val message = messagesFile.getMessageRuleListFormat();
         val configFile = this.proxyBansManager.getConfigFile();
@@ -26,10 +27,10 @@ public final class RulesCommand extends AbstractPunishCommand {
                     .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages())).send(sender);
             return false;
         }
-        int pageIndex = this.parsePage(args[0]);
+        int pageIndex = this.parsePage(sender, args[0]);
         if (pageIndex > configFile.getMaxRulesPages()) pageIndex = configFile.getMaxRulesPages();
         val rulePage = configFile.getRulesPage(messagesFile, pageIndex);
-        if (rulePage == null) this.parsePage(null);
+        if (rulePage == null) this.parsePage(sender, null);
         message.tag(PAGE_PATTERN, String.valueOf(pageIndex))
                 .tag(RULES_PATTERN, rulePage)
                 .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages())).send(sender);
