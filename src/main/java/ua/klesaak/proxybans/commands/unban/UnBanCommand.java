@@ -21,13 +21,10 @@ public final class UnBanCommand extends AbstractPunishCommand {
     @Override
     public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
         val messagesFile = this.proxyBansManager.getMessagesFile();
-        val message = messagesFile.getBroadcastUnbanned();
         val senderName = this.cmdVerifySender(sender);
         this.cmdVerifyArgs( 1, args, messagesFile.getUsageUnbanCommand());
         val nickName = args[0];
-        this.cmdVerifyTryUnban(nickName);
-        message.tag(PUNISHER_NAME_PATTERN, senderName)
-                .tag(PLAYER_NAME_PATTERN, nickName).broadcast();
+        this.cmdVerifyTryUnban(senderName, nickName, false);
         return false;//возвращаем именно фолс, потому что не нужно включать кд
     }
 

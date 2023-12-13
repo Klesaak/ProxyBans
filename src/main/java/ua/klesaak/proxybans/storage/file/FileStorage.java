@@ -24,11 +24,11 @@ public class FileStorage extends PunishStorage {
         this.bansFile = new JsonData(new File(pluginDataFolder, "bans.json"));
         this.mutesFile = new JsonData(new File(pluginDataFolder, "mutes.json"));
         this.historyFile = new JsonData(new File(pluginDataFolder, "history.json"));
-        if (this.bansFile.getFile().length() > 0L) {
+        if (this.bansFile.getFile().length() > 0L) { //todo remove if expired temp ban
             Collection<PunishData> dataCollection = JacksonAPI.readFile(this.bansFile.getFile(), PUNISH_DATA_REFERENCE);
             dataCollection.forEach(punishData -> this.bansCache.put(punishData.getPlayerName(), punishData));
         }
-        if (this.mutesFile.getFile().length() > 0L) {
+        if (this.mutesFile.getFile().length() > 0L) { //todo remove if expired temp mute
             Collection<PunishData> dataCollection = JacksonAPI.readFile(this.mutesFile.getFile(), PUNISH_DATA_REFERENCE);
             dataCollection.forEach(punishData -> this.mutesCache.put(punishData.getPlayerName(), punishData));
         }

@@ -323,7 +323,7 @@ public class NumberUtils {
             return true;
         });
 
-        if (total.get() <= 0) {
+        if (total.get() < 0) {
             throw new IllegalArgumentException("Illegal Date");
         }
 

@@ -9,6 +9,7 @@ import ua.klesaak.proxybans.storage.PunishData;
 import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -30,7 +31,7 @@ public final class BanCommand extends AbstractPunishCommand {
         String comment = this.parseComment(sender,2, args);
         String punishServer = this.parseServer(sender);
         String playerServer = this.parseServer(nickName);
-        String date = this.proxyBansManager.getConfigFile().parseDate(System.currentTimeMillis());
+        String date = this.proxyBansManager.getConfigFile().parseDate(Instant.now());
         messagesFile.getBroadcastBanned()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
                 .tag(RULE_PATTERN, rule.getRule())

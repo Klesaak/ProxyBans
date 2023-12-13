@@ -46,7 +46,14 @@ public class PunishListener implements Listener {
                     break;
                 }
                 case OP_BAN: {
-
+                    cancelReason = messagesFile.getMessageOpBanned()
+                            .tag(PUNISHER_NAME_PATTERN, punishData.getPunisherName())
+                            .tag(RULE_PATTERN, punishData.getRule())
+                            .tag(COMMENT_TEXT_PATTERN, punishData.getComment())
+                            .tag(PUNISH_SERVER_PATTERN, punishData.getPunisherServer())
+                            .tag(PLAYER_SERVER_PATTERN, punishData.getServer())
+                            .tag(DATE_PATTERN, punishData.getPunishDate())
+                            .getMessageComponent();
                     break;
                 }
                 case OP_TEMP_BAN: {

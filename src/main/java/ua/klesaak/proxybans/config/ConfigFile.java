@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.val;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -98,7 +100,10 @@ public class ConfigFile extends PluginConfig {
     }
 
     public long getCooldownTime(CommandSender commandSender, String command) {
-        return this.getCooldownTime(this.proxyBansManager.getPermHook().getUserGroup(commandSender.getName()), command);
+        if (commandSender instanceof ProxiedPlayer) {
+            return this.getCooldownTime(this.proxyBansManager.getPermHook().getUserGroup(commandSender.getName()), command);
+        }
+        return 0L;
     }
 
     private long getMaxPunishTime(String group, String command) {
@@ -121,7 +126,7 @@ public class ConfigFile extends PluginConfig {
         return this.getConfig().getInt("groups." + fromGroup + ".weight", 0);
     }
 
-    public String parseDate(long time) {
-        return this.dateFormat.format(new Date(time));
+    public String parseDate(Instant instant) {
+        return this.dateFormat.format(Date.from(instant));
     }
 }

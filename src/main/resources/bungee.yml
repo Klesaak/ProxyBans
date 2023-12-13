@@ -40,5 +40,5 @@ permissions:
     description: "Позволяет игроку не писать подробный комментарий к наказанию."
   proxybans.unban:
     description: "Позволяет игроку снимать наказания от команд /ban, /ban-ip, /tempban."
-  proxybans.unop-ban:
+  proxybans.op-unban:
     description: "Позволяет игроку снимать наказания от команд /op-ban, /op-banip, /op-tempban."

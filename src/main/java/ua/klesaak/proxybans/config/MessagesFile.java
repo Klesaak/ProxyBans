@@ -66,59 +66,68 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageIsCooldownExpired;
     @MessageField(key = "command.consoleName", defaultMessage = "&cProxyBansPlugin", withoutQuotes = true)
     private Message messageIsConsoleName;
-    @MessageField(key = "command.wrongNickname", defaultMessage = "&4Ошибка: &cНеправильный ник.")
+    @MessageField(key = "command.error.wrongNickname", defaultMessage = "&4Ошибка: &cНеправильный ник.")
     private Message messageWrongNickname;
-    @MessageField(key = "command.playerIsOffline", defaultMessage = "&4Ошибка: &cИгрок не в сети.")
+    @MessageField(key = "command.error.playerIsOffline", defaultMessage = "&4Ошибка: &cИгрок не в сети.")
     private Message messagePlayerIsOffline;
-    @MessageField(key = "command.playerIsProtected", defaultMessage = "&4Ошибка: &cВы не можете наказать этого игрока.")
+    @MessageField(key = "command.error.playerIsProtected", defaultMessage = "&4Ошибка: &cВы не можете наказать этого игрока.")
     private Message messagePlayerIsProtected;
-    @MessageField(key = "command.tooFewInfoAboutPunish", defaultMessage = "&4Ошибка: &cВы указали мало информации в пояснении.")
+    @MessageField(key = "command.error.tooFewInfoAboutPunish", defaultMessage = "&4Ошибка: &cВы указали мало информации в пояснении.")
     private Message messageTooFewInfoAboutPunish;
+    @MessageField(key = "command.error.pageNotFound", defaultMessage = "Страница не найдена.")
+    private Message messagePageNotFound;
+    @MessageField(key = "command.error.self", defaultMessage = "&4Ошибка: &cВы не можете взаимодействовать с собой.")
+    private Message messageSelfHarm;
+    @MessageField(key = "command.error.playerIsNotBanned", defaultMessage = "&4Ошибка: &cИгрок не забанен.")
+    private Message playerIsNotBanned;
+    @MessageField(key = "command.error.playerIsOPBanned", defaultMessage = "&4Ошибка: &cУ игрока ОП-Бан, вы не можете его разблокировать!.")
+    private Message playerIsOPBanned;
     @MessageField(key = "command.rule.notFound", defaultMessage = "&4Ошибка: &cПравило не найдено.")
     private Message messageRuleNotFound;
     @MessageField(key = "command.rule.notApplicablePunish", defaultMessage = "&4Ошибка: &cДля данного правила нельзя применить этот тип наказания.")
     private Message messageNotApplicablePunish;
-    @MessageField(key = "command.rule.listFormat", defaultMessage = {"&6Список правил: &c(page)/(pages)", "", "(rules)", "", "&6Следующая страница - /rules [&cномер страницы&6]"})
+    @MessageField(key = "command.rule.listFormat", defaultMessage = {
+            "&6Список правил: &c(page)/(pages)",
+            "&7",
+            "(rules)",
+            "&c&r",
+            "&6Следующая страница - /rules [&cномер страницы&6]"})
     private Message messageRuleListFormat;
     @MessageField(key = "command.rule.format", defaultMessage = "&c(rule). &6(ruleText) &a((applicablePunishments))", withoutQuotes = true)
     private Message messageRuleFormat;
     @MessageField(key = "command.emptyData", defaultMessage = "N/A", withoutQuotes = true)
     private Message messageEmptyData;
-    @MessageField(key = "command.pageNotFound", defaultMessage = "Страница не найдена.")
-    private Message messagePageNotFound;
-    @MessageField(key = "command.self", defaultMessage = "&4Ошибка: &cВы не можете взаимодействовать с собой.")
-    private Message messageSelfHarm;
 
     //broadcast'ы
-    @MessageField(key = "message.broadcast.banned", defaultMessage = "(punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.banned", defaultMessage = "[BAN]: (punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastBanned;
-    @MessageField(key = "message.broadcast.banned-ip", defaultMessage = "(punisher) (punishServer) забанил по-ip (player) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.banned-ip", defaultMessage = "[IP-BAN]: (punisher) (punishServer) забанил по-ip (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastIpBanned;
-    @MessageField(key = "message.broadcast.tempBanned", defaultMessage = "(punisher) (punishServer) забанил (player) на (date) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.tempBanned", defaultMessage = "[TEMP-BAN]: (punisher) (punishServer) забанил (player) до (date) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastTempBanned;
-    @MessageField(key = "message.broadcast.op-banned", defaultMessage = "(punisher) (punishServer) забанил (player) (server). Причина - (comment)")
+    @MessageField(key = "message.broadcast.op-banned", defaultMessage = "[OP-BAN]: (punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastOpBanned;
-    @MessageField(key = "message.broadcast.op-bannedIp", defaultMessage = "(punisher) (punishServer) забанил по-ip (player) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.op-bannedIp", defaultMessage = "[OP-IPBAN]: (punisher) (punishServer) забанил по-ip (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastOpIpBanned;
-    @MessageField(key = "message.broadcast.op-tempBanned", defaultMessage = "(punisher) (punishServer) забанил (player) до (date)  на сервере (server). Причина - (comment)")
+    @MessageField(key = "message.broadcast.op-tempBanned", defaultMessage = "[OP-TEMPBAN]: (punisher) (punishServer) забанил (player) до (date)  на сервере (server). Причина - (comment)")
     private Message broadcastOpTempBanned;
-    @MessageField(key = "message.broadcast.muted", defaultMessage = "(punisher) (punishServer) замутил (player) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.muted", defaultMessage = "[MUTE]: (punisher) (punishServer) замутил (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastMuted;
-    @MessageField(key = "message.broadcast.tempMuted", defaultMessage = "(punisher) (punishServer) замутил (player) на (date) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.tempMuted", defaultMessage = "[TEMP-MUTE]: (punisher) (punishServer) замутил (player) до (date) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastTempMuted;
-    @MessageField(key = "message.broadcast.op-muted", defaultMessage = "(punisher) (punishServer) замутил (player) (server). Причина - (comment)")
+    @MessageField(key = "message.broadcast.op-muted", defaultMessage = "[OP-MUTE]: (punisher) (punishServer) замутил (player) (server). Причина - (comment)")
     private Message broadcastOpMuted;
-    @MessageField(key = "message.broadcast.op-tempMuted", defaultMessage = "(punisher) (punishServer) замутил (player) на (date) (server). Причина - (comment)")
+    @MessageField(key = "message.broadcast.op-tempMuted", defaultMessage = "[OP-TEMPMUTE]: (punisher) (punishServer) замутил (player) до (date) (server). Причина - (comment)")
     private Message broadcastOpTempMuted;
-    @MessageField(key = "message.broadcast.unbanned", defaultMessage = "(punisher) снял бан с (player)")
+    @MessageField(key = "message.broadcast.unbanned", defaultMessage = "[UNBAN]: (punisher) снял бан с (player)")
     private Message broadcastUnbanned;
-    @MessageField(key = "message.broadcast.op-unbanned", defaultMessage = "(punisher) снял бан с (player)")
+    @MessageField(key = "message.broadcast.op-unbanned", defaultMessage = "[OP-UNBAN]: (punisher) снял бан с (player)")
     private Message broadcastOpUnbanned;
-    @MessageField(key = "message.broadcast.unmuted", defaultMessage = "Игрок (punisher) размутил игрока (player)")
+    @MessageField(key = "message.broadcast.unmuted", defaultMessage = "[UNMUTE]: (punisher) размутил игрока (player)")
     private Message broadcastUnmuted;
-    @MessageField(key = "message.broadcast.op-unmuted", defaultMessage = "Игрок (punisher) размутил игрока (player)")
+    @MessageField(key = "message.broadcast.op-unmuted", defaultMessage = "[OP-UNMUTE]: (punisher) размутил игрока (player)")
     private Message broadcastOpUnmuted;
-    @MessageField(key = "message.broadcast.kicked", defaultMessage = "(punisher) (punishServer) кикнул (player) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.kicked", defaultMessage = "[KICK]: (punisher) (punishServer) кикнул (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastKicked;
 
 
@@ -134,6 +143,17 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
             "Дата: (date)"
     })
     private Message messageBanned;
+    @MessageField(key = "message.op-banned", defaultMessage = {
+            "[OP-БАН]",
+            "Вас забанили навсегда!",
+            "Забанил: (punisher)" ,
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Вы были на сервере: (server)",
+            "Забанивший был на сервере: (punishServer)",
+            "Дата: (date)"
+    })
+    private Message messageOpBanned;
     @MessageField(key = "message.banned-ip", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
     private Message messageBannedIp;
     @MessageField(key = "message.tempBanned", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})

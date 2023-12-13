@@ -20,6 +20,8 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static ua.klesaak.proxybans.config.MessagesFile.PLAYER_NAME_PATTERN;
+import static ua.klesaak.proxybans.config.MessagesFile.PUNISHER_NAME_PATTERN;
 import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
 
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
@@ -90,20 +92,25 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return nickName;
     }
 
-    protected void cmdVerifyTryUnban(String nickname) throws AbstractCommandException {
+    protected void cmdVerifyTryUnban(String senderName, String nickname, boolean isOpUnban) throws AbstractCommandException {
         val storage = this.proxyBansManager.getPunishStorage();
         val nicknameLC = nickname.toLowerCase();
         val punishData = storage.getBanData(nicknameLC);
+        MessagesFile messageFile = this.proxyBansManager.getMessagesFile();
         if (punishData == null) {
-            throw new AbstractCommandException(new Message("\"Игрок не забанен(ВНЕСТИ ЭТО В КОНФИГ)\"", false, false));
+            throw new AbstractCommandException(messageFile.getPlayerIsNotBanned());
         }
-        if (punishData.getPunishType().isOPBan()) {
-            throw new AbstractCommandException(new Message("\"У игрока ОП-Бан, вы не можете его разблокировать!(ВНЕСТИ ЭТО В КОНФИГ)\"", false, false));
+        boolean playerHaveOpBan = punishData.getPunishType().isOPBan();
+        if (playerHaveOpBan && !isOpUnban) {
+            throw new AbstractCommandException(messageFile.getPlayerIsOPBanned());
         }
+        val message = playerHaveOpBan ? messageFile.getBroadcastOpUnbanned() : messageFile.getBroadcastUnbanned();
+        message.tag(PUNISHER_NAME_PATTERN, senderName)
+                .tag(PLAYER_NAME_PATTERN, nickname).broadcast();
         storage.unBan(nicknameLC);
     }
 
-    protected void cmdVerifyTryUnmute() {
+    protected void cmdVerifyTryUnmute() { //todo
 
     }
 
