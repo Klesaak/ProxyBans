@@ -1,4 +1,4 @@
-package ua.klesaak.proxybans.commands.ban;
+package ua.klesaak.proxybans.commands.punish.ban;
 
 import lombok.val;
 import net.md_5.bungee.api.CommandSender;
@@ -14,17 +14,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
+import static ua.klesaak.proxybans.config.MessagesFile.DATE_PATTERN;
 
-public final class BanCommand extends AbstractPunishCommand {
+public final class OpBanCommand extends AbstractPunishCommand {
 
-    public BanCommand(ProxyBansManager proxyBansManager) {
-        super(proxyBansManager, PunishType.BAN);
+    public OpBanCommand(ProxyBansManager proxyBansManager) {
+        super(proxyBansManager, PunishType.OP_BAN);
     }
 
     @Override
     public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
         val messagesFile = this.proxyBansManager.getMessagesFile();
-        this.cmdVerifyArgs(3, args, messagesFile.getUsageBanCommand());
+        this.cmdVerifyArgs(3, args, messagesFile.getUsageOpBanCommand());
         String nickName = this.cmdVerifyNickname(sender, true, args);
         RuleData rule = this.parseRule(sender,1, args);
         String punisherName = this.cmdVerifySender(sender);
@@ -32,7 +33,7 @@ public final class BanCommand extends AbstractPunishCommand {
         String punishServer = this.parseServer(sender);
         String playerServer = this.parseServer(nickName);
         String date = this.proxyBansManager.getConfigFile().parseDate(Instant.now());
-        messagesFile.getBroadcastBanned()
+        messagesFile.getBroadcastOpBanned()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
                 .tag(RULE_PATTERN, rule.getRule())
                 .tag(PLAYER_NAME_PATTERN, nickName)
@@ -41,7 +42,7 @@ public final class BanCommand extends AbstractPunishCommand {
                 .tag(PUNISH_SERVER_PATTERN, punishServer)
                 .tag(PLAYER_SERVER_PATTERN, playerServer)
                 .tag(DATE_PATTERN, date).broadcast();
-        this.disconnect(nickName, messagesFile.getMessageBanned()
+        this.disconnect(nickName, messagesFile.getMessageOpBanned()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
                 .tag(RULE_PATTERN, rule.getRuleData())
                 .tag(COMMENT_TEXT_PATTERN, comment)
@@ -51,7 +52,7 @@ public final class BanCommand extends AbstractPunishCommand {
 
         val punishData = PunishData.builder()
                 .playerName(nickName)
-                .punishType(PunishType.BAN)
+                .punishType(PunishType.OP_BAN)
                 .rule(rule.getRuleData())
                 .punisherName(punisherName)
                 .comment(comment)

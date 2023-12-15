@@ -1,4 +1,4 @@
-package ua.klesaak.proxybans.commands.unban;
+package ua.klesaak.proxybans.commands.punish.unban;
 
 import lombok.val;
 import net.md_5.bungee.api.CommandSender;
@@ -9,9 +9,6 @@ import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static ua.klesaak.proxybans.config.MessagesFile.PLAYER_NAME_PATTERN;
-import static ua.klesaak.proxybans.config.MessagesFile.PUNISHER_NAME_PATTERN;
 
 public final class OpUnBanCommand extends AbstractPunishCommand {
 

@@ -158,7 +158,15 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageBannedIp;
     @MessageField(key = "message.tempBanned", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
     private Message messageTempBanned;
-    @MessageField(key = "message.kicked", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
+    @MessageField(key = "message.kicked", defaultMessage = {
+            "Вас кикнули с сервера!",
+            "Кикнул: (punisher)" ,
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Вы были на сервере: (server)",
+            "Кикнувший был на сервере: (punishServer)",
+            "Дата: (date)"
+    })
     private Message messageKicked;
     // TODO: 15.06.2023 messages
 

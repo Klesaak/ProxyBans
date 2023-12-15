@@ -16,7 +16,7 @@ public final class PermissionsConstants {
     public static final String RULES_PERMISSION = PREFIX_WILDCARD_PERMISSION + "rules";
     public static final String INFO_PERMISSION = PREFIX_WILDCARD_PERMISSION + "punish-info";
     public static final String HISTORY_PERMISSION = PREFIX_WILDCARD_PERMISSION + "punish-history";
-    public static final String COMMENT_PERMISSION = PREFIX_WILDCARD_PERMISSION + "smart-comment";
+    public static final String SMART_COMMENT_PERMISSION = PREFIX_WILDCARD_PERMISSION + "smart-comment";
     public static final String UNBAN_PERMISSION = PREFIX_WILDCARD_PERMISSION + "unban";
     public static final String UNOP_BAN_PERMISSION = PREFIX_WILDCARD_PERMISSION + "unop-ban";
 }

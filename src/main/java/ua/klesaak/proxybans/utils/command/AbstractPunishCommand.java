@@ -1,5 +1,6 @@
 package ua.klesaak.proxybans.utils.command;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import lombok.val;
 import net.md_5.bungee.api.ChatColor;
@@ -73,7 +74,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     public void cmdVerifyArgs(CommandSender commandSender, int minimum, String[] args, String usage) throws AbstractCommandException {
         if (args.length < minimum) {
-            throw new AbstractCommandException(new Message(ChatColor.RED + usage, false, true));
+            throw new AbstractCommandException(new Message(ChatColor.RED + usage, false, false));
         }
     }
 
@@ -83,12 +84,12 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         val messagesFile = this.proxyBansManager.getMessagesFile();
         if (nickName.isEmpty()) throw new AbstractCommandException(messagesFile.getMessageWrongNickname());
         if (senderName.equalsIgnoreCase(nickName)) throw new AbstractCommandException(messagesFile.getMessageSelfHarm());
+        if (checkOffline) this.checkOffline(commandSender, nickName);
         val configFile = this.proxyBansManager.getConfigFile();
         val permsHook = this.proxyBansManager.getPermHook();
         if (commandSender instanceof ProxiedPlayer && (configFile.isProtected(nickName) || configFile.isHeavier(permsHook.getUserGroup(nickName), permsHook.getUserGroup(senderName)))) {
             throw new AbstractCommandException(messagesFile.getMessagePlayerIsProtected());
         }
-        if (checkOffline) this.checkOffline(commandSender, nickName);
         return nickName;
     }
 
@@ -211,23 +212,18 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     }
 
     private void checkOffline(CommandSender commandSender, String targetName) throws AbstractCommandException {
-        if (ProxyServer.getInstance().getPlayer(targetName) == null && !commandSender.hasPermission(IGNORE_OFFLINE_PERMISSION)) {
+        val target = ProxyServer.getInstance().getPlayer(targetName);
+        if ((target == null && !commandSender.hasPermission(IGNORE_OFFLINE_PERMISSION)) || (this.punishType == PunishType.KICK && target == null)) {
             throw new AbstractCommandException(this.proxyBansManager.getMessagesFile().getMessagePlayerIsOffline());
         }
     }
 
     protected String parseComment(CommandSender commandSender, int start, String[] args) throws AbstractCommandException {
-        StringBuilder builder = new StringBuilder();
-        for (int i = start; i < args.length; ++i) {
-            if (i != start) {
-                builder.append(" ");
-            }
-            builder.append(args[i]);
-        }
-        if (!commandSender.hasPermission(COMMENT_PERMISSION) && Arrays.stream(builder.toString().split("\\s+")).filter(s -> s.length() >= 2).count() < 3L) {
+        val comm = Arrays.copyOfRange(args, start, args.length);
+        if (!commandSender.hasPermission(SMART_COMMENT_PERMISSION) && Arrays.stream(comm).filter(s -> s.length() >= 2).count() < 3L) {
             throw new AbstractCommandException(this.proxyBansManager.getMessagesFile().getMessageTooFewInfoAboutPunish());
         }
-        return builder.toString();
+        return Joiner.on(" ").join(comm);
     }
 
     protected List<String> getOnlinePlayers() {
