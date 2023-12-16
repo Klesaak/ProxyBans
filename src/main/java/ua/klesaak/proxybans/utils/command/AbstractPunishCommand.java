@@ -212,8 +212,8 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     }
 
     private void checkOffline(CommandSender commandSender, String targetName) throws AbstractCommandException {
-        val target = ProxyServer.getInstance().getPlayer(targetName);
-        if ((target == null && !commandSender.hasPermission(IGNORE_OFFLINE_PERMISSION)) || (this.punishType == PunishType.KICK && target == null)) {
+        val targetIsOffline = ProxyServer.getInstance().getPlayer(targetName) == null;
+        if ((targetIsOffline && !commandSender.hasPermission(IGNORE_OFFLINE_PERMISSION)) || (this.punishType == PunishType.KICK && targetIsOffline)) {
             throw new AbstractCommandException(this.proxyBansManager.getMessagesFile().getMessagePlayerIsOffline());
         }
     }

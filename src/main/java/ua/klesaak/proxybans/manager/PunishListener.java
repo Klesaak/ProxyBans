@@ -1,7 +1,6 @@
 package ua.klesaak.proxybans.manager;
 
 import lombok.val;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -25,17 +24,20 @@ public class PunishListener implements Listener {
         val nickName = event.getConnection().getName().toLowerCase();
         val punishData = storage.getBanData(nickName);
         if (punishData != null) {
-            BaseComponent[] cancelReason = this.tagPunishMessage(punishData);
+            val cancelReason = this.tagPunishMessage(punishData);
             event.setCancelled(true);
-            event.setCancelReason(cancelReason);
+            event.setCancelReason(cancelReason.getMessageComponent());
         }
     }
 
-    private BaseComponent[] tagPunishMessage(PunishData punishData) {
+    private Message tagPunishMessage(PunishData punishData) {
         Message cancelReason = null;
         val messagesFile = this.manager.getMessagesFile();
         switch (punishData.getPunishType()) {
-            case BAN: cancelReason = messagesFile.getMessageBanned();
+            case BAN:{
+                cancelReason = messagesFile.getMessageBanned();
+                break;
+            }
             case TEMP_BAN: {
 
                 break;
@@ -63,7 +65,7 @@ public class PunishListener implements Listener {
                 .tag(PUNISH_SERVER_PATTERN, punishData.getPunisherServer())
                 .tag(PLAYER_SERVER_PATTERN, punishData.getServer())
                 .tag(DATE_PATTERN, punishData.getPunishDate());
-        return cancelReason.getMessageComponent();
+        return cancelReason;
     }
 
 
