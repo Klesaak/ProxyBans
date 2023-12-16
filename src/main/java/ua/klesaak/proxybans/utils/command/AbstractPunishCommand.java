@@ -111,8 +111,25 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         storage.unBan(nicknameLC);
     }
 
-    protected void cmdVerifyTryUnmute() { //todo
-
+    protected void cmdVerifyTryUnmute(String senderName, String nickname, boolean isOpUnmute) throws AbstractCommandException {
+        val storage = this.proxyBansManager.getPunishStorage();
+        val nicknameLC = nickname.toLowerCase();
+        val punishData = storage.getMuteData(nicknameLC);
+        MessagesFile messageFile = this.proxyBansManager.getMessagesFile();
+        if (punishData == null) {
+            throw new AbstractCommandException(messageFile.getPlayerIsNotMuted());
+        }
+        if (senderName.equalsIgnoreCase(nicknameLC)) {
+            throw new AbstractCommandException(messageFile.getPlayerSelfUnmute());
+        }
+        boolean playerHaveOpMute = punishData.getPunishType().isOPMute();
+        if (playerHaveOpMute && !isOpUnmute) {
+            throw new AbstractCommandException(messageFile.getPlayerIsOPMuted());
+        }
+        val message = playerHaveOpMute ? messageFile.getBroadcastOpUnmuted() : messageFile.getBroadcastUnmuted();
+        message.tag(PUNISHER_NAME_PATTERN, senderName)
+                .tag(PLAYER_NAME_PATTERN, nickname).broadcast();
+        storage.unMute(nicknameLC);
     }
 
     protected String cmdVerifySender(CommandSender commandSender) {

@@ -80,8 +80,14 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageSelfHarm;
     @MessageField(key = "command.error.playerIsNotBanned", defaultMessage = "&4Ошибка: &cИгрок не забанен.")
     private Message playerIsNotBanned;
-    @MessageField(key = "command.error.playerIsOPBanned", defaultMessage = "&4Ошибка: &cУ игрока ОП-Бан, вы не можете его разблокировать!.")
+    @MessageField(key = "command.error.playerIsOPBanned", defaultMessage = "&4Ошибка: &cУ игрока ОП-Бан, вы не можете его разблокировать!")
     private Message playerIsOPBanned;
+    @MessageField(key = "command.error.playerIsOPMuted", defaultMessage = "&4Ошибка: &cУ игрока ОП-Мут, вы не можете его размутить!")
+    private Message playerIsOPMuted;
+    @MessageField(key = "command.error.playerIsNotMuted", defaultMessage = "&4Ошибка: &cИгрок не замучен.")
+    private Message playerIsNotMuted;
+    @MessageField(key = "command.error.playerSelfUnmute", defaultMessage = "&4Ошибка: &cВы не можете себя размутить :)")
+    private Message playerSelfUnmute;
     @MessageField(key = "command.rule.notFound", defaultMessage = "&4Ошибка: &cПравило не найдено.")
     private Message messageRuleNotFound;
     @MessageField(key = "command.rule.notApplicablePunish", defaultMessage = "&4Ошибка: &cДля данного правила нельзя применить этот тип наказания.")
@@ -131,8 +137,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message broadcastKicked;
 
 
-
-
+    //баны
     @MessageField(key = "message.banned", defaultMessage = {
             "Вас забанили навсегда!",
             "Забанил: (punisher)" ,
@@ -143,6 +148,28 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
             "Дата: (date)"
     })
     private Message messageBanned;
+    @MessageField(key = "message.tempBanned", defaultMessage = {
+            "Вас временно забанили!",
+            "Забанил: (punisher)" ,
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Вы были на сервере: (server)",
+            "Забанивший был на сервере: (punishServer)",
+            "Бан продлится до: (time)",
+            "Дата: (date)"
+    })
+    private Message messageTempBanned;
+    @MessageField(key = "message.banned-ip", defaultMessage = {
+            "Вас забанили навсегда по IP!",
+            "Забанил: (punisher)" ,
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Вы были на сервере: (server)",
+            "Забанивший был на сервере: (punishServer)",
+            "Дата: (date)"
+    })
+    private Message messageBannedIp;
+    //op-баны
     @MessageField(key = "message.op-banned", defaultMessage = {
             "[OP-БАН]",
             "Вас забанили навсегда!",
@@ -154,10 +181,47 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
             "Дата: (date)"
     })
     private Message messageOpBanned;
-    @MessageField(key = "message.banned-ip", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
-    private Message messageBannedIp;
-    @MessageField(key = "message.tempBanned", defaultMessage = {"stroka1", "stroka2" ,"stroka3", "stroka4"})
-    private Message messageTempBanned;
+    @MessageField(key = "message.op-tempBanned", defaultMessage = {
+            "[OP-БАН]",
+            "Вас временно забанили!",
+            "Забанил: (punisher)" ,
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Вы были на сервере: (server)",
+            "Забанивший был на сервере: (punishServer)",
+            "Бан продлится до: (time)",
+            "Дата: (date)"
+    })
+    private Message messageOpTempBanned;
+    @MessageField(key = "message.op-IpBanned", defaultMessage = {
+            "[OP-БАН]",
+            "Вас забанили навсегда!",
+            "Забанил: (punisher)" ,
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Вы были на сервере: (server)",
+            "Забанивший был на сервере: (punishServer)",
+            "Дата: (date)"
+    })
+    private Message messageOpIpBanned;
+    //муты
+    @MessageField(key = "message.muted", defaultMessage = {"Вас замутили навсегда! Замутил: (punisher) Правило: (rule) Комментарий: (comment)" +
+            " Вы были на сервере: (server) Заткнувший был на сервере: (punishServer) Дата: (date)"
+    })
+    private Message messageMuted;
+    @MessageField(key = "message.tempMuted", defaultMessage = {"Вас временно замутили! Замутил: (punisher) Правило: (rule) Комментарий: (comment)" +
+            " Вы были на сервере: (server) Заткнувший был на сервере: (punishServer) Мут продлится до: (time) Дата: (date)"
+    })
+    private Message messageTempMuted;
+    @MessageField(key = "message.op-muted", defaultMessage = {"[OP-МУТ] Вас замутили навсегда! Замутил: (punisher) Правило: (rule) Комментарий: (comment)" +
+            " Вы были на сервере: (server) Заткнувший был на сервере: (punishServer) Дата: (date)"
+    })
+    private Message messageOpMuted;
+    @MessageField(key = "message.op-tempMuted", defaultMessage = {"[OP-МУТ] Вас временно замутили! Замутил: (punisher) Правило: (rule) Комментарий: (comment)" +
+            " Вы были на сервере: (server) Заткнувший был на сервере: (punishServer) Мут продлится до: (time) Дата: (date)"
+    })
+    private Message messageOpTempMuted;
+    //кик
     @MessageField(key = "message.kicked", defaultMessage = {
             "Вас кикнули с сервера!",
             "Кикнул: (punisher)" ,
@@ -168,7 +232,6 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
             "Дата: (date)"
     })
     private Message messageKicked;
-    // TODO: 15.06.2023 messages
 
 
 
