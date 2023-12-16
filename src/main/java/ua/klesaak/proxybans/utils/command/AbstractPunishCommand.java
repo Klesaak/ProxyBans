@@ -224,8 +224,12 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return i;
     }
 
-    protected long parseTimme(String time) {
-        return NumberUtils.parseTimeFromString(time, TimeUnit.MILLISECONDS);
+    protected long parseTime(CommandSender sender, int argIndex, String[] args) { //return's Instant seconds, когда время наказания истечет
+        String time = args[argIndex];
+        long timeForWhichPunish = NumberUtils.parseTimeFromString(time, TimeUnit.SECONDS);
+        long maxConfigTime = this.proxyBansManager.getConfigFile().getMaxPunishTime(sender, this.getName());
+        if (timeForWhichPunish > maxConfigTime) return Instant.now().plusSeconds(maxConfigTime).getEpochSecond();
+        return Instant.now().plusSeconds(timeForWhichPunish).getEpochSecond();
     }
 
     private void checkOffline(CommandSender commandSender, String targetName) throws AbstractCommandException {

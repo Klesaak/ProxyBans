@@ -32,4 +32,8 @@ public enum PunishType {
     public boolean isOPMute() {
         return this == OP_MUTE || this == OP_TEMP_MUTE;
     }
+
+    public boolean isTemporary() {
+        return this == TEMP_BAN || this == TEMP_MUTE || this == OP_TEMP_MUTE || this == OP_TEMP_BAN;
+    }
 }

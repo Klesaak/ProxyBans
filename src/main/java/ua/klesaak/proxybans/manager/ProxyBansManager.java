@@ -8,6 +8,7 @@ import ua.klesaak.proxybans.commands.RulesCommand;
 import ua.klesaak.proxybans.commands.punish.KickCommand;
 import ua.klesaak.proxybans.commands.punish.ban.BanCommand;
 import ua.klesaak.proxybans.commands.punish.ban.OpBanCommand;
+import ua.klesaak.proxybans.commands.punish.ban.TempBanCommand;
 import ua.klesaak.proxybans.commands.punish.unban.OpUnBanCommand;
 import ua.klesaak.proxybans.commands.punish.unban.UnBanCommand;
 import ua.klesaak.proxybans.config.ConfigFile;
@@ -40,6 +41,7 @@ public class ProxyBansManager {
         this.hookPerms();
         /////commands/////
         new BanCommand(this);
+        new TempBanCommand(this);
         new OpBanCommand(this);
         new UnBanCommand(this);
         new OpUnBanCommand(this);

@@ -107,7 +107,7 @@ public class ConfigFile extends PluginConfig {
     }
 
     private long getMaxPunishTime(String group, String command) {
-        return NumberUtils.parseTimeFromString(this.getTime(group, "maxPunishTime", command), TimeUnit.MILLISECONDS);
+        return NumberUtils.parseTimeFromString(this.getTime(group, "maxPunishTime", command), TimeUnit.SECONDS);
     }
 
     public long getMaxPunishTime(CommandSender commandSender, String command) {
