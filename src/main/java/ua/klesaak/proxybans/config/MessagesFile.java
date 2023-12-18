@@ -88,6 +88,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message playerIsNotMuted;
     @MessageField(key = "command.error.playerSelfUnmute", defaultMessage = "&4Ошибка: &cВы не можете себя размутить :)")
     private Message playerSelfUnmute;
+    @MessageField(key = "command.error.invalidFormatTime", defaultMessage = "&4Ошибка: &cВы указали неверный формат времени. Верный: 10s, 10m, 10h, 10d")
+    private Message invalidFormatTime;
     @MessageField(key = "command.rule.notFound", defaultMessage = "&4Ошибка: &cПравило не найдено.")
     private Message messageRuleNotFound;
     @MessageField(key = "command.rule.notApplicablePunish", defaultMessage = "&4Ошибка: &cДля данного правила нельзя применить этот тип наказания.")
@@ -109,21 +111,21 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message broadcastBanned;
     @MessageField(key = "message.broadcast.banned-ip", defaultMessage = "[IP-BAN]: (punisher) (punishServer) забанил по-ip (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastIpBanned;
-    @MessageField(key = "message.broadcast.tempBanned", defaultMessage = "[TEMP-BAN]: (punisher) (punishServer) забанил (player) до (date) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.tempBanned", defaultMessage = "[TEMP-BAN]: (punisher) (punishServer) забанил (player) до (time) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastTempBanned;
     @MessageField(key = "message.broadcast.op-banned", defaultMessage = "[OP-BAN]: (punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastOpBanned;
     @MessageField(key = "message.broadcast.op-bannedIp", defaultMessage = "[OP-IPBAN]: (punisher) (punishServer) забанил по-ip (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastOpIpBanned;
-    @MessageField(key = "message.broadcast.op-tempBanned", defaultMessage = "[OP-TEMPBAN]: (punisher) (punishServer) забанил (player) до (date)  на сервере (server). Причина - (comment)")
+    @MessageField(key = "message.broadcast.op-tempBanned", defaultMessage = "[OP-TEMPBAN]: (punisher) (punishServer) забанил (player) до (time)  на сервере (server). Причина - (comment)")
     private Message broadcastOpTempBanned;
     @MessageField(key = "message.broadcast.muted", defaultMessage = "[MUTE]: (punisher) (punishServer) замутил (player) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastMuted;
-    @MessageField(key = "message.broadcast.tempMuted", defaultMessage = "[TEMP-MUTE]: (punisher) (punishServer) замутил (player) до (date) (server). Причина - (rule). (ruleText) ((comment))")
+    @MessageField(key = "message.broadcast.tempMuted", defaultMessage = "[TEMP-MUTE]: (punisher) (punishServer) замутил (player) до (time) (server). Причина - (rule). (ruleText) ((comment))")
     private Message broadcastTempMuted;
     @MessageField(key = "message.broadcast.op-muted", defaultMessage = "[OP-MUTE]: (punisher) (punishServer) замутил (player) (server). Причина - (comment)")
     private Message broadcastOpMuted;
-    @MessageField(key = "message.broadcast.op-tempMuted", defaultMessage = "[OP-TEMPMUTE]: (punisher) (punishServer) замутил (player) до (date) (server). Причина - (comment)")
+    @MessageField(key = "message.broadcast.op-tempMuted", defaultMessage = "[OP-TEMPMUTE]: (punisher) (punishServer) замутил (player) до (time) (server). Причина - (comment)")
     private Message broadcastOpTempMuted;
     @MessageField(key = "message.broadcast.unbanned", defaultMessage = "[UNBAN]: (punisher) снял бан с (player)")
     private Message broadcastUnbanned;

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
-public abstract class PunishStorage implements AutoCloseable { //todo поток, который чистит истекшую блокировку!
+public abstract class PunishStorage implements AutoCloseable {
     protected final Map<String, PunishData> bansCache = new ConcurrentHashMap<>();
     protected final Map<String, PunishData> mutesCache = new ConcurrentHashMap<>();
     protected final Map<String, List<PunishData>> historyCache = new ConcurrentHashMap<>();
@@ -23,7 +23,9 @@ public abstract class PunishStorage implements AutoCloseable { //todo поток
     public abstract void addHistory(String nickName, PunishData punishData);
 
     public abstract void unBan(String nickName);
+    public abstract boolean unBanIsExpired(String nickName);
     public abstract void unMute(String nickName);
+    public abstract boolean unMuteIsExpired(String nickName);
     public abstract void clearHistory(String nickName);
 
     public abstract void unBanAllBy(String nickName);

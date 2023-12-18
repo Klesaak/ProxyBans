@@ -24,13 +24,23 @@ public class FileStorage extends PunishStorage {
         this.bansFile = new JsonData(new File(pluginDataFolder, "bans.json"));
         this.mutesFile = new JsonData(new File(pluginDataFolder, "mutes.json"));
         this.historyFile = new JsonData(new File(pluginDataFolder, "history.json"));
-        if (this.bansFile.getFile().length() > 0L) { //todo remove if expired temp ban
+        if (this.bansFile.getFile().length() > 0L) {
             Collection<PunishData> dataCollection = JacksonAPI.readFile(this.bansFile.getFile(), PUNISH_DATA_REFERENCE);
             dataCollection.forEach(punishData -> this.bansCache.put(punishData.getPlayerName(), punishData));
+            //чистим истекшие темп-баны
+            for (val punishData : this.bansCache.entrySet()) {
+                if (punishData.getValue().isExpired()) this.bansCache.remove(punishData.getKey());
+            }
+            this.writeBansCache();
         }
-        if (this.mutesFile.getFile().length() > 0L) { //todo remove if expired temp mute
+        if (this.mutesFile.getFile().length() > 0L) {
             Collection<PunishData> dataCollection = JacksonAPI.readFile(this.mutesFile.getFile(), PUNISH_DATA_REFERENCE);
             dataCollection.forEach(punishData -> this.mutesCache.put(punishData.getPlayerName(), punishData));
+            //чистим истекшие темп-муты
+            for (val punishData : this.mutesCache.entrySet()) {
+                if (punishData.getValue().isExpired()) this.mutesCache.remove(punishData.getKey());
+            }
+            this.writeMutesCache();
         }
         //todo history
     }
@@ -80,9 +90,31 @@ public class FileStorage extends PunishStorage {
     }
 
     @Override
+    public boolean unBanIsExpired(String nickName) {
+        val punishData = this.bansCache.get(nickName);
+        if (punishData.isExpired()) {
+            this.bansCache.remove(nickName);
+            this.writeBansCache();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void unMute(String nickName) {
         this.mutesCache.remove(nickName);
         this.writeMutesCache();
+    }
+
+    @Override
+    public boolean unMuteIsExpired(String nickName) {
+        val punishData = this.mutesCache.get(nickName);
+        if (punishData.isExpired()) {
+            this.mutesCache.remove(nickName);
+            this.writeBansCache();
+            return true;
+        }
+        return false;
     }
 
     @Override

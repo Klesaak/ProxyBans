@@ -18,7 +18,6 @@ import ua.klesaak.proxybans.permshook.MinePermsHook;
 import ua.klesaak.proxybans.permshook.SimplePermsHook;
 import ua.klesaak.proxybans.storage.PunishStorage;
 import ua.klesaak.proxybans.storage.file.FileStorage;
-import ua.klesaak.proxybans.storage.redis.RedisStorage;
 import ua.klesaak.proxybans.utils.command.CooldownExpireNotifier;
 
 import java.io.File;
@@ -61,7 +60,7 @@ public class ProxyBansManager {
         val storageType = this.configFile.getString("storage").toLowerCase();
         switch (storageType) {
             case "redis": {
-                this.punishStorage = new RedisStorage(this);
+               // this.punishStorage = new RedisStorage(this);
                 break;
             }
             case "file": {
