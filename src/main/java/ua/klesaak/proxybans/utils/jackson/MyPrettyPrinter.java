@@ -7,6 +7,11 @@ import com.fasterxml.jackson.core.util.Separators;
 
 import java.io.IOException;
 
+/**
+ * Спижжено отсюда:
+ * <a href="https://stackoverflow.com/questions/64669932/how-to-configure-jackson-prettyprinter-format-json-as-gson">...</a>
+ */
+
 public class MyPrettyPrinter extends DefaultPrettyPrinter {
 
     public MyPrettyPrinter() {
