@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Joiner;
 import lombok.SneakyThrows;
 import lombok.val;
-import ua.klesaak.proxybans.utils.JacksonAPI;
+import ua.klesaak.proxybans.utils.jackson.JacksonAPI;
 
 import java.io.File;
 import java.lang.reflect.Field;

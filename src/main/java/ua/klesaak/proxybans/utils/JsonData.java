@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.val;
+import ua.klesaak.proxybans.utils.jackson.JacksonAPI;
 
 import java.io.File;
 import java.lang.reflect.Modifier;

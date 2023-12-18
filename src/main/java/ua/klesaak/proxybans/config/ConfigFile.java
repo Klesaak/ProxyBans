@@ -11,7 +11,7 @@ import net.md_5.bungee.api.event.ChatEvent;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
-import ua.klesaak.proxybans.utils.JacksonAPI;
+import ua.klesaak.proxybans.utils.jackson.JacksonAPI;
 import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.Paginated;
 import ua.klesaak.proxybans.utils.yml.PluginConfig;

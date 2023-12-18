@@ -5,7 +5,7 @@ import lombok.val;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.storage.PunishData;
 import ua.klesaak.proxybans.storage.PunishStorage;
-import ua.klesaak.proxybans.utils.JacksonAPI;
+import ua.klesaak.proxybans.utils.jackson.JacksonAPI;
 import ua.klesaak.proxybans.utils.JsonData;
 
 import java.io.File;
