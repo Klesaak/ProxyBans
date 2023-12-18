@@ -13,7 +13,6 @@ import java.time.Instant;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 
-//TODO: TEST THIS SHIT!
 public final class TempBanCommand extends AbstractPunishCommand {
 
     public TempBanCommand(ProxyBansManager proxyBansManager) {

@@ -95,8 +95,8 @@ public class PunishListener implements Listener {
         val nickName = proxiedPlayer.getName().toLowerCase();
         val punishData = storage.getMuteData(nickName);
         if (punishData != null) {
-            //TODO: check command
             if (storage.unMuteIsExpired(nickName)) return;
+            if (event.isCommand() && !this.manager.getConfigFile().checkBlackListCommandOnMute(event)) return; // TODO: TEST this shiiiiiiiiitt
             val cancelReason = this.tagPunishMessage(punishData);
             cancelReason.send(proxiedPlayer);
             event.setCancelled(true);

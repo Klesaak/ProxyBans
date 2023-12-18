@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import lombok.val;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.ChatEvent;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
@@ -31,6 +32,7 @@ public class ConfigFile extends PluginConfig {
     private final DateFormat dateFormat;
     private Paginated<RuleData> rulePages;
     private final ProxyBansManager proxyBansManager;
+    private final List<String> blockedCommandsOnMute;
 
     public ConfigFile(ProxyBansManager manager) {
         super(manager.getProxyBansPlugin(), "config.yml");
@@ -39,6 +41,7 @@ public class ConfigFile extends PluginConfig {
         SimpleDateFormat dateFormat = new SimpleDateFormat(this.getString("dateFormat.format"), new Locale(this.getString("dateFormat.locale")));
         dateFormat.setTimeZone(TimeZone.getTimeZone(this.getString("dateFormat.timeZone")));
         this.dateFormat = dateFormat;
+        this.blockedCommandsOnMute = this.getStringList("blockedCommandsOnMute");
     }
 
     @SneakyThrows
@@ -128,5 +131,18 @@ public class ConfigFile extends PluginConfig {
 
     public String parseDate(Instant instant) {
         return this.dateFormat.format(Date.from(instant));
+    }
+
+    public boolean checkBlackListCommandOnMute(ChatEvent event) {
+        String cmd = event.getMessage().split(" ")[0].toLowerCase();
+        if (cmd.contains(":") && !cmd.endsWith(":")) {
+            StringBuilder slashes = new StringBuilder();
+            for (int i = 0; i < cmd.length() && cmd.charAt(i) == '/'; ++i) {
+                slashes.append('/');
+            }
+            slashes.append(cmd.split(":")[1]);
+            cmd = slashes.toString();
+        }
+        return this.blockedCommandsOnMute.contains(cmd);
     }
 }

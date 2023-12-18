@@ -90,6 +90,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message playerSelfUnmute;
     @MessageField(key = "command.error.invalidFormatTime", defaultMessage = "&4Ошибка: &cВы указали неверный формат времени. Верный: 10s, 10m, 10h, 10d")
     private Message invalidFormatTime;
+    @MessageField(key = "command.error.invalidTime", defaultMessage = "&4Ошибка: &cВремя не может быть меньше либо равняться нулю.")
+    private Message invalidTime;
     @MessageField(key = "command.rule.notFound", defaultMessage = "&4Ошибка: &cПравило не найдено.")
     private Message messageRuleNotFound;
     @MessageField(key = "command.rule.notApplicablePunish", defaultMessage = "&4Ошибка: &cДля данного правила нельзя применить этот тип наказания.")
