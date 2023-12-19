@@ -267,6 +267,11 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
                 players.add(punishData.getPlayerName());
             }
         }
+        for (val punishData : this.proxyBansManager.getPunishStorage().getMutesCache().values()) {
+            if (punishData.getPunishType() == punishType) {
+                players.add(punishData.getPlayerName());
+            }
+        }
         return players;
     }
 

@@ -1,5 +1,6 @@
 package ua.klesaak.proxybans.utils.messages;
 
+import lombok.val;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -49,6 +50,11 @@ public class Message implements Cloneable {
             return;
         }
         player.sendMessage(ComponentSerializer.parse(this.message));
+    }
+
+    public void send(String playerName) {
+        val proxiedPlayer = ProxyServer.getInstance().getPlayer(playerName);
+        if (proxiedPlayer != null) this.send(proxiedPlayer);
     }
 
     public void disconnect(ProxiedPlayer proxiedPlayer) {

@@ -4,13 +4,21 @@ import lombok.Getter;
 import lombok.val;
 import net.md_5.bungee.api.ChatColor;
 import ua.klesaak.proxybans.ProxyBansPlugin;
+import ua.klesaak.proxybans.commands.ReloadCommand;
 import ua.klesaak.proxybans.commands.RulesCommand;
 import ua.klesaak.proxybans.commands.punish.KickCommand;
 import ua.klesaak.proxybans.commands.punish.ban.BanCommand;
 import ua.klesaak.proxybans.commands.punish.ban.OpBanCommand;
+import ua.klesaak.proxybans.commands.punish.ban.OpTempBanCommand;
 import ua.klesaak.proxybans.commands.punish.ban.TempBanCommand;
+import ua.klesaak.proxybans.commands.punish.mute.MuteCommand;
+import ua.klesaak.proxybans.commands.punish.mute.OpMuteCommand;
+import ua.klesaak.proxybans.commands.punish.mute.OpTempMuteCommand;
+import ua.klesaak.proxybans.commands.punish.mute.TempMuteCommand;
 import ua.klesaak.proxybans.commands.punish.unban.OpUnBanCommand;
 import ua.klesaak.proxybans.commands.punish.unban.UnBanCommand;
+import ua.klesaak.proxybans.commands.punish.unmute.OpUnMuteCommand;
+import ua.klesaak.proxybans.commands.punish.unmute.UnMuteCommand;
 import ua.klesaak.proxybans.config.ConfigFile;
 import ua.klesaak.proxybans.config.MessagesFile;
 import ua.klesaak.proxybans.permshook.IPermHook;
@@ -42,10 +50,22 @@ public class ProxyBansManager {
         new BanCommand(this);
         new TempBanCommand(this);
         new OpBanCommand(this);
+        new OpTempBanCommand(this);
         new UnBanCommand(this);
         new OpUnBanCommand(this);
+
+        new MuteCommand(this);
+        new TempMuteCommand(this);
+        new UnMuteCommand(this);
+        new OpMuteCommand(this);
+        new OpTempMuteCommand(this);
+        new OpUnMuteCommand(this);
+
         new RulesCommand(this);
         new KickCommand(this);
+
+
+        new ReloadCommand(this);
     }
 
     private void hookPerms() {

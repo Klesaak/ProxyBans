@@ -3,9 +3,7 @@ package ua.klesaak.proxybans.utils.jackson;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.SneakyThrows;
@@ -24,13 +22,14 @@ import java.util.Map;
 public class JacksonAPI {
     private final ObjectMapper EMPTY_MAPPER = new ObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .enable(SerializationFeature.INDENT_OUTPUT)
             .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
             .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
     public final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .enable(SerializationFeature.INDENT_OUTPUT)
-            .setDefaultPrettyPrinter(new MyPrettyPrinter())
+            .setDefaultPrettyPrinter(new GsonPrettyPrinter())
             .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
             .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
@@ -103,5 +102,10 @@ public class JacksonAPI {
     @SneakyThrows
     public String readAsString(Object value) {
         return OBJECT_MAPPER.writeValueAsString(value);
+    }
+
+    @SneakyThrows
+    public String readAsEmptyMapperString(Object value) {
+        return EMPTY_MAPPER.writeValueAsString(value);
     }
 }

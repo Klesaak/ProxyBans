@@ -10,6 +10,8 @@ import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 
@@ -70,6 +72,14 @@ public final class TempBanCommand extends AbstractPunishCommand {
 
     @Override
     public Iterable<String> onTabSuggest(CommandSender commandSender, String[] args) {
-        return null;
+        switch (args.length) {
+            case 1: {
+                return this.copyPartialMatches(args[0].toLowerCase(), this.getOnlinePlayers(), new ArrayList<>());
+            }
+            case 3: {
+                return this.copyPartialMatches(args[2].toLowerCase(), this.getActualRules(), new ArrayList<>());
+            }
+        }
+        return Collections.emptyList();
     }
 }

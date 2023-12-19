@@ -12,28 +12,28 @@ import java.io.IOException;
  * <a href="https://stackoverflow.com/questions/64669932/how-to-configure-jackson-prettyprinter-format-json-as-gson">...</a>
  */
 
-public class MyPrettyPrinter extends DefaultPrettyPrinter {
+public class GsonPrettyPrinter extends DefaultPrettyPrinter {
 
-    public MyPrettyPrinter() {
+    public GsonPrettyPrinter() {
         this._arrayIndenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE;
         this._objectIndenter = DefaultIndenter.SYSTEM_LINEFEED_INSTANCE;
     }
 
-    public MyPrettyPrinter(DefaultPrettyPrinter base) {
+    public GsonPrettyPrinter(DefaultPrettyPrinter base) {
         super(base);
     }
 
     @Override
-    public MyPrettyPrinter createInstance() {
-        if (getClass() != MyPrettyPrinter.class) {
+    public GsonPrettyPrinter createInstance() {
+        if (getClass() != GsonPrettyPrinter.class) {
             throw new IllegalStateException("Failed `createInstance()`: " + getClass().getName()
                     + " does not override method; it has to");
         }
-        return new MyPrettyPrinter(this);
+        return new GsonPrettyPrinter(this);
     }
 
     @Override
-    public MyPrettyPrinter withSeparators(Separators separators) {
+    public GsonPrettyPrinter withSeparators(Separators separators) {
         this._separators = separators;
         this._objectFieldValueSeparatorWithSpaces = separators.getObjectFieldValueSeparator() + " ";
         return this;

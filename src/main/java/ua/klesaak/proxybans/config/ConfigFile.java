@@ -11,6 +11,7 @@ import net.md_5.bungee.api.event.ChatEvent;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
+import ua.klesaak.proxybans.storage.PunishData;
 import ua.klesaak.proxybans.utils.jackson.JacksonAPI;
 import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.Paginated;
@@ -28,6 +29,8 @@ import static ua.klesaak.proxybans.config.MessagesFile.*;
 
 @Getter
 public class ConfigFile extends PluginConfig {
+    public static final TypeReference<LinkedList<RuleData>> RULES_DATA_REFERENCE = new TypeReference<LinkedList<RuleData>>() {};
+
     private LinkedList<RuleData> rules;
     private final DateFormat dateFormat;
     private Paginated<RuleData> rulePages;
@@ -53,9 +56,10 @@ public class ConfigFile extends PluginConfig {
             LinkedList<RuleData> ruleData = new LinkedList<>();
             ruleData.add(new RuleData("1.0", "Бан за матюки", EnumSet.of(PunishType.BAN, PunishType.MUTE)));
             ruleData.add(new RuleData("1.1", "Бан за оскорбление негров в чате", EnumSet.of(PunishType.BAN, PunishType.OP_BAN, PunishType.IP_BAN)));
-            JacksonAPI.writeFile(file, ruleData);
+            ruleData.add(new RuleData("1.2", "Мут просто так", EnumSet.of(PunishType.MUTE, PunishType.TEMP_MUTE, PunishType.OP_MUTE, PunishType.OP_TEMP_MUTE)));
+            JacksonAPI.writePath(file.toPath(), JacksonAPI.readAsEmptyMapperString(ruleData));
         }
-        LinkedList<RuleData> ruleData = JacksonAPI.readFile(file, new TypeReference<LinkedList<RuleData>>() {});
+        LinkedList<RuleData> ruleData = JacksonAPI.readFile(file, RULES_DATA_REFERENCE);
         this.rules = new LinkedList<>(ruleData);
         this.rulePages = new Paginated<>(this.rules);
     }
