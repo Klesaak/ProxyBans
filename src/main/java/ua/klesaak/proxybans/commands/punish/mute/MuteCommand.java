@@ -51,7 +51,7 @@ public final class MuteCommand extends AbstractPunishCommand {
 
         val punishData = PunishData.builder()
                 .playerName(nickName)
-                .punishType(PunishType.MUTE)
+                .punishType(this.punishType)
                 .rule(rule.getRuleData())
                 .punisherName(punisherName)
                 .comment(comment)

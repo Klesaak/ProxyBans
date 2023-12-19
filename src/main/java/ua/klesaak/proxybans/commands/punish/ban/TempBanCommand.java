@@ -56,7 +56,7 @@ public final class TempBanCommand extends AbstractPunishCommand {
 
         val punishData = PunishData.builder()
                 .playerName(nickName)
-                .punishType(PunishType.TEMP_BAN)
+                .punishType(this.punishType)
                 .rule(rule.getRuleData())
                 .punisherName(punisherName)
                 .comment(comment)

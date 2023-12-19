@@ -52,7 +52,7 @@ public final class OpBanCommand extends AbstractPunishCommand {
 
         val punishData = PunishData.builder()
                 .playerName(nickName)
-                .punishType(PunishType.OP_BAN)
+                .punishType(this.punishType)
                 .rule(rule.getRuleData())
                 .punisherName(punisherName)
                 .comment(comment)

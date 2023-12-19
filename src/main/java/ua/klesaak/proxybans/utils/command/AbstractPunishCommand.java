@@ -26,7 +26,7 @@ import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
 
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
     private final CooldownExpireNotifier cooldownExpireNotifier;
-    private PunishType punishType = PunishType.UNKNOWN;
+    protected PunishType punishType = PunishType.UNKNOWN;
     protected final ProxyBansManager proxyBansManager;
 
     public AbstractPunishCommand(ProxyBansManager proxyBansManager, PunishType punishType) {
