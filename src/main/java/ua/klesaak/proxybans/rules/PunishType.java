@@ -33,6 +33,14 @@ public enum PunishType {
         return this == BAN || this == TEMP_BAN || this == IP_BAN || this == OP_BAN || this == OP_TEMP_BAN || this == OP_IP_BAN;
     }
 
+    public boolean isIPBan() {
+        return this == IP_BAN || this == OP_IP_BAN;
+    }
+
+    public boolean isKick() {
+        return this == KICK;
+    }
+
     public boolean isOPMute() {
         return this == OP_MUTE || this == OP_TEMP_MUTE;
     }

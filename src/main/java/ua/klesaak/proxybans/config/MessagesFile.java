@@ -70,6 +70,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageWrongNickname;
     @MessageField(key = "command.error.playerIsOffline", defaultMessage = "&4Ошибка: &cИгрок не в сети.")
     private Message messagePlayerIsOffline;
+    @MessageField(key = "command.error.banIpOfflinePlayer", defaultMessage = "&4Ошибка: &cПлагин не сможет получить IP-адрес оффлайн игрока. Попробуй обычный бан.")
+    private Message messageBanIpOfflinePlayer;
     @MessageField(key = "command.error.playerIsProtected", defaultMessage = "&4Ошибка: &cВы не можете наказать этого игрока.")
     private Message messagePlayerIsProtected;
     @MessageField(key = "command.error.tooFewInfoAboutPunish", defaultMessage = "&4Ошибка: &cВы указали мало информации в пояснении.")

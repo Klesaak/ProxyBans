@@ -21,8 +21,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static ua.klesaak.proxybans.config.MessagesFile.PLAYER_NAME_PATTERN;
-import static ua.klesaak.proxybans.config.MessagesFile.PUNISHER_NAME_PATTERN;
+import static ua.klesaak.proxybans.config.MessagesFile.*;
 import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
 
 public abstract class AbstractPunishCommand extends Command implements TabExecutor {
@@ -241,7 +240,11 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     private void checkOffline(CommandSender commandSender, String targetName) throws AbstractCommandException {
         val targetIsOffline = ProxyServer.getInstance().getPlayer(targetName) == null;
-        if ((targetIsOffline && !commandSender.hasPermission(IGNORE_OFFLINE_PERMISSION)) || (this.punishType == PunishType.KICK && targetIsOffline)) {
+        val messagesFile = this.proxyBansManager.getMessagesFile();
+        if (this.punishType.isIPBan() && targetIsOffline) {
+            throw new AbstractCommandException(messagesFile.getMessageBanIpOfflinePlayer());
+        }
+        if ((targetIsOffline && !commandSender.hasPermission(IGNORE_OFFLINE_PERMISSION)) || (this.punishType.isKick() && targetIsOffline)) {
             throw new AbstractCommandException(this.proxyBansManager.getMessagesFile().getMessagePlayerIsOffline());
         }
     }
