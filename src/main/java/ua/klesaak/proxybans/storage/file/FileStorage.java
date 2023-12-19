@@ -46,22 +46,19 @@ public class FileStorage extends PunishStorage {
 
     private void writeBansCache() {
         CompletableFuture.runAsync(() -> this.bansFile.write(this.bansCache.values())).exceptionally(throwable -> {
-            throwable.printStackTrace();
-            return null;
+            throw new RuntimeException("Ошибка при сохранении файла bans.json", throwable);
         });
     }
 
     private void writeMutesCache() {
         CompletableFuture.runAsync(() -> this.mutesFile.write(this.mutesCache.values())).exceptionally(throwable -> {
-            throwable.printStackTrace();
-            return null;
+            throw new RuntimeException("Ошибка при сохранении файла mutes.json", throwable);
         });
     }
 
     private void writeHistoryCache() {
         CompletableFuture.runAsync(() -> this.historyFile.write(this.historyCache.values())).exceptionally(throwable -> {
-            throwable.printStackTrace();
-            return null;
+            throw new RuntimeException("Ошибка при сохранении файла history.json", throwable);
         });
     }
 

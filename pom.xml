@@ -148,6 +148,19 @@
             <scope>system</scope>
             <systemPath>D:/EclipseWS/MinePerms.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>ru.den_abr.simpleperms</groupId>
+            <artifactId>SimplePerms</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>D:/EclipseWS/SimplePerms29.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.4</version>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
 </project>

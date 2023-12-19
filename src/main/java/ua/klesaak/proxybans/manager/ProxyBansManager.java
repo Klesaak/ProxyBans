@@ -22,6 +22,7 @@ import ua.klesaak.proxybans.commands.punish.unmute.UnMuteCommand;
 import ua.klesaak.proxybans.config.ConfigFile;
 import ua.klesaak.proxybans.config.MessagesFile;
 import ua.klesaak.proxybans.permshook.IPermHook;
+import ua.klesaak.proxybans.permshook.LuckPermsHook;
 import ua.klesaak.proxybans.permshook.MinePermsHook;
 import ua.klesaak.proxybans.permshook.SimplePermsHook;
 import ua.klesaak.proxybans.storage.PunishStorage;
@@ -69,8 +70,13 @@ public class ProxyBansManager {
     }
 
     private void hookPerms() {
-        if (this.proxyBansPlugin.getProxy().getPluginManager().getPlugin("SimplePerms") != null) {
+        val pluginManager = this.proxyBansPlugin.getProxy().getPluginManager();
+        if (pluginManager.getPlugin("SimplePerms") != null) {
             this.permHook = new SimplePermsHook();
+            return;
+        }
+        if (pluginManager.getPlugin("LuckPerms") != null) {
+            this.permHook = new LuckPermsHook();
             return;
         }
         this.permHook = new MinePermsHook();
