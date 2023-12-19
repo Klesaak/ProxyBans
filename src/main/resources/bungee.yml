@@ -36,6 +36,8 @@ permissions:
     description: "Позволяет пользователям наказывать оффлайн игроков"
   proxybans.useanypunishments:
     description: "Позволяет использовать типы наказаний, которые не предусмотрены правилом."
+  proxybans.ignore-maxtime:
+    description: "Позволяет наказывать игроков на неограниченное время."
   proxybans.smart-comment:
     description: "Позволяет игроку не писать подробный комментарий к наказанию."
   proxybans.unban:

@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileStorage extends PunishStorage {
     public static final TypeReference<Collection<PunishData>> PUNISH_DATA_REFERENCE = new TypeReference<Collection<PunishData>>() {};
@@ -27,21 +28,19 @@ public class FileStorage extends PunishStorage {
         if (this.bansFile.getFile().length() > 0L) {
             Collection<PunishData> dataCollection = JacksonAPI.readFile(this.bansFile.getFile(), PUNISH_DATA_REFERENCE);
             dataCollection.forEach(punishData -> this.bansCache.put(punishData.getPlayerName(), punishData));
-            //чистим истекшие темп-баны
-            for (val punishData : this.bansCache.entrySet()) {
-                if (punishData.getValue().isExpired()) this.bansCache.remove(punishData.getKey());
-            }
-            this.writeBansCache();
         }
         if (this.mutesFile.getFile().length() > 0L) {
             Collection<PunishData> dataCollection = JacksonAPI.readFile(this.mutesFile.getFile(), PUNISH_DATA_REFERENCE);
             dataCollection.forEach(punishData -> this.mutesCache.put(punishData.getPlayerName(), punishData));
-            //чистим истекшие темп-муты
-            for (val punishData : this.mutesCache.entrySet()) {
-                if (punishData.getValue().isExpired()) this.mutesCache.remove(punishData.getKey());
-            }
-            this.writeMutesCache();
         }
+        Stream.concat(this.bansCache.values().stream(), this.mutesCache.values().stream()).filter(PunishData::isExpired).forEach(punishData -> {
+            if (punishData.getPunishType().isBan()) {
+                this.bansCache.remove(punishData.getPlayerName());
+            } else this.mutesCache.remove(punishData.getPlayerName());
+        });
+        this.writeBansCache();
+        this.writeMutesCache();
+        
         //todo history
     }
 

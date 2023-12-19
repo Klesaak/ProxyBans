@@ -26,8 +26,9 @@ public class Message implements Cloneable {
     }
 
     public void broadcast() {
-        ProxyServer.getInstance().getPlayers().forEach(this::send);
-        this.send(ProxyServer.getInstance().getConsole());
+        val components = this.getMessageComponent();
+        ProxyServer.getInstance().getPlayers().forEach(proxiedPlayer -> proxiedPlayer.sendMessage(components));
+        ProxyServer.getInstance().getConsole().sendMessage(components);
     }
 
     public static Message create(String text, boolean isList, boolean isWithoutQuotes) {
@@ -35,8 +36,9 @@ public class Message implements Cloneable {
     }
 
     public void send(CommandSender... players) {
+        val components = this.getMessageComponent();
         for (CommandSender player : players) {
-            this.send(player);
+            player.sendMessage(components);
         }
     }
 
@@ -45,11 +47,7 @@ public class Message implements Cloneable {
     }
 
     public void send(CommandSender player) {
-        if (this.isWithoutQuotes || this.isList) {
-            player.sendMessage(this.getMessageComponent());
-            return;
-        }
-        player.sendMessage(ComponentSerializer.parse(this.message));
+        player.sendMessage(this.getMessageComponent());
     }
 
     public void send(String playerName) {
@@ -64,7 +62,10 @@ public class Message implements Cloneable {
     }
 
     public BaseComponent[] getMessageComponent() {
-        return TextComponent.fromLegacyText(this.message);
+        if (this.isWithoutQuotes || this.isList) {
+            return TextComponent.fromLegacyText(this.message);
+        }
+        return ComponentSerializer.parse(this.message);
     }
 
     public String getMessageString() {

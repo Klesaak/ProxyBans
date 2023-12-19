@@ -235,7 +235,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
         if (timeForWhichPunish <= 0) throw new AbstractCommandException(messagesFile.getInvalidTime());
         long maxConfigTime = this.proxyBansManager.getConfigFile().getMaxPunishTime(sender, this.getName());
-        if (timeForWhichPunish > maxConfigTime) return Instant.now().plusSeconds(maxConfigTime).getEpochSecond();
+        if (timeForWhichPunish > maxConfigTime && !sender.hasPermission(IGNORE_MAXTIME)) return Instant.now().plusSeconds(maxConfigTime).getEpochSecond();
         return Instant.now().plusSeconds(timeForWhichPunish).getEpochSecond();
     }
 
