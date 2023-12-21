@@ -35,6 +35,7 @@ public final class TempMuteCommand extends AbstractPunishCommand {
         String playerServer = this.parseServer(nickName);
         String punishExpireDate = configFile.parseDate(Instant.ofEpochSecond(punishTime));
         String date = configFile.parseDate(Instant.now());
+        messagesFile.getMessageMuteSuccess().tag(PLAYER_NAME_PATTERN, nickName).send(sender);
         messagesFile.getBroadcastTempMuted()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
                 .tag(RULE_PATTERN, rule.getRule())

@@ -35,6 +35,7 @@ public final class TempBanCommand extends AbstractPunishCommand {
         String playerServer = this.parseServer(nickName);
         String punishExpireDate = configFile.parseDate(Instant.ofEpochSecond(punishTime));
         String date = configFile.parseDate(Instant.now());
+        messagesFile.getMessageBanSuccess().tag(PLAYER_NAME_PATTERN, nickName).send(sender);
         messagesFile.getBroadcastTempBanned()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
                 .tag(RULE_PATTERN, rule.getRule())

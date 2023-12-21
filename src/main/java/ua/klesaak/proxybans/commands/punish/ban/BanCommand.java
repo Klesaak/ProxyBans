@@ -32,6 +32,7 @@ public final class BanCommand extends AbstractPunishCommand {
         String punishServer = this.parseServer(sender);
         String playerServer = this.parseServer(nickName);
         String date = this.proxyBansManager.getConfigFile().parseDate(Instant.now());
+        messagesFile.getMessageBanSuccess().tag(PLAYER_NAME_PATTERN, nickName).send(sender);
         messagesFile.getBroadcastBanned()
                 .tag(PUNISHER_NAME_PATTERN, punisherName)
                 .tag(RULE_PATTERN, rule.getRule())

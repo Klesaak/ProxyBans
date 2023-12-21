@@ -33,7 +33,7 @@ permissions:
   proxybans.ignore-cd:
     description: "При использовании любой команды плагина - игроку не наложиться кулдаун."
   proxybans.offline:
-    description: "Позволяет пользователям наказывать оффлайн игроков"
+    description: "Позволяет пользователям наказывать оффлайн игроков."
   proxybans.useanypunishments:
     description: "Позволяет использовать типы наказаний, которые не предусмотрены правилом."
   proxybans.ignore-maxtime:

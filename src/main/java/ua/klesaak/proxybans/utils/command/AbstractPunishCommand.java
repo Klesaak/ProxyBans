@@ -85,14 +85,18 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         if (senderName.equalsIgnoreCase(nickName)) throw new AbstractCommandException(messagesFile.getMessageSelfHarm());
         if (checkOffline) this.checkOffline(commandSender, nickName);
         val configFile = this.proxyBansManager.getConfigFile();
-        if (commandSender instanceof ProxiedPlayer && (configFile.isProtected(nickName) || (configFile.isHeavier(nickName, senderName) && !commandSender.hasPermission(IGNORE_PRIORITY)))) {
+        if (commandSender instanceof ProxiedPlayer && configFile.isProtected(nickName)) {
             throw new AbstractCommandException(messagesFile.getMessagePlayerIsProtected());
+        }
+        if (commandSender instanceof ProxiedPlayer && configFile.isHeavier(nickName, senderName) && !commandSender.hasPermission(IGNORE_PRIORITY)) {
+            throw new AbstractCommandException(messagesFile.getMessagePlayerIsLowPriority());
         }
         return nickName;
     }
 
-    protected void cmdVerifyTryUnban(String senderName, String nickname, boolean isOpUnban) throws AbstractCommandException {
+    protected void cmdVerifyTryUnban(CommandSender commandSender, String nickname, boolean isOpUnban) throws AbstractCommandException {
         val storage = this.proxyBansManager.getPunishStorage();
+        val senderName = this.cmdVerifySender(commandSender);
         val nicknameLC = nickname.toLowerCase();
         val punishData = storage.getBanData(nicknameLC);
         MessagesFile messageFile = this.proxyBansManager.getMessagesFile();
@@ -104,13 +108,15 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
             throw new AbstractCommandException(messageFile.getPlayerIsOPBanned());
         }
         val message = playerHaveOpBan ? messageFile.getBroadcastOpUnbanned() : messageFile.getBroadcastUnbanned();
+        messageFile.getMessageUnbanSuccess().tag(PLAYER_NAME_PATTERN, nickname).send(commandSender);
         message.tag(PUNISHER_NAME_PATTERN, senderName)
                 .tag(PLAYER_NAME_PATTERN, nickname).broadcast();
         storage.unBan(nicknameLC);
     }
 
-    protected void cmdVerifyTryUnmute(String senderName, String nickname, boolean isOpUnmute) throws AbstractCommandException {
+    protected void cmdVerifyTryUnmute(CommandSender commandSender, String nickname, boolean isOpUnmute) throws AbstractCommandException {
         val storage = this.proxyBansManager.getPunishStorage();
+        val senderName = this.cmdVerifySender(commandSender);
         val nicknameLC = nickname.toLowerCase();
         val punishData = storage.getMuteData(nicknameLC);
         MessagesFile messageFile = this.proxyBansManager.getMessagesFile();
@@ -125,6 +131,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
             throw new AbstractCommandException(messageFile.getPlayerIsOPMuted());
         }
         val message = playerHaveOpMute ? messageFile.getBroadcastOpUnmuted() : messageFile.getBroadcastUnmuted();
+        messageFile.getMessageUnmuteSuccess().tag(PLAYER_NAME_PATTERN, nickname).send(commandSender);
         message.tag(PUNISHER_NAME_PATTERN, senderName)
                 .tag(PLAYER_NAME_PATTERN, nickname).broadcast();
         storage.unMute(nicknameLC);

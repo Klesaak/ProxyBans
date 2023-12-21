@@ -66,14 +66,26 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageIsCooldownExpired;
     @MessageField(key = "command.consoleName", defaultMessage = "&cProxyBansPlugin", withoutQuotes = true)
     private Message messageIsConsoleName;
+    @MessageField(key = "command.success.ban", defaultMessage = "&aИгрок (player) успешно забанен.")
+    private Message messageBanSuccess;
+    @MessageField(key = "command.success.mute", defaultMessage = "&aИгрок (player) успешно замучен.")
+    private Message messageMuteSuccess;
+    @MessageField(key = "command.success.kick", defaultMessage = "&aИгрок (player) успешно кикнут.")
+    private Message messageKickSuccess;
+    @MessageField(key = "command.success.unban", defaultMessage = "&aИгрок (player) успешно разбанен.")
+    private Message messageUnbanSuccess;
+    @MessageField(key = "command.success.unmute", defaultMessage = "&aИгрок (player) успешно размучен.")
+    private Message messageUnmuteSuccess;
     @MessageField(key = "command.error.wrongNickname", defaultMessage = "&4Ошибка: &cНеправильный ник.")
     private Message messageWrongNickname;
     @MessageField(key = "command.error.playerIsOffline", defaultMessage = "&4Ошибка: &cИгрок не в сети.")
     private Message messagePlayerIsOffline;
     @MessageField(key = "command.error.banIpOfflinePlayer", defaultMessage = "&4Ошибка: &cПлагин не сможет получить IP-адрес оффлайн игрока. Попробуй обычный бан.")
     private Message messageBanIpOfflinePlayer;
-    @MessageField(key = "command.error.playerIsProtected", defaultMessage = "&4Ошибка: &cВы не можете наказать этого игрока.")
+    @MessageField(key = "command.error.playerIsProtected", defaultMessage = "&4Ошибка: &cЭтот игрок под божьей защитой.")
     private Message messagePlayerIsProtected;
+    @MessageField(key = "command.error.playerIsLowPriority", defaultMessage = "&4Ошибка: &cВы не можете наказать игрока с более дорогим донатом.")
+    private Message messagePlayerIsLowPriority;
     @MessageField(key = "command.error.tooFewInfoAboutPunish", defaultMessage = "&4Ошибка: &cВы указали мало информации в пояснении.")
     private Message messageTooFewInfoAboutPunish;
     @MessageField(key = "command.error.pageNotFound", defaultMessage = "Страница не найдена.")

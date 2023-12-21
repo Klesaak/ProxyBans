@@ -84,8 +84,7 @@ public class Message implements Cloneable {
             super.clone();
             return new Message(this.message, this.isList, this.isWithoutQuotes);
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("Got error while trying to clone Message", e);
         }
     }
 
