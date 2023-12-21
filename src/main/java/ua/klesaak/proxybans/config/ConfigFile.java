@@ -11,10 +11,9 @@ import net.md_5.bungee.api.event.ChatEvent;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
-import ua.klesaak.proxybans.storage.PunishData;
-import ua.klesaak.proxybans.utils.jackson.JacksonAPI;
 import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.Paginated;
+import ua.klesaak.proxybans.utils.jackson.JacksonAPI;
 import ua.klesaak.proxybans.utils.yml.PluginConfig;
 
 import java.io.File;
@@ -125,8 +124,9 @@ public class ConfigFile extends PluginConfig {
         return this.getStringList("protectedPlayers").contains(playerName);
     }
 
-    public boolean isHeavier(String fromGroup, String toGroup) {
-        return this.getWeight(fromGroup) > this.getWeight(toGroup);
+    public boolean isHeavier(String fromNickname, String toNickname) {
+        val permHook = this.proxyBansManager.getPermHook();
+        return this.getWeight(permHook.getUserGroup(fromNickname)) > this.getWeight(permHook.getUserGroup(toNickname));
     }
 
     private int getWeight(String fromGroup) {

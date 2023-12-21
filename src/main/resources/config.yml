@@ -32,7 +32,6 @@ groups:
     maxPunishTime:
       tempban: 10m
       tempmute: 30m
-      tempipban: 1h
     cooldown:
       ban: 5m
       tempban: 1m
@@ -44,7 +43,6 @@ groups:
     maxPunishTime:
       tempban: 150h
       tempmute: 10h
-      tempipban: 1h
     cooldown:
       ban: 2m
       tempban: 1m

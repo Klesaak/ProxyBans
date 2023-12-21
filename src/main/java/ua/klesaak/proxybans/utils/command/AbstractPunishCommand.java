@@ -71,7 +71,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     public abstract Iterable<String> onTabSuggest(CommandSender commandSender, String[] args);
 
-    public void cmdVerifyArgs(CommandSender commandSender, int minimum, String[] args, String usage) throws AbstractCommandException {
+    public void cmdVerifyArgs(int minimum, String[] args, String usage) throws AbstractCommandException {
         if (args.length < minimum) {
             throw new AbstractCommandException(new Message(ChatColor.RED + usage, false, false));
         }
@@ -85,8 +85,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         if (senderName.equalsIgnoreCase(nickName)) throw new AbstractCommandException(messagesFile.getMessageSelfHarm());
         if (checkOffline) this.checkOffline(commandSender, nickName);
         val configFile = this.proxyBansManager.getConfigFile();
-        val permsHook = this.proxyBansManager.getPermHook();
-        if (commandSender instanceof ProxiedPlayer && (configFile.isProtected(nickName) || configFile.isHeavier(permsHook.getUserGroup(nickName), permsHook.getUserGroup(senderName)))) {
+        if (commandSender instanceof ProxiedPlayer && (configFile.isProtected(nickName) || (configFile.isHeavier(nickName, senderName) && !commandSender.hasPermission(IGNORE_PRIORITY)))) {
             throw new AbstractCommandException(messagesFile.getMessagePlayerIsProtected());
         }
         return nickName;

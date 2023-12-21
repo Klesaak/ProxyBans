@@ -38,6 +38,8 @@ permissions:
     description: "Позволяет использовать типы наказаний, которые не предусмотрены правилом."
   proxybans.ignore-maxtime:
     description: "Позволяет наказывать игроков на неограниченное время."
+  proxybans.ignore-priority:
+    description: "Позволяет наказывать игроков, которые имеют группу выше по весу, но всё так же нельзя наказать игроков из списка 'protectedPlayers'"
   proxybans.smart-comment:
     description: "Позволяет игроку не писать подробный комментарий к наказанию."
   proxybans.unban:
