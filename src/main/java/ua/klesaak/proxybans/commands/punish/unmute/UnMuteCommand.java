@@ -20,8 +20,7 @@ public final class UnMuteCommand extends AbstractPunishCommand {
     public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
         val messagesFile = this.proxyBansManager.getMessagesFile();
         this.cmdVerifyArgs(1, args, messagesFile.getUsageUnmuteCommand());
-        val nickName = args[0];
-        this.cmdVerifyTryUnmute(sender, nickName, false);
+        this.cmdVerifyTryUnmute(sender, args[0], false);
         return false;//возвращаем именно фолс, потому что не нужно включать кд
     }
 
