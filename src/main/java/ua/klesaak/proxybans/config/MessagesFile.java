@@ -25,6 +25,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     public static final Pattern PAGES_PATTERN = Pattern.compile("(pages)", Pattern.LITERAL);
     public static final Pattern IS_IP_BAN_PATTERN = Pattern.compile("(isIpBan)", Pattern.LITERAL);
     public static final Pattern IS_OP_PUNISH_PATTERN = Pattern.compile("(isOpPunish)", Pattern.LITERAL);
+    public static final Pattern PUNISH_LIST_PATTERN = Pattern.compile("(punishList)", Pattern.LITERAL);
 
 
     //commands'ы
@@ -127,6 +128,24 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageRuleFormat;
     @MessageField(key = "command.emptyData", defaultMessage = "N/A", withoutQuotes = true)
     private Message messageEmptyData;
+
+    // TODO: 23.12.2023 Реадизовать это кодом иииуу
+    @MessageField(key = "command.banList.listFormat", defaultMessage = {
+            "&6Список банов: &c(page)/(pages)",
+            "&7",
+            "(punishList)",
+            "&c&r",
+            "&6Следующая страница - /ban-list [&cномер страницы&6]"})
+    private Message messageBanListFormat;
+    // TODO: 23.12.2023 Реадизовать это кодом иииуу
+    @MessageField(key = "command.muteList.listFormat", defaultMessage = {
+            "&6Список мутов: &c(page)/(pages)",
+            "&7",
+            "(punishList)",
+            "&c&r",
+            "&6Следующая страница - /mute-list [&cномер страницы&6]"})
+    private Message messageMuteListFormat;
+
     @MessageField(key = "command.info.banInfoFormat", defaultMessage = {
             "Информация по игроку: (player)",
             "Забанил: (punisher)",
