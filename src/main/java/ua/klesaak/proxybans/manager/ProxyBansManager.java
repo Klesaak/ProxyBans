@@ -7,10 +7,7 @@ import ua.klesaak.proxybans.ProxyBansPlugin;
 import ua.klesaak.proxybans.commands.ReloadCommand;
 import ua.klesaak.proxybans.commands.RulesCommand;
 import ua.klesaak.proxybans.commands.punish.KickCommand;
-import ua.klesaak.proxybans.commands.punish.ban.BanCommand;
-import ua.klesaak.proxybans.commands.punish.ban.OpBanCommand;
-import ua.klesaak.proxybans.commands.punish.ban.OpTempBanCommand;
-import ua.klesaak.proxybans.commands.punish.ban.TempBanCommand;
+import ua.klesaak.proxybans.commands.punish.ban.*;
 import ua.klesaak.proxybans.commands.punish.mute.MuteCommand;
 import ua.klesaak.proxybans.commands.punish.mute.OpMuteCommand;
 import ua.klesaak.proxybans.commands.punish.mute.OpTempMuteCommand;
@@ -50,8 +47,10 @@ public class ProxyBansManager {
         /////commands/////
         new BanCommand(this);
         new TempBanCommand(this);
+        new BanIPCommand(this);
         new OpBanCommand(this);
         new OpTempBanCommand(this);
+        new OpBanIPCommand(this);
         new UnBanCommand(this);
         new OpUnBanCommand(this);
 

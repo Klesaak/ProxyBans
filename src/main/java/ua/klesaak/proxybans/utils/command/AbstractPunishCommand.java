@@ -229,6 +229,11 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return i;
     }
 
+    @SuppressWarnings("deprecation")
+    protected String getIpAddress(String nickName) {
+        return ProxyServer.getInstance().getPlayer(nickName).getAddress().getAddress().getHostAddress();
+    }
+
     protected long parseTime(CommandSender sender, int argIndex, String[] args) throws AbstractCommandException { //return's Instant seconds, когда время наказания истечет
         String time = args[argIndex];
         val messagesFile = this.proxyBansManager.getMessagesFile();

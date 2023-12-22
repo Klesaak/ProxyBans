@@ -2,6 +2,7 @@ package ua.klesaak.proxybans.storage.file;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.val;
+import net.md_5.bungee.api.connection.PendingConnection;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.storage.PunishData;
 import ua.klesaak.proxybans.storage.PunishStorage;
@@ -135,6 +136,19 @@ public class FileStorage extends PunishStorage {
     @Override
     public PunishData getBanData(String nickName) {
         return this.bansCache.get(nickName.toLowerCase());
+    }
+
+    @Override @SuppressWarnings("deprecation")
+    public PunishData getBanData(PendingConnection pendingConnection) {
+        PunishData punishData = this.bansCache.get(pendingConnection.getName().toLowerCase());
+        if (punishData != null) {
+            return punishData;
+        }
+        String ip = pendingConnection.getAddress().getAddress().getHostAddress();
+        for (val pd : this.bansCache.values()) {
+            if (pd.getPunishType().isIPBan() && pd.getIp().equalsIgnoreCase(ip)) punishData = pd;
+        }
+        return punishData;
     }
 
     @Override

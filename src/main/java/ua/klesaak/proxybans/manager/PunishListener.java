@@ -22,10 +22,9 @@ public class PunishListener implements Listener {
     @EventHandler
     public void onPlayerJoin(LoginEvent event) {
         val storage = this.manager.getPunishStorage();
-        val nickName = event.getConnection().getName().toLowerCase();
-        val punishData = storage.getBanData(nickName);
+        val punishData = storage.getBanData(event.getConnection());
         if (punishData != null) {
-            if (storage.unBanIsExpired(nickName)) return;
+            if (storage.unBanIsExpired(punishData.getPlayerName())) return;
             val cancelReason = this.tagPunishMessage(punishData);
             event.setCancelled(true);
             event.setCancelReason(cancelReason.getMessageComponent());

@@ -28,13 +28,13 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     //commands'ы
     @MessageField(key = "command.usage.ban", defaultMessage = "&7Использование - &c/ban &7<ник> <правило> <пояснение>")
     private Message usageBanCommand;
-    @MessageField(key = "command.usage.ban-ip", defaultMessage = "&7Использование - &c/ban-ip &7<ник/IP-адрес> <правило> <пояснение>")
+    @MessageField(key = "command.usage.ban-ip", defaultMessage = "&7Использование - &c/ban-ip &7<ник> <правило> <пояснение>")
     private Message usageBanIpCommand;
     @MessageField(key = "command.usage.tempBan", defaultMessage = "&7Использование - &c/tempban &7<ник> <время> <правило> <пояснение>")
     private Message usageTempBanCommand;
     @MessageField(key = "command.usage.op-ban", defaultMessage = "&7Использование - &c/op-ban &7<ник> <правило> <пояснение>")
     private Message usageOpBanCommand;
-    @MessageField(key = "command.usage.op-banip", defaultMessage = "&7Использование - &c/op-banip &7<ник/IP-адрес> <правило> <пояснение>")
+    @MessageField(key = "command.usage.op-banip", defaultMessage = "&7Использование - &c/op-banip &7<ник> <правило> <пояснение>")
     private Message usageOpBanIpCommand;
     @MessageField(key = "command.usage.op-tempBan", defaultMessage = "&7Использование - &c/op-tempban &7<ник> <время> <правило> <пояснение>")
     private Message usageOpTempBanCommand;

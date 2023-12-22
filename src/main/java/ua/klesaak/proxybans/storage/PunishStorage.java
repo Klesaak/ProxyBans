@@ -1,6 +1,7 @@
 package ua.klesaak.proxybans.storage;
 
 import lombok.Getter;
+import net.md_5.bungee.api.connection.PendingConnection;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public abstract class PunishStorage implements AutoCloseable {
     public abstract void unMuteAllBy(String nickName);
 
     public abstract PunishData getBanData(String nickName);
+    public abstract PunishData getBanData(PendingConnection pendingConnection);
     public abstract PunishData getMuteData(String nickName);
     public abstract List<PunishData> getHistoryData(String nickName);
     public abstract boolean isBanned(String nickName);
