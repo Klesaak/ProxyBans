@@ -73,7 +73,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     public void cmdVerifyArgs(int minimum, String[] args, String usage) throws AbstractCommandException {
         if (args.length < minimum) {
-            throw new AbstractCommandException(new Message(ChatColor.RED + usage, false, false));
+            throw new AbstractCommandException(new Message(ChatColor.RED + usage, false, true));
         }
     }
 

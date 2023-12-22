@@ -6,7 +6,9 @@ import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 
@@ -39,6 +41,14 @@ public final class RulesCommand extends AbstractPunishCommand {
 
     @Override
     public Iterable<String> onTabSuggest(CommandSender commandSender, String[] args) {
+        if (args.length == 1) {
+            List<String> pagesIndexes = new ArrayList<>();
+            int pages = this.proxyBansManager.getConfigFile().getRulePages().getMaxPages(5);
+            for (int i = 1; i <= pages; i++) {
+                pagesIndexes.add(String.valueOf(i));
+            }
+            return this.copyPartialMatches(args[0].toLowerCase(), pagesIndexes, new ArrayList<>());
+        }
         return Collections.emptyList();
     }
 }

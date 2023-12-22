@@ -2,7 +2,7 @@ package ua.klesaak.proxybans.permshook;
 
 import ua.klesaak.mineperms.api.MinePermsAPI;
 
-public class MinePermsHook implements IPermHook {
+public final class MinePermsHook implements IPermHook {
 
     public MinePermsHook() {
     }

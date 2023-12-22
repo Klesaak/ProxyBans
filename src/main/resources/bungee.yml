@@ -26,8 +26,10 @@ permissions:
     description: "Позволяет использовать команду /op-mute"
   proxybans.rules:
     description: "Позволяет использовать команду /rules"
-  proxybans.punish-info:
-    description: "Позволяет использовать команду /punish-info"
+  proxybans.ban-info:
+    description: "Позволяет использовать команду /ban-info"
+  proxybans.mute-info:
+    description: "Позволяет использовать команду /mute-info"
   proxybans.punish-history:
     description: "Позволяет использовать команду /punish-history"
   proxybans.ignore-cd:
@@ -44,5 +46,13 @@ permissions:
     description: "Позволяет игроку не писать подробный комментарий к наказанию."
   proxybans.unban:
     description: "Позволяет игроку снимать наказания от команд /ban, /ban-ip, /tempban."
+  proxybans.unban-all:
+    description: "Позволяет игроку снимать ВСЕ баны выданные недобросовестным админом."
+  proxybans.unmute-all:
+    description: "Позволяет игроку снимать ВСЕ муты выданные недобросовестным админом."
+  proxybans.unmute:
+    description: "Позволяет игроку снимать наказания от команд /mute, /tempmute."
+  proxybans.op-unmute:
+    description: "Позволяет игроку снимать наказания от команд /op-mute, /op-tempmute."
   proxybans.op-unban:
     description: "Позволяет игроку снимать наказания от команд /op-ban, /op-banip, /op-tempban."

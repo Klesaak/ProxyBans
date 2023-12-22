@@ -28,6 +28,9 @@ public final class OpUnMuteCommand extends AbstractPunishCommand {
     public Iterable<String> onTabSuggest(CommandSender commandSender, String[] args) {
         if (args.length == 1) {
             val players = new ArrayList<String>();
+            players.addAll(this.getPunishedPlayersBy(PunishType.MUTE));
+            players.addAll(this.getPunishedPlayersBy(PunishType.TEMP_MUTE));
+
             players.addAll(this.getPunishedPlayersBy(PunishType.OP_MUTE));
             players.addAll(this.getPunishedPlayersBy(PunishType.OP_TEMP_MUTE));
             return this.copyPartialMatches(args[0].toLowerCase(), players, new ArrayList<>());

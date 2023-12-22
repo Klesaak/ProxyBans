@@ -6,6 +6,8 @@ import net.md_5.bungee.api.ChatColor;
 import ua.klesaak.proxybans.ProxyBansPlugin;
 import ua.klesaak.proxybans.commands.ReloadCommand;
 import ua.klesaak.proxybans.commands.RulesCommand;
+import ua.klesaak.proxybans.commands.info.BanInfoCommand;
+import ua.klesaak.proxybans.commands.info.MuteInfoCommand;
 import ua.klesaak.proxybans.commands.punish.KickCommand;
 import ua.klesaak.proxybans.commands.punish.ban.*;
 import ua.klesaak.proxybans.commands.punish.mute.MuteCommand;
@@ -13,8 +15,10 @@ import ua.klesaak.proxybans.commands.punish.mute.OpMuteCommand;
 import ua.klesaak.proxybans.commands.punish.mute.OpTempMuteCommand;
 import ua.klesaak.proxybans.commands.punish.mute.TempMuteCommand;
 import ua.klesaak.proxybans.commands.punish.unban.OpUnBanCommand;
+import ua.klesaak.proxybans.commands.punish.unban.UnBanAllCommand;
 import ua.klesaak.proxybans.commands.punish.unban.UnBanCommand;
 import ua.klesaak.proxybans.commands.punish.unmute.OpUnMuteCommand;
+import ua.klesaak.proxybans.commands.punish.unmute.UnMuteAllCommand;
 import ua.klesaak.proxybans.commands.punish.unmute.UnMuteCommand;
 import ua.klesaak.proxybans.config.ConfigFile;
 import ua.klesaak.proxybans.config.MessagesFile;
@@ -53,10 +57,12 @@ public class ProxyBansManager {
         new OpBanIPCommand(this);
         new UnBanCommand(this);
         new OpUnBanCommand(this);
+        new UnBanAllCommand(this);
 
         new MuteCommand(this);
         new TempMuteCommand(this);
         new UnMuteCommand(this);
+        new UnMuteAllCommand(this);
         new OpMuteCommand(this);
         new OpTempMuteCommand(this);
         new OpUnMuteCommand(this);
@@ -64,7 +70,8 @@ public class ProxyBansManager {
         new RulesCommand(this);
         new KickCommand(this);
 
-
+        new BanInfoCommand(this);
+        new MuteInfoCommand(this);
         new ReloadCommand(this);
     }
 

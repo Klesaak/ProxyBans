@@ -23,6 +23,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     public static final Pattern APPLICABLE_PUNISHMENTS_PATTERN = Pattern.compile("(applicablePunishments)", Pattern.LITERAL);
     public static final Pattern PAGE_PATTERN = Pattern.compile("(page)", Pattern.LITERAL);
     public static final Pattern PAGES_PATTERN = Pattern.compile("(pages)", Pattern.LITERAL);
+    public static final Pattern IS_IP_BAN_PATTERN = Pattern.compile("(isIpBan)", Pattern.LITERAL);
+    public static final Pattern IS_OP_PUNISH_PATTERN = Pattern.compile("(isOpPunish)", Pattern.LITERAL);
 
 
     //commands'ы
@@ -56,8 +58,10 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message usageOpUnmuteCommand;
     @MessageField(key = "command.usage.kick", defaultMessage = "&7Использование - &c/kick &7<ник> <правило> <пояснение>")
     private Message usageKickCommand;
-    @MessageField(key = "command.usage.check", defaultMessage = "&7Использование - &c/check &7<ник>")
-    private Message usageCheckCommand;
+    @MessageField(key = "command.usage.ban-info", defaultMessage = "&7Использование - &c/ban-info &7<ник>")
+    private Message usageBanInfo;
+    @MessageField(key = "command.usage.mute-info", defaultMessage = "&7Использование - &c/mute-info &7<ник>")
+    private Message usageMuteInfo;
     @MessageField(key = "command.cooldown", defaultMessage = "&7Вы сможете юзать данную команду через &6(time)")
     private Message messageCooldown;
     @MessageField(key = "command.no-permission", defaultMessage = "&cВы не можете юзать данную команду.")
@@ -106,6 +110,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message invalidFormatTime;
     @MessageField(key = "command.error.invalidTime", defaultMessage = "&4Ошибка: &cВремя не может быть меньше либо равняться нулю.")
     private Message invalidTime;
+    @MessageField(key = "command.error.infoNotFound", defaultMessage = "&4Ошибка: &cИнформация по игроку не найдена.")
+    private Message messageInfoNotFound;
     @MessageField(key = "command.rule.notFound", defaultMessage = "&4Ошибка: &cПравило не найдено.")
     private Message messageRuleNotFound;
     @MessageField(key = "command.rule.notApplicablePunish", defaultMessage = "&4Ошибка: &cДля данного правила нельзя применить этот тип наказания.")
@@ -121,6 +127,31 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageRuleFormat;
     @MessageField(key = "command.emptyData", defaultMessage = "N/A", withoutQuotes = true)
     private Message messageEmptyData;
+    @MessageField(key = "command.info.banInfoFormat", defaultMessage = {
+            "Информация по игроку: (player)",
+            "Забанил: (punisher)",
+            "Игрок был на сервере: (server)",
+            "Забанивший был на сервере: (punishServer)",
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Дата: (date)",
+            "По-IP: (isIpBan)",
+            "ОП-Бан: (isOpPunish)",
+            "Забанен до: (time)"
+    })
+    private Message messageBanInfoFormat;
+    @MessageField(key = "command.info.muteInfoFormat", defaultMessage = {
+            "Информация по игроку: (player)",
+            "Замутил: (punisher)",
+            "Игрок был на сервере: (server)",
+            "Замутивший был на сервере: (punishServer)",
+            "Правило: (rule)",
+            "Комментарий: (comment)",
+            "Дата: (date)",
+            "ОП-Мут: (isOpPunish)",
+            "Замучен до: (time)"
+    })
+    private Message messageMuteInfoFormat;
 
     //broadcast'ы
     @MessageField(key = "message.broadcast.banned", defaultMessage = "[BAN]: (punisher) (punishServer) забанил (player) (server). Причина - (rule). (ruleText) ((comment))")

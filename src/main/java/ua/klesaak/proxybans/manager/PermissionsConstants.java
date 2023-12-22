@@ -14,10 +14,13 @@ public final class PermissionsConstants {
     public static final String IGNORE_OFFLINE_PERMISSION = PREFIX_WILDCARD_PERMISSION       + "offline";
     public static final String USER_ANY_PUNISHMENTS_PERMISSION = PREFIX_WILDCARD_PERMISSION + "useanypunishments";
     public static final String RULES_PERMISSION = PREFIX_WILDCARD_PERMISSION + "rules";
-    public static final String INFO_PERMISSION = PREFIX_WILDCARD_PERMISSION + "punish-info";
+    public static final String BAN_INFO_PERMISSION = PREFIX_WILDCARD_PERMISSION + "ban-info";
+    public static final String MUTE_INFO_PERMISSION = PREFIX_WILDCARD_PERMISSION + "mute-info";
     public static final String HISTORY_PERMISSION = PREFIX_WILDCARD_PERMISSION + "punish-history";
     public static final String SMART_COMMENT_PERMISSION = PREFIX_WILDCARD_PERMISSION + "smart-comment";
     public static final String UNBAN_PERMISSION = PREFIX_WILDCARD_PERMISSION + "unban";
+    public static final String UNBAN_ALL_PERMISSION = PREFIX_WILDCARD_PERMISSION + "unban-all";
+    public static final String UNMUTE_ALL_PERMISSION = PREFIX_WILDCARD_PERMISSION + "unmute-all";
     public static final String OP_UNBAN_PERMISSION = PREFIX_WILDCARD_PERMISSION + "op-unban";
     public static final String OP_UNMUTE_PERMISSION = PREFIX_WILDCARD_PERMISSION + "op-unmute";
     public static final String IGNORE_MAXTIME = PREFIX_WILDCARD_PERMISSION + "ignore-maxtime";

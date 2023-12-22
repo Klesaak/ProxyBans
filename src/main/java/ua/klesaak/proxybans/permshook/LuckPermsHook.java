@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class LuckPermsHook implements IPermHook {
+public final class LuckPermsHook implements IPermHook {
     private final LuckPerms luckPermsApi = LuckPermsProvider.get();
 
     public LuckPermsHook() {
@@ -29,7 +29,7 @@ public class LuckPermsHook implements IPermHook {
 
     @Override
     public boolean hasPermission(String nickName, String permission) {
-        return false;
+        return false;//я ебал этот апи
     }
 
     private String getLPGroup(String nick) throws InterruptedException, ExecutionException {
