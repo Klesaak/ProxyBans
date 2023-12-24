@@ -2,10 +2,12 @@ package ua.klesaak.proxybans.permshook;
 
 import lombok.val;
 import ru.Den_Abr.SimplePerms.SimplePermsCommon;
+import ua.klesaak.proxybans.ProxyBansPlugin;
 
 public final class SimplePermsHook implements IPermHook {
 
-    public SimplePermsHook() {
+    public SimplePermsHook(ProxyBansPlugin proxyBansPlugin) {
+        proxyBansPlugin.getLogger().info("Loaded permission provider: " + this.getClass().getSimpleName());
     }
 
     @Override

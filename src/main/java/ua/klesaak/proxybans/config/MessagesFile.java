@@ -128,7 +128,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageRuleFormat;
     @MessageField(key = "command.emptyData", defaultMessage = "N/A", withoutQuotes = true)
     private Message messageEmptyData;
-
+/////////////////////////////////////////////////////////
     // TODO: 23.12.2023 Реадизовать это кодом иииуу
     @MessageField(key = "command.banList.listFormat", defaultMessage = {
             "&6Список банов: &c(page)/(pages)",
@@ -137,6 +137,8 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
             "&c&r",
             "&6Следующая страница - /ban-list [&cномер страницы&6]"})
     private Message messageBanListFormat;
+    @MessageField(key = "command.banList.format-entry", defaultMessage = "&ctodo", withoutQuotes = true)
+    private Message messageBanListFormatEntry;
     // TODO: 23.12.2023 Реадизовать это кодом иииуу
     @MessageField(key = "command.muteList.listFormat", defaultMessage = {
             "&6Список мутов: &c(page)/(pages)",
@@ -145,7 +147,9 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
             "&c&r",
             "&6Следующая страница - /mute-list [&cномер страницы&6]"})
     private Message messageMuteListFormat;
-
+    @MessageField(key = "command.muteList.format-entry", defaultMessage = "&ctodo", withoutQuotes = true)
+    private Message messageMuteListFormatEntry;
+//////////////////////////////////////////////////////////
     @MessageField(key = "command.info.banInfoFormat", defaultMessage = {
             "Информация по игроку: (player)",
             "Забанил: (punisher)",

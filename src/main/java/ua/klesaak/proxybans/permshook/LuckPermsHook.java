@@ -4,7 +4,7 @@ import lombok.val;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
-import net.md_5.bungee.api.ProxyServer;
+import ua.klesaak.proxybans.ProxyBansPlugin;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -13,18 +13,13 @@ import java.util.concurrent.ExecutionException;
 public final class LuckPermsHook implements IPermHook {
     private final LuckPerms luckPermsApi = LuckPermsProvider.get();
 
-    public LuckPermsHook() {
+    public LuckPermsHook(ProxyBansPlugin proxyBansPlugin) {
+        proxyBansPlugin.getLogger().info("Loaded permission provider: " + this.getClass().getSimpleName());
     }
 
     @Override
     public String getUserGroup(String nickName) {
-        String group = "";
-        try {
-            group = this.getGroup(nickName);
-        } catch (InterruptedException | ExecutionException exception) {
-            throw new RuntimeException("Ошибка при получении группы из LuckPerms", exception);
-        }
-        return group;
+        return this.getGroup(nickName);
     }
 
     @Override
@@ -32,23 +27,24 @@ public final class LuckPermsHook implements IPermHook {
         return false;//я ебал этот апи
     }
 
-    private String getLPGroup(String nick) throws InterruptedException, ExecutionException {
+    private String loadLPGroup(String nick) {
         val userManager = this.luckPermsApi.getUserManager();
-        CompletableFuture<UUID> uuid = userManager.lookupUniqueId(nick);
-        val userId = uuid.get();
-        if (userId != null) {
-            CompletableFuture<User> user = userManager.loadUser(userId);
-            return user.get().getPrimaryGroup();
+        String group = "default";
+        try {
+            CompletableFuture<UUID> uuidLoadTask = userManager.lookupUniqueId(nick);
+            UUID userId = uuidLoadTask.get();
+            if (userId != null) {
+                CompletableFuture<User> userLoadTask = userManager.loadUser(userId);
+                group = userLoadTask.get().getPrimaryGroup();
+            }
+        } catch (ExecutionException | InterruptedException exception) {
+            throw new RuntimeException("Произошла ошибка при получении группы игрока из LuckPerms.", exception);
         }
-        return "default";
+        return group;
     }
 
-    private String getGroup(String nick) throws InterruptedException, ExecutionException {
-        val proxiedPlayer = ProxyServer.getInstance().getPlayer(nick);
-        if (proxiedPlayer != null) {
-            User user = this.luckPermsApi.getUserManager().getUser(proxiedPlayer.getName());
-            return user != null ? user.getPrimaryGroup() : getLPGroup(nick);
-        }
-        return "default";
+    private String getGroup(String nick) {
+        User user = this.luckPermsApi.getUserManager().getUser(nick);
+        return user != null ? user.getPrimaryGroup() : this.loadLPGroup(nick);
     }
 }

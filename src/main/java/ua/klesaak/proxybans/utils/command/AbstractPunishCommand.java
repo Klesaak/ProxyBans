@@ -51,7 +51,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
                 val senderName = commandSender.getName();
                 val configTime = this.proxyBansManager.getConfigFile().getCooldownTime(commandSender, this.getName());
                 boolean applyCooldown = !commandSender.hasPermission(PermissionsConstants.IGNORE_COOLDOWN_PERMISSION) && configTime > 0L;
-                if (applyCooldown && !this.cooldownExpireNotifier.isCooldown(this.getName(), senderName)) {
+                if (applyCooldown) {
                     this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, Instant.now().plusSeconds(configTime));
                 }
             }
@@ -186,9 +186,11 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     private void checkCooldown(CommandSender sender) throws AbstractCommandException {
         Instant cooldown = this.cooldownExpireNotifier.getCooldown(sender, this.getName());
-        if (cooldown != null) {
+        int cooldownTime = 0;
+        if (cooldown != null) cooldownTime = (int)cooldown.minusSeconds(Instant.now().getEpochSecond()).getEpochSecond();
+        if (cooldownTime > 0) {
             throw new AbstractCommandException(this.proxyBansManager.getMessagesFile().getMessageCooldown()
-                    .tag(MessagesFile.TIME_PATTERN, NumberUtils.getTime((int)cooldown.minusSeconds(Instant.now().getEpochSecond()).getEpochSecond())));
+                    .tag(MessagesFile.TIME_PATTERN, NumberUtils.getTime(cooldownTime)));
         }
     }
 

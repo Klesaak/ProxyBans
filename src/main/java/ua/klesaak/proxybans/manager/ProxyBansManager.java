@@ -44,10 +44,10 @@ public class ProxyBansManager {
     public ProxyBansManager(ProxyBansPlugin proxyBansPlugin) {
         this.proxyBansPlugin = proxyBansPlugin;
         this.reloadConfigFiles();
+        this.hookPerms();
         this.initStorage();
         new PunishListener(this);
         this.cooldownExpireNotifier = new CooldownExpireNotifier(this);
-        this.hookPerms();
         /////commands/////
         new BanCommand(this);
         new TempBanCommand(this);
@@ -78,14 +78,18 @@ public class ProxyBansManager {
     private void hookPerms() {
         val pluginManager = this.proxyBansPlugin.getProxy().getPluginManager();
         if (pluginManager.getPlugin("SimplePerms") != null) {
-            this.permHook = new SimplePermsHook();
+            this.permHook = new SimplePermsHook(this.proxyBansPlugin);
             return;
         }
         if (pluginManager.getPlugin("LuckPerms") != null) {
-            this.permHook = new LuckPermsHook();
+            this.permHook = new LuckPermsHook(this.proxyBansPlugin);
             return;
         }
-        this.permHook = new MinePermsHook();
+        if (pluginManager.getPlugin("MinePermsBungee") != null) {
+            this.permHook = new MinePermsHook(this.proxyBansPlugin);
+            return;
+        }
+        throw new RuntimeException("You must be install MinePerms or SimplePerms(By Den_Abr) or LuckPermsBungee");
     }
 
     private void initStorage() {
