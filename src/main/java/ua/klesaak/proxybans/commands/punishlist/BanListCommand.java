@@ -27,10 +27,7 @@ public final class BanListCommand extends AbstractPunishCommand {
         val messageHeader = messagesFile.getMessageBanListHeader();
         val messageBanListEntry = messagesFile.getMessageBanListFormatEntry();
         val messageFooter = messagesFile.getMessageBanListFooter();
-        List<PunishData> actualBans = new ArrayList<>();
-        for (val pd : this.proxyBansManager.getPunishStorage().getBansCache().values()) {
-            if (!pd.isExpired()) actualBans.add(pd);
-        }
+        List<PunishData> actualBans = new ArrayList<>(this.getPunishedPlayersBy(punishData -> punishData.getPunishType().isBan()));
         Paginated<PunishData> bans = new Paginated<>(actualBans);
         if (bans.getContent().isEmpty()) {
             messagesFile.getMessageBanListEmpty().send(sender);

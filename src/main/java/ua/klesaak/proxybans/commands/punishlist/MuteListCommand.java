@@ -27,10 +27,7 @@ public final class MuteListCommand extends AbstractPunishCommand {
         val messageHeader = messagesFile.getMessageMuteListHeader();
         val messageMuteListEntry = messagesFile.getMessageMuteListFormatEntry();
         val messageFooter = messagesFile.getMessageMuteListFooter();
-        List<PunishData> actualMutes = new ArrayList<>();
-        for (val pd : this.proxyBansManager.getPunishStorage().getMutesCache().values()) {
-            if (!pd.isExpired()) actualMutes.add(pd);
-        }
+        List<PunishData> actualMutes = new ArrayList<>(this.getPunishedPlayersBy(punishData -> !punishData.getPunishType().isBan()));
         Paginated<PunishData> mutes = new Paginated<>(actualMutes);
         if (mutes.getContent().isEmpty()) {
             messagesFile.getMessageMuteListEmpty().send(sender);

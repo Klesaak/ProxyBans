@@ -14,12 +14,14 @@ import ua.klesaak.proxybans.manager.PermissionsConstants;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
 import ua.klesaak.proxybans.rules.RuleData;
+import ua.klesaak.proxybans.storage.PunishData;
 import ua.klesaak.proxybans.utils.NumberUtils;
 import ua.klesaak.proxybans.utils.messages.Message;
 
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 import static ua.klesaak.proxybans.manager.PermissionsConstants.*;
@@ -278,14 +280,21 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     protected List<String> getPunishedPlayersBy(PunishType punishType) {
         List<String> players = new ArrayList<>();
-        for (val punishData : this.proxyBansManager.getPunishStorage().getBansCache().values()) {
-            if (punishData.getPunishType() == punishType && !punishData.isExpired()) {
-                players.add(punishData.getPlayerName());
+        this.getPunishedPlayersBy(punishData -> punishData.getPunishType() == punishType).forEach(punishData -> players.add(punishData.getPlayerName()));
+        return players;
+    }
+
+    protected List<PunishData> getPunishedPlayersBy(Predicate<PunishData> predicate) {
+        List<PunishData> players = new ArrayList<>();
+        val storage = this.proxyBansManager.getPunishStorage();
+        for (val punishData : storage.getBansCache().values()) {
+            if (predicate.test(punishData) && !punishData.isExpired()) {
+                players.add(punishData);
             }
         }
-        for (val punishData : this.proxyBansManager.getPunishStorage().getMutesCache().values()) {
-            if (punishData.getPunishType() == punishType && !punishData.isExpired()) {
-                players.add(punishData.getPlayerName());
+        for (val punishData : storage.getMutesCache().values()) {
+            if (predicate.test(punishData) && !punishData.isExpired()) {
+                players.add(punishData);
             }
         }
         return players;

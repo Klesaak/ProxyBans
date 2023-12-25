@@ -30,6 +30,10 @@ permissions:
     description: "Позволяет использовать команду /ban-info"
   proxybans.mute-info:
     description: "Позволяет использовать команду /mute-info"
+  proxybans.ban-list:
+    description: "Позволяет использовать команду /ban-list"
+  proxybans.mute-list:
+    description: "Позволяет использовать команду /mute-list"
   proxybans.punish-history:
     description: "Позволяет использовать команду /punish-history"
   proxybans.ignore-cd:
