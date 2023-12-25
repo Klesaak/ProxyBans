@@ -23,19 +23,17 @@ public final class RulesCommand extends AbstractPunishCommand {
         val messagesFile = this.proxyBansManager.getMessagesFile();
         val message = messagesFile.getMessageRuleListFormat();
         val configFile = this.proxyBansManager.getConfigFile();
-        if (args.length == 0) {
-            message.tag(PAGE_PATTERN, String.valueOf(1))
-                    .tag(RULES_PATTERN, configFile.getRulesPage(messagesFile,1))
-                    .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages())).send(sender);
-            return false;
+        int pageIndex = 1;
+        if (args.length != 0) {
+            pageIndex = this.parsePage(args[0]);
         }
-        int pageIndex = this.parsePage(args[0]);
         if (pageIndex > configFile.getMaxRulesPages()) pageIndex = configFile.getMaxRulesPages();
         val rulePage = configFile.getRulesPage(messagesFile, pageIndex);
         if (rulePage == null) this.parsePage(null);
         message.tag(PAGE_PATTERN, String.valueOf(pageIndex))
                 .tag(RULES_PATTERN, rulePage)
-                .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages())).send(sender);
+                .tag(PAGES_PATTERN, String.valueOf(configFile.getMaxRulesPages()))
+                .send(sender);
         return false;//возвращаем именно фолс, потому что не нужно включать кд
     }
 

@@ -163,12 +163,14 @@ public class FileStorage extends PunishStorage {
 
     @Override
     public boolean isBanned(String nickName) {
-        return this.getBanData(nickName) != null;
+        val punishData = this.getBanData(nickName);
+        return punishData != null && !punishData.isExpired();
     }
 
     @Override
     public boolean isMuted(String nickName) {
-        return this.getMuteData(nickName) != null;
+        val punishData = this.getMuteData(nickName);
+        return punishData != null && !punishData.isExpired();
     }
 
     @Override

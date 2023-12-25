@@ -25,7 +25,7 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     public static final Pattern PAGES_PATTERN = Pattern.compile("(pages)", Pattern.LITERAL);
     public static final Pattern IS_IP_BAN_PATTERN = Pattern.compile("(isIpBan)", Pattern.LITERAL);
     public static final Pattern IS_OP_PUNISH_PATTERN = Pattern.compile("(isOpPunish)", Pattern.LITERAL);
-    public static final Pattern PUNISH_LIST_PATTERN = Pattern.compile("(punishList)", Pattern.LITERAL);
+    public static final Pattern INDEX_PATTERN = Pattern.compile("(index)", Pattern.LITERAL);
 
 
     //commands'ы
@@ -128,28 +128,25 @@ public class MessagesFile implements LocaleConfigData<MessagesFile> {
     private Message messageRuleFormat;
     @MessageField(key = "command.emptyData", defaultMessage = "N/A", withoutQuotes = true)
     private Message messageEmptyData;
-/////////////////////////////////////////////////////////
-    // TODO: 23.12.2023 Реадизовать это кодом иииуу
-    @MessageField(key = "command.banList.listFormat", defaultMessage = {
-            "&6Список банов: &c(page)/(pages)",
-            "&7",
-            "(punishList)",
-            "&c&r",
-            "&6Следующая страница - /ban-list [&cномер страницы&6]"})
-    private Message messageBanListFormat;
-    @MessageField(key = "command.banList.format-entry", defaultMessage = "&ctodo", withoutQuotes = true)
+
+    @MessageField(key = "command.banList.empty", defaultMessage = "&cБан-Лист пока пуст, забань кого-то :)")
+    private Message messageBanListEmpty;
+    @MessageField(key = "command.banList.header", defaultMessage = "&6Список банов: &c(page)/(pages)")
+    private Message messageBanListHeader;
+    @MessageField(key = "command.banList.footer", defaultMessage = "\n&6Следующая страница - /ban-list [&cномер страницы&6]")
+    private Message messageBanListFooter;
+    @MessageField(key = "command.banList.format-entry", defaultMessage = "&c(index). (player) ((server)) забанен игроком (punisher) ((punishServer)), правило (rule), комментарий (comment), дата (date), По-IP: (isIpBan), ОП-Бан: (isOpPunish), Забанен до: (time)")
     private Message messageBanListFormatEntry;
-    // TODO: 23.12.2023 Реадизовать это кодом иииуу
-    @MessageField(key = "command.muteList.listFormat", defaultMessage = {
-            "&6Список мутов: &c(page)/(pages)",
-            "&7",
-            "(punishList)",
-            "&c&r",
-            "&6Следующая страница - /mute-list [&cномер страницы&6]"})
-    private Message messageMuteListFormat;
-    @MessageField(key = "command.muteList.format-entry", defaultMessage = "&ctodo", withoutQuotes = true)
+
+    @MessageField(key = "command.muteList.empty", defaultMessage = "&cМут-Лист пока пуст, замуть кого-то :)")
+    private Message messageMuteListEmpty;
+    @MessageField(key = "command.muteList.header", defaultMessage = "&6Список мутов: &c(page)/(pages)")
+    private Message messageMuteListHeader;
+    @MessageField(key = "command.muteList.footer", defaultMessage = "\n&6Следующая страница - /mute-list [&cномер страницы&6]")
+    private Message messageMuteListFooter;
+    @MessageField(key = "command.muteList.format-entry", defaultMessage = "&c(index). (player) ((server)) замучен игроком (punisher) ((punishServer)), правило (rule), комментарий (comment), дата (date), По-IP: (isIpBan), ОП-Бан: (isOpPunish), Забанен до: (time)")
     private Message messageMuteListFormatEntry;
-//////////////////////////////////////////////////////////
+
     @MessageField(key = "command.info.banInfoFormat", defaultMessage = {
             "Информация по игроку: (player)",
             "Забанил: (punisher)",

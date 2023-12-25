@@ -20,6 +20,8 @@ import ua.klesaak.proxybans.commands.punish.unban.UnBanCommand;
 import ua.klesaak.proxybans.commands.punish.unmute.OpUnMuteCommand;
 import ua.klesaak.proxybans.commands.punish.unmute.UnMuteAllCommand;
 import ua.klesaak.proxybans.commands.punish.unmute.UnMuteCommand;
+import ua.klesaak.proxybans.commands.punishlist.BanListCommand;
+import ua.klesaak.proxybans.commands.punishlist.MuteListCommand;
 import ua.klesaak.proxybans.config.ConfigFile;
 import ua.klesaak.proxybans.config.MessagesFile;
 import ua.klesaak.proxybans.permshook.IPermHook;
@@ -69,6 +71,9 @@ public class ProxyBansManager {
 
         new RulesCommand(this);
         new KickCommand(this);
+
+        new BanListCommand(this);
+        new MuteListCommand(this);
 
         new BanInfoCommand(this);
         new MuteInfoCommand(this);

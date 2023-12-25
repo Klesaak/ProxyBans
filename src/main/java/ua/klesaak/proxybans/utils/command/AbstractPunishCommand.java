@@ -100,7 +100,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         val nicknameLC = nickname.toLowerCase();
         val punishData = storage.getBanData(nicknameLC);
         MessagesFile messageFile = this.proxyBansManager.getMessagesFile();
-        if (punishData == null) {
+        if (punishData == null || punishData.isExpired()) {
             throw new AbstractCommandException(messageFile.getPlayerIsNotBanned());
         }
         boolean playerHaveOpBan = punishData.getPunishType().isOPBan();
@@ -120,7 +120,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         val nicknameLC = nickname.toLowerCase();
         val punishData = storage.getMuteData(nicknameLC);
         MessagesFile messageFile = this.proxyBansManager.getMessagesFile();
-        if (punishData == null) {
+        if (punishData == null || punishData.isExpired()) {
             throw new AbstractCommandException(messageFile.getPlayerIsNotMuted());
         }
         if (senderName.equalsIgnoreCase(nicknameLC)) {
@@ -279,12 +279,12 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
     protected List<String> getPunishedPlayersBy(PunishType punishType) {
         List<String> players = new ArrayList<>();
         for (val punishData : this.proxyBansManager.getPunishStorage().getBansCache().values()) {
-            if (punishData.getPunishType() == punishType) {
+            if (punishData.getPunishType() == punishType && !punishData.isExpired()) {
                 players.add(punishData.getPlayerName());
             }
         }
         for (val punishData : this.proxyBansManager.getPunishStorage().getMutesCache().values()) {
-            if (punishData.getPunishType() == punishType) {
+            if (punishData.getPunishType() == punishType && !punishData.isExpired()) {
                 players.add(punishData.getPlayerName());
             }
         }
