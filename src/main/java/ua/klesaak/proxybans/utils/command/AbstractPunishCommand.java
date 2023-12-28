@@ -50,11 +50,11 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
             this.cmdVerifyPermission(commandSender,PREFIX_WILDCARD_PERMISSION + this.getName(), this.proxyBansManager.getMessagesFile().getMessageNoPermission());
             this.checkCooldown(commandSender);
             if (this.onReceiveCommand(commandSender, args)) {
-                val senderName = commandSender.getName();
+                val senderUUID = ((ProxiedPlayer)commandSender).getUniqueId();
                 val configTime = this.proxyBansManager.getConfigFile().getCooldownTime(commandSender, this.getName());
                 boolean applyCooldown = !commandSender.hasPermission(PermissionsConstants.IGNORE_COOLDOWN_PERMISSION) && configTime > 0L;
                 if (applyCooldown) {
-                    this.cooldownExpireNotifier.addCooldown(this.getName(), senderName, Instant.now().plusSeconds(configTime));
+                    this.cooldownExpireNotifier.addCooldown(this.getName(), senderUUID, Instant.now().plusSeconds(configTime));
                 }
             }
         } catch (AbstractCommandException e) {

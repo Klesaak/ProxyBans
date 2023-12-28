@@ -1,0 +1,4 @@
+= ProxyBans plugin for BungeeCord
+:toc:
+:icons: font
+

@@ -10,6 +10,7 @@ import ua.klesaak.proxybans.manager.ProxyBansManager;
 
 import java.time.Instant;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +18,7 @@ import static ua.klesaak.proxybans.manager.PermissionsConstants.PREFIX_WILDCARD_
 
 public final class CooldownExpireNotifier {
     private final ProxyBansManager proxyBansManager;
-    private final Map<String, ConcurrentHashMap<String, Instant>> commandCooldowns = new ConcurrentHashMap<>(64);
+    private final Map<String, ConcurrentHashMap<UUID, Instant>> commandCooldowns = new ConcurrentHashMap<>(64);
     private ScheduledTask cooldownExpireTask;
 
 
@@ -26,10 +27,10 @@ public final class CooldownExpireNotifier {
         this.cooldownExpireTask = ProxyServer.getInstance().getScheduler().schedule(this.proxyBansManager.getProxyBansPlugin(), () -> {
             for (String commandKey : this.commandCooldowns.keySet()) {
                 val playersMap = this.commandCooldowns.get(commandKey);
-                for (String playerKey : playersMap.keySet()) {
-                    if (Instant.now().isAfter(playersMap.get(playerKey))) {
-                        playersMap.remove(playerKey);
-                        ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playerKey);
+                for (UUID playerUUIDKey : playersMap.keySet()) {
+                    if (Instant.now().isAfter(playersMap.get(playerUUIDKey))) {
+                        playersMap.remove(playerUUIDKey);
+                        ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(playerUUIDKey);
                         if (proxiedPlayer != null && proxiedPlayer.hasPermission(PREFIX_WILDCARD_PERMISSION + commandKey)) {
                             this.proxyBansManager.getMessagesFile().getMessageIsCooldownExpired().tag(MessagesFile.COMMAND_PATTERN, commandKey).send(proxiedPlayer);
                         }
@@ -43,16 +44,17 @@ public final class CooldownExpireNotifier {
         this.commandCooldowns.put(command.getName(), new ConcurrentHashMap<>());
     }
 
-    public void addCooldown(String commandName, String playerName, Instant instant) {
-        this.commandCooldowns.get(commandName).put(playerName, instant);
+    public void addCooldown(String commandName, UUID playerUUID, Instant instant) {
+        this.commandCooldowns.get(commandName).put(playerUUID, instant);
     }
 
-    public boolean isCooldown(String commandName, String playerName) {
-        return this.commandCooldowns.get(commandName).get(playerName) != null;
+    public boolean isCooldown(String commandName, UUID playerUUID) {
+        return this.commandCooldowns.get(commandName).get(playerUUID) != null;
     }
 
     public Instant getCooldown(CommandSender commandSender, String commandName) {
-        return this.commandCooldowns.get(commandName).get(commandSender.getName());
+        val senderUUID = ((ProxiedPlayer)commandSender).getUniqueId();
+        return this.commandCooldowns.get(commandName).get(senderUUID);
     }
 
     public void stop() {
