@@ -53,6 +53,7 @@ public final class CooldownExpireNotifier {
     }
 
     public Instant getCooldown(CommandSender commandSender, String commandName) {
+        if (!(commandSender instanceof ProxiedPlayer)) return null;
         val senderUUID = ((ProxiedPlayer)commandSender).getUniqueId();
         return this.commandCooldowns.get(commandName).get(senderUUID);
     }

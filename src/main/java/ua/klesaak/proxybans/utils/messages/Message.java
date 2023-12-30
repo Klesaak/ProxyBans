@@ -1,13 +1,13 @@
 package ua.klesaak.proxybans.utils.messages;
 
 import lombok.val;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.chat.ComponentSerializer;
+import ua.klesaak.proxybans.utils.MCColorUtils;
 
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -20,7 +20,7 @@ public class Message implements Cloneable {
 
     public Message(String message, boolean isList, boolean isWithoutQuotes) {
         String mes = isWithoutQuotes ? message.replace("\"", "") : message;
-        this.message = ChatColor.translateAlternateColorCodes('&', mes);
+        this.message = MCColorUtils.color(mes);
         this.isList = isList;
         this.isWithoutQuotes = isWithoutQuotes;
     }
