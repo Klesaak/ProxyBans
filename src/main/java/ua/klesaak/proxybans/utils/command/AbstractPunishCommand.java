@@ -87,10 +87,11 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         if (senderName.equalsIgnoreCase(nickName)) throw new AbstractCommandException(messagesFile.getMessageSelfHarm());
         if (checkOffline) this.checkOffline(commandSender, nickName);
         val configFile = this.proxyBansManager.getConfigFile();
-        if (commandSender instanceof ProxiedPlayer && configFile.isProtected(nickName)) {
+        boolean isProxiedPlayer = commandSender instanceof ProxiedPlayer;
+        if (isProxiedPlayer && configFile.isProtected(nickName)) {
             throw new AbstractCommandException(messagesFile.getMessagePlayerIsProtected());
         }
-        if (commandSender instanceof ProxiedPlayer && configFile.isHeavier(nickName, senderName) && !commandSender.hasPermission(IGNORE_PRIORITY)) {
+        if (isProxiedPlayer && configFile.isHeavier(nickName, senderName) && !commandSender.hasPermission(IGNORE_PRIORITY)) {
             throw new AbstractCommandException(messagesFile.getMessagePlayerIsLowPriority());
         }
         return nickName;
