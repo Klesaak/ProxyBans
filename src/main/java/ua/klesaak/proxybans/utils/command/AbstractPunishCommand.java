@@ -267,7 +267,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     protected String parseComment(CommandSender commandSender, int start, String[] args) throws AbstractCommandException {
         val comm = Arrays.copyOfRange(args, start, args.length);
-        if (!commandSender.hasPermission(SMART_COMMENT_PERMISSION) && Arrays.stream(comm).filter(s -> s.length() >= 2).count() < 3L) {
+        if (!commandSender.hasPermission(SMART_COMMENT_PERMISSION) && Arrays.stream(comm).filter(s -> s.length() >= 2).count() < 2L) {
             throw new AbstractCommandException(this.proxyBansManager.getMessagesFile().getMessageTooFewInfoAboutPunish());
         }
         return Joiner.on(" ").join(comm);

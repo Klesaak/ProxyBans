@@ -60,7 +60,7 @@ protectedPlayers:
 dateFormat:
   format: "dd.MM.yyyy HH:mm:ss"
   locale: "ru"
-  timeZone: "Europe/Moscow"
+  timeZone: "GMT+4"
 
 #Команды, которые будут блокироваться плагином, если игроку выдан мут. Автоматически обрабатываются команды типа /me -> /essentials:me
 blockedCommandsOnMute:
