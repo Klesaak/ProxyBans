@@ -4,14 +4,12 @@ import lombok.val;
 import net.md_5.bungee.api.CommandSender;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
-import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import static ua.klesaak.proxybans.config.MessagesFile.*;
-import static ua.klesaak.proxybans.config.MessagesFile.TIME_PATTERN;
 
 public final class BanInfoCommand extends AbstractPunishCommand {
 
@@ -20,7 +18,7 @@ public final class BanInfoCommand extends AbstractPunishCommand {
     }
 
     @Override
-    public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
+    public boolean onReceiveCommand(CommandSender sender, String[] args) {
         val messagesFile = this.proxyBansManager.getMessagesFile();
         this.cmdVerifyArgs(1, args, messagesFile.getUsageBanInfo());
         val nickName = args[0].toLowerCase();

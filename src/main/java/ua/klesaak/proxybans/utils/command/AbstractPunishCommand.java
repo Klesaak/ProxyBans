@@ -58,8 +58,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
                 }
             }
         } catch (AbstractCommandException e) {
-            val mes = e.getMinecraftMessage();
-            if (mes != null) mes.send(commandSender);
+            e.sendMinecraftMessage(commandSender);
         }
     }
 
@@ -69,17 +68,17 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.onTabSuggest(commandSender, args);
     }
 
-    public abstract boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException; // если возвращаем - тру то включаеца кулдовн
+    public abstract boolean onReceiveCommand(CommandSender sender, String[] args); // если возвращаем - тру то включаеца кулдовн
 
     public abstract Iterable<String> onTabSuggest(CommandSender commandSender, String[] args);
 
-    public void cmdVerifyArgs(int minimum, String[] args, String usage) throws AbstractCommandException {
+    public void cmdVerifyArgs(int minimum, String[] args, String usage) {
         if (args.length < minimum) {
             throw new AbstractCommandException(new Message(ChatColor.RED + usage, false, true));
         }
     }
 
-    protected String cmdVerifyNickname(CommandSender commandSender, boolean checkOffline, String[] args) throws AbstractCommandException {
+    protected String cmdVerifyNickname(CommandSender commandSender, boolean checkOffline, String[] args) {
         String nickName = args[0].toLowerCase();
         String senderName = commandSender.getName();
         val messagesFile = this.proxyBansManager.getMessagesFile();
@@ -97,7 +96,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return nickName;
     }
 
-    protected void cmdVerifyTryUnban(CommandSender commandSender, String nickname, boolean isOpUnban) throws AbstractCommandException {
+    protected void cmdVerifyTryUnban(CommandSender commandSender, String nickname, boolean isOpUnban) {
         val storage = this.proxyBansManager.getPunishStorage();
         val senderName = this.cmdVerifySender(commandSender);
         val nicknameLC = nickname.toLowerCase();
@@ -117,7 +116,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         storage.unBan(nicknameLC);
     }
 
-    protected void cmdVerifyTryUnmute(CommandSender commandSender, String nickname, boolean isOpUnmute) throws AbstractCommandException {
+    protected void cmdVerifyTryUnmute(CommandSender commandSender, String nickname, boolean isOpUnmute) {
         val storage = this.proxyBansManager.getPunishStorage();
         val senderName = this.cmdVerifySender(commandSender);
         val nicknameLC = nickname.toLowerCase();
@@ -147,32 +146,32 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.getConsoleName();
     }
 
-    public void cmdVerifyArgs(int minimum, String[] args, Message usage) throws AbstractCommandException {
+    public void cmdVerifyArgs(int minimum, String[] args, Message usage) {
         if (args.length < minimum) {
             throw new AbstractCommandException(usage);
         }
     }
 
-    public ProxiedPlayer cmdVerifyPlayer(CommandSender sender) throws AbstractCommandException {
+    public ProxiedPlayer cmdVerifyPlayer(CommandSender sender) {
         if (!(sender instanceof ProxiedPlayer)) {
             throw new AbstractCommandException(new Message(ChatColor.RED + "Must be player", false, false));
         }
         return (ProxiedPlayer)sender;
     }
 
-    public void cmdVerifyPermission(CommandSender sender, String permission) throws AbstractCommandException {
+    public void cmdVerifyPermission(CommandSender sender, String permission) {
         if (!sender.hasPermission(permission)) {
             throw new AbstractCommandException(new Message(ChatColor.RED + "Do not have permission", false, false));
         }
     }
 
-    private void cmdVerifyPermission(CommandSender sender, String permission, String errorMessage) throws AbstractCommandException {
+    private void cmdVerifyPermission(CommandSender sender, String permission, String errorMessage) {
         if (!sender.hasPermission(permission)) {
             throw new AbstractCommandException(new Message(errorMessage, false, false));
         }
     }
 
-    private void cmdVerifyPermission(CommandSender sender, String permission, Message errorMessage) throws AbstractCommandException {
+    private void cmdVerifyPermission(CommandSender sender, String permission, Message errorMessage) {
         if (!sender.hasPermission(permission)) {
             throw new AbstractCommandException(errorMessage);
         }
@@ -187,7 +186,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         this.disconnect(proxiedPlayer, message);
     }
 
-    private void checkCooldown(CommandSender sender) throws AbstractCommandException {
+    private void checkCooldown(CommandSender sender) {
         Instant cooldown = this.cooldownExpireNotifier.getCooldown(sender, this.getName());
         int cooldownTime = 0;
         if (cooldown != null) cooldownTime = (int)cooldown.minusSeconds(Instant.now().getEpochSecond()).getEpochSecond();
@@ -201,7 +200,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.proxyBansManager.getMessagesFile().getMessageIsConsoleName().getMessageString();
     }
 
-    protected RuleData parseRule(CommandSender commandSender, int argIndex, String[] args) throws AbstractCommandException {
+    protected RuleData parseRule(CommandSender commandSender, int argIndex, String[] args) {
         String rule = args[argIndex].toLowerCase();
         RuleData ruleData = this.proxyBansManager.getConfigFile().getRule(rule);
         val messagesFile = this.proxyBansManager.getMessagesFile();
@@ -221,7 +220,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return this.parseServer(ProxyServer.getInstance().getPlayer(playerName));
     }
 
-    protected int parsePage(String message) throws AbstractCommandException {
+    protected int parsePage(String message) {
         int i;
         try {
             i = Integer.parseInt(message);
@@ -239,7 +238,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return ProxyServer.getInstance().getPlayer(nickName).getAddress().getAddress().getHostAddress();
     }
 
-    protected long parseTime(CommandSender sender, int argIndex, String[] args) throws AbstractCommandException { //return's Instant seconds, когда время наказания истечет
+    protected long parseTime(CommandSender sender, int argIndex, String[] args) { //return's Instant seconds, когда время наказания истечет
         String time = args[argIndex];
         val messagesFile = this.proxyBansManager.getMessagesFile();
         long timeForWhichPunish;
@@ -254,7 +253,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return Instant.now().plusSeconds(timeForWhichPunish).getEpochSecond();
     }
 
-    private void checkOffline(CommandSender commandSender, String targetName) throws AbstractCommandException {
+    private void checkOffline(CommandSender commandSender, String targetName) {
         val targetIsOffline = ProxyServer.getInstance().getPlayer(targetName) == null;
         val messagesFile = this.proxyBansManager.getMessagesFile();
         if (this.punishType.isIPBan() && targetIsOffline) {
@@ -265,7 +264,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
     }
 
-    protected String parseComment(CommandSender commandSender, int start, String[] args) throws AbstractCommandException {
+    protected String parseComment(CommandSender commandSender, int start, String[] args) {
         val comm = Arrays.copyOfRange(args, start, args.length);
         if (!commandSender.hasPermission(SMART_COMMENT_PERMISSION) && Arrays.stream(comm).filter(s -> s.length() >= 2).count() < 2L) {
             throw new AbstractCommandException(this.proxyBansManager.getMessagesFile().getMessageTooFewInfoAboutPunish());

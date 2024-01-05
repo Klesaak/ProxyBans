@@ -6,7 +6,6 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.rules.PunishType;
-import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public final class UnMuteAllCommand extends AbstractPunishCommand {
     }
 
     @Override
-    public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
+    public boolean onReceiveCommand(CommandSender sender, String[] args) {
         this.cmdVerifyArgs( 1, args, "/unmute-all-by <nickname> - remove all mutes by this user.");
         val nickName = args[0].toLowerCase();
         this.proxyBansManager.getPunishStorage().unMuteAllBy(nickName);

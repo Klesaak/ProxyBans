@@ -5,7 +5,6 @@ import net.md_5.bungee.api.CommandSender;
 import ua.klesaak.proxybans.manager.ProxyBansManager;
 import ua.klesaak.proxybans.storage.PunishData;
 import ua.klesaak.proxybans.utils.Paginated;
-import ua.klesaak.proxybans.utils.command.AbstractCommandException;
 import ua.klesaak.proxybans.utils.command.AbstractPunishCommand;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public final class BanListCommand extends AbstractPunishCommand {
     }
 
     @Override
-    public boolean onReceiveCommand(CommandSender sender, String[] args) throws AbstractCommandException {
+    public boolean onReceiveCommand(CommandSender sender, String[] args) {
         val messagesFile = this.proxyBansManager.getMessagesFile();
         val messageHeader = messagesFile.getMessageBanListHeader();
         val messageBanListEntry = messagesFile.getMessageBanListFormatEntry();
