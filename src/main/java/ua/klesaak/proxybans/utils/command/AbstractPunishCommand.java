@@ -90,7 +90,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         if (isProxiedPlayer && configFile.isProtected(nickName)) {
             throw new AbstractCommandException(messagesFile.getMessagePlayerIsProtected());
         }
-        if (isProxiedPlayer && configFile.isHeavier(nickName, senderName) && !commandSender.hasPermission(IGNORE_PRIORITY)) {
+        if (isProxiedPlayer && configFile.isHeavier(nickName, senderName) && !commandSender.hasPermission(IGNORE_PRIORITY_PERMISSION)) {
             throw new AbstractCommandException(messagesFile.getMessagePlayerIsLowPriority());
         }
         return nickName;
@@ -98,7 +98,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     protected void cmdVerifyTryUnban(CommandSender commandSender, String nickname, boolean isOpUnban) {
         val storage = this.proxyBansManager.getPunishStorage();
-        val senderName = this.cmdVerifySender(commandSender);
+        val senderName = this.cmdGetSenderName(commandSender);
         val nicknameLC = nickname.toLowerCase();
         val punishData = storage.getBanData(nicknameLC);
         MessagesFile messageFile = this.proxyBansManager.getMessagesFile();
@@ -118,7 +118,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
 
     protected void cmdVerifyTryUnmute(CommandSender commandSender, String nickname, boolean isOpUnmute) {
         val storage = this.proxyBansManager.getPunishStorage();
-        val senderName = this.cmdVerifySender(commandSender);
+        val senderName = this.cmdGetSenderName(commandSender);
         val nicknameLC = nickname.toLowerCase();
         val punishData = storage.getMuteData(nicknameLC);
         MessagesFile messageFile = this.proxyBansManager.getMessagesFile();
@@ -139,7 +139,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         storage.unMute(nicknameLC);
     }
 
-    protected String cmdVerifySender(CommandSender commandSender) {
+    protected String cmdGetSenderName(CommandSender commandSender) {
         if (commandSender instanceof ProxiedPlayer) {
             return commandSender.getName();
         }
@@ -249,7 +249,7 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         }
         if (timeForWhichPunish <= 0) throw new AbstractCommandException(messagesFile.getInvalidTime());
         long maxConfigTime = this.proxyBansManager.getConfigFile().getMaxPunishTime(sender, this.getName());
-        if (timeForWhichPunish > maxConfigTime && !sender.hasPermission(IGNORE_MAXTIME)) return Instant.now().plusSeconds(maxConfigTime).getEpochSecond();
+        if (timeForWhichPunish > maxConfigTime && !sender.hasPermission(IGNORE_MAXTIME_PERMISSION)) return Instant.now().plusSeconds(maxConfigTime).getEpochSecond();
         return Instant.now().plusSeconds(timeForWhichPunish).getEpochSecond();
     }
 
@@ -300,10 +300,10 @@ public abstract class AbstractPunishCommand extends Command implements TabExecut
         return players;
     }
 
-    protected List<String> getActualRules() {
+    protected List<String> getActualRules(CommandSender commandSender) {
         List<String> actualRules = new ArrayList<>();
         for (RuleData ruleData : this.proxyBansManager.getConfigFile().getRules()) {
-            if (ruleData.getApplicablePunishments().contains(this.punishType)) {
+            if (ruleData.getApplicablePunishments().contains(this.punishType) || commandSender.hasPermission(USER_ANY_PUNISHMENTS_PERMISSION)) {
                 actualRules.add(ruleData.getRule());
             }
         }

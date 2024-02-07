@@ -26,7 +26,7 @@ public final class OpBanIPCommand extends AbstractPunishCommand {
         this.cmdVerifyArgs(3, args, messagesFile.getUsageOpBanIpCommand());
         String nickName = this.cmdVerifyNickname(sender, true, args);
         RuleData rule = this.parseRule(sender,1, args);
-        String punisherName = this.cmdVerifySender(sender);
+        String punisherName = this.cmdGetSenderName(sender);
         String comment = this.parseComment(sender,2, args);
         String punishServer = this.parseServer(sender);
         String playerServer = this.parseServer(nickName);
@@ -72,7 +72,7 @@ public final class OpBanIPCommand extends AbstractPunishCommand {
                 return this.copyPartialMatches(args[0].toLowerCase(), this.getOnlinePlayers(), new ArrayList<>());
             }
             case 2: {
-                return this.copyPartialMatches(args[1].toLowerCase(), this.getActualRules(), new ArrayList<>());
+                return this.copyPartialMatches(args[1].toLowerCase(), this.getActualRules(commandSender), new ArrayList<>());
             }
         }
         return Collections.emptyList();

@@ -28,7 +28,7 @@ public final class OpTempMuteCommand extends AbstractPunishCommand {
         String nickName = this.cmdVerifyNickname(sender, true, args);
         long punishTime = this.parseTime(sender, 1, args);
         RuleData rule = this.parseRule(sender, 2, args);
-        String punisherName = this.cmdVerifySender(sender);
+        String punisherName = this.cmdGetSenderName(sender);
         String comment = this.parseComment(sender, 3, args);
         String punishServer = this.parseServer(sender);
         String playerServer = this.parseServer(nickName);
@@ -77,7 +77,7 @@ public final class OpTempMuteCommand extends AbstractPunishCommand {
                 return this.copyPartialMatches(args[0].toLowerCase(), this.getOnlinePlayers(), new ArrayList<>());
             }
             case 3: {
-                return this.copyPartialMatches(args[2].toLowerCase(), this.getActualRules(), new ArrayList<>());
+                return this.copyPartialMatches(args[2].toLowerCase(), this.getActualRules(commandSender), new ArrayList<>());
             }
         }
         return Collections.emptyList();
