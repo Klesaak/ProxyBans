@@ -43,6 +43,7 @@ public class Message implements Cloneable {
         }
     }
 
+    //TODO пофикситть этот треш
     public Message tag(Pattern pattern, String replacement) {
         return create(this.replaceAll(this.message, pattern, ()-> replacement), this.isList, this.isWithoutQuotes);
     }
