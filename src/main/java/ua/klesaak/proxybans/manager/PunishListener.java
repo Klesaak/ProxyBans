@@ -12,6 +12,8 @@ import ua.klesaak.proxybans.utils.messages.Message;
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 
 public class PunishListener implements Listener {
+    private static final Message UNDEFINED_REASON = Message.create("deff", false, true);
+
     private final ProxyBansManager manager;
 
     public PunishListener(ProxyBansManager manager) {
@@ -32,10 +34,10 @@ public class PunishListener implements Listener {
     }
 
     private Message tagPunishMessage(PunishData punishData) {
-        Message cancelReason = Message.create("deff", false, true);
+        Message cancelReason;
         val messagesFile = this.manager.getMessagesFile();
         switch (punishData.getPunishType()) {
-            case BAN:{
+            case BAN: {
                 cancelReason = messagesFile.getMessageBanned();
                 break;
             }
@@ -73,6 +75,10 @@ public class PunishListener implements Listener {
             }
             case OP_TEMP_MUTE: {
                 cancelReason = messagesFile.getMessageOpTempMuted();
+                break;
+            }
+            default: {
+                cancelReason = UNDEFINED_REASON;
                 break;
             }
         }
