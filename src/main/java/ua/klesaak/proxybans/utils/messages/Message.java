@@ -27,8 +27,9 @@ public class Message implements Cloneable {
 
     public void broadcast() {
         val components = this.getMessageComponent();
-        ProxyServer.getInstance().getPlayers().forEach(proxiedPlayer -> proxiedPlayer.sendMessage(components));
-        ProxyServer.getInstance().getConsole().sendMessage(components);
+        ProxyServer proxyServer = ProxyServer.getInstance();
+        proxyServer.getPlayers().forEach(proxiedPlayer -> proxiedPlayer.sendMessage(components));
+        proxyServer.getConsole().sendMessage(components);
     }
 
     public static Message create(String text, boolean isList, boolean isWithoutQuotes) {
