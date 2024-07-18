@@ -12,7 +12,7 @@ import ua.klesaak.proxybans.utils.messages.Message;
 import static ua.klesaak.proxybans.config.MessagesFile.*;
 
 public class PunishListener implements Listener {
-    private static final Message UNDEFINED_REASON = Message.create("deff", false, true);
+    private static final Message UNDEFINED_REASON = new Message("deff", false, true);
 
     private final ProxyBansManager manager;
 

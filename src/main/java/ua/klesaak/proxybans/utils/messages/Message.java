@@ -8,13 +8,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.chat.ComponentSerializer;
 import ua.klesaak.proxybans.utils.MCColorUtils;
+import ua.klesaak.proxybans.utils.UtilityMethods;
 
-import java.util.function.Supplier;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Message implements Cloneable {
-    private final String message;
+    protected String message;
     private final boolean isList;
     private final boolean isWithoutQuotes;
 
@@ -25,6 +24,10 @@ public class Message implements Cloneable {
         this.isWithoutQuotes = isWithoutQuotes;
     }
 
+    public TagMessage tag(Pattern pattern, String replacement) {
+        return new TagMessage(UtilityMethods.replaceAll(this.message, pattern, ()-> replacement), this.isList, this.isWithoutQuotes);
+    }
+
     public void broadcast() {
         val components = this.getMessageComponent();
         ProxyServer proxyServer = ProxyServer.getInstance();
@@ -32,20 +35,11 @@ public class Message implements Cloneable {
         proxyServer.getConsole().sendMessage(components);
     }
 
-    public static Message create(String text, boolean isList, boolean isWithoutQuotes) {
-        return new Message(text, isList, isWithoutQuotes);
-    }
-
     public void send(CommandSender... players) {
         val components = this.getMessageComponent();
         for (CommandSender player : players) {
             player.sendMessage(components);
         }
-    }
-
-    //TODO пофикситть этот треш
-    public Message tag(Pattern pattern, String replacement) {
-        return create(this.replaceAll(this.message, pattern, ()-> replacement), this.isList, this.isWithoutQuotes);
     }
 
     public void send(CommandSender player) {
@@ -74,12 +68,6 @@ public class Message implements Cloneable {
         return this.message;
     }
 
-    private String replaceAll(String message, Pattern pattern, Supplier<String> replacement) {
-        Matcher matcher = pattern.matcher(message);
-        if (matcher.find()) return matcher.replaceAll(Matcher.quoteReplacement(replacement.get()));
-        return message;
-    }
-
     @Override
     public Message clone() {
         try {
@@ -95,5 +83,17 @@ public class Message implements Cloneable {
         return "Message{" +
                 "message='" + message + '\'' +
                 '}';
+    }
+    public static class TagMessage extends Message {
+
+        public TagMessage(String message, boolean isList, boolean isWithoutQuotes) {
+            super(message, isList, isWithoutQuotes);
+        }
+
+        @Override
+        public TagMessage tag(Pattern pattern, String replacement) {
+            this.message = UtilityMethods.replaceAll(this.message, pattern, ()-> replacement);
+            return this;
+        }
     }
 }
