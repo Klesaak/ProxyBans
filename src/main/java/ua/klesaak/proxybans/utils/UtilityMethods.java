@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 @UtilityClass
 public class UtilityMethods {
+
     public String replaceAll(String message, Pattern pattern, Supplier<String> replacement) {
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) return matcher.replaceAll(Matcher.quoteReplacement(replacement.get()));
